@@ -1,0 +1,36 @@
+{
+    "status": "published",
+    "documentType": "ItemSupplierData",
+    "selectAttributes": [
+        "DeclineToBidReasonComment",
+        "DeclineToBidReason",
+        "PurgeState",
+        "HasBid",
+        "SupplierData",
+        "Awarded",
+        "ItemId",
+        "TimeUpdated",
+        "NumberOfRemovedBids",
+        "TimeCreated",
+        "NumberOfBidExtension",
+        "Active",
+        "NumberOfSurrogateBids",
+        "IntendToBid",
+        "Version",
+        "NumberOfSubmittedBids"
+    ],
+    "filterExpressions": [
+        {
+            "name": "updatedDateTo",
+            "field": "TimeUpdated",
+            "op": "<=",
+            "defaultValue": null
+        },
+        {
+            "name": "updatedDateFrom",
+            "field": "TimeUpdated",
+            "op": ">",
+            "defaultValue": null
+        }
+    ]
+}

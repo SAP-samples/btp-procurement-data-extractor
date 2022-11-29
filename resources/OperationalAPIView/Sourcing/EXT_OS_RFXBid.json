@@ -1,0 +1,37 @@
+{
+    "status": "published",
+    "documentType": "RFXBid",
+    "selectAttributes": [
+    "AlternativeStatus",
+    "SavedBy",
+    "SliceType",
+    "SubmitBy",
+    "SubmitFor",
+    "SavedDate",
+    "SliceId",
+    "IsEmailBid",
+    "SubmissionDate",
+    "IsSurrogateBid",
+    "TimeUpdated",
+    "ProcessedDate",
+    "TimeCreated",
+    "AlternativeId",
+    "Active",
+    "AlternativeType",
+    "ContentDocumentReference"
+    ],
+    "filterExpressions": [
+        {
+            "name": "updatedDateTo",
+            "field": "TimeUpdated",
+            "op": "<=",
+            "defaultValue": null
+        },
+        {
+            "name": "updatedDateFrom",
+            "field": "TimeUpdated",
+            "op": ">",
+            "defaultValue": null
+        }
+    ]
+}

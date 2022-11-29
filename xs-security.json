@@ -1,0 +1,17 @@
+{
+    "xsappname" : "btp-procurement-data-extractor",
+    "tenant-mode" : "dedicated",
+    "scopes": [
+      {
+        "name": "$XSAPPNAME.JobScheduler",
+        "description": "JobScheduler",
+        "grant-as-authority-to-apps": ["$XSSERVICENAME(btp-procurement-data-extractor-jobscheduler)"]
+      }
+    ],
+    "authorities":["$ACCEPT_GRANTED_AUTHORITIES"],
+    "role-templates": [ { 
+      "name"               : "JobScheduler", 
+      "description"        : "Job Scheduler", 
+      "scope-references"   : [ "$XSAPPNAME.JobScheduler"]
+      }]
+}

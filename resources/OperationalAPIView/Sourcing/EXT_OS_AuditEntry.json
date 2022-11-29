@@ -1,0 +1,34 @@
+{
+    "status": "published",
+    "documentType": "AuditEntry",
+    "selectAttributes": [
+        "EffectiveUser",
+        "Parameters",
+        "LineId",
+        "NodeName",
+        "ContextObject",
+        "TimeUpdated",
+        "Template",
+        "TimeCreated",
+        "Active",
+        "IsSystem",
+        "Level",
+        "Id",
+        "ContextVersion",
+        "RealUser"
+    ],
+    "filterExpressions": [
+        {
+            "name": "updatedDateTo",
+            "field": "TimeUpdated",
+            "op": "<=",
+            "defaultValue": null
+        },
+        {
+            "name": "updatedDateFrom",
+            "field": "TimeUpdated",
+            "op": ">",
+            "defaultValue": null
+        }
+    ]
+}

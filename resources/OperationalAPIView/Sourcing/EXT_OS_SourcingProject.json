@@ -1,0 +1,62 @@
+{
+    "status": "published",
+    "documentType": "SourcingProject",
+    "selectAttributes": [
+       "LastModifiedBy",
+        "Owner",
+        "Description",
+        "Region.Region",
+        "ProcessStatus",
+        "DocumentId",
+        "CreateDate",
+        "LastModified",
+        "TimeCreated",
+        "PlannedStartDate",
+        "ProjectAddin",
+        "AwardJustification",
+        "Suppliers.SystemID",
+        "Changed",
+        "ParentDocument",
+        "Currency",
+        "Suppliers.Name",
+        "DocumentVersion",
+        "Status",
+        "UniqueId",
+        "InternalId",
+        "Commodity.Name",
+        "IsVersionPinned",
+        "Title",
+        "Client.Description",
+        "TimeUpdated",
+        "BaselineSpend",
+        "Region.Description",
+        "TemplateObject",
+        "ResultsDescription",
+        "Active",
+        "Client.DepartmentID",
+        "ParentWorkspace",
+        "ActualSaving",
+        "NextVersion",
+        "PlannedEndDate",
+        "SubContent.Title",
+        "Alert",
+        "Commodity.UniqueName",
+        "ProcessId",
+        "SubContent.InternalId",
+        "TargetSavingPct"
+    ],
+    "filterExpressions": [
+        {
+            "name": "updatedDateTo",
+            "field": "TimeUpdated",
+            "op": "<=",
+            "defaultValue": null
+        },
+        {
+            "name": "updatedDateFrom",
+            "field": "TimeUpdated",
+            "op": ">",
+            "defaultValue": null
+        }
+    ]
+}

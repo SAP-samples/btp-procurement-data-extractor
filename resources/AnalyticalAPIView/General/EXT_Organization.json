@@ -1,0 +1,33 @@
+{
+  "status": "published",
+  "documentType": "OrganizationDim",
+  "selectAttributes": [
+    "OrganizationName",
+    "OrganizationId",
+    "ParentOrgId",
+    "OrganizationNameL1",
+    "OrganizationNameL2",
+    "OrganizationNameL3",
+    "OrganizationNameL4",
+    "OrganizationNameL5",
+    "OrganizationIdL1",
+    "OrganizationIdL2",
+    "OrganizationIdL3",
+    "OrganizationIdL4",
+    "OrganizationIdL5"
+  ],
+  "filterExpressions": [
+    {
+      "name": "updatedDateTo",
+      "field": "TimeUpdated",
+      "op": "<=",
+      "defaultValue": null
+    },
+    {
+      "name": "updatedDateFrom",
+      "field": "TimeUpdated",
+      "op": ">",
+      "defaultValue": null
+    }
+  ]
+}

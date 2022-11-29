@@ -1,0 +1,52 @@
+{
+
+    "status": "published",
+    "documentType": "EventSummaryFact",
+    "selectAttributes": [
+        "LoadCreateTime",
+        "LoadUpdateTime",
+        "Event",
+        "ProjectInfo",
+        "SourceSystem",
+        "BiddedSuppliers.BiddedSuppliers",
+        "Commodity.Commodity",
+        "EventStartDate",
+        "EventEndDate",
+        "EstAwardDate",
+        "ContractEffectiveDate",
+        "EventCreateDate",
+        "PreviewBeginDate",
+        "BiddingStartDate",
+        "BiddingEndDate",
+        "Owner",
+        "Origin",
+        "Region.Region",
+        "Department.Department",
+        "AclId",
+        "BaselineSpend",
+        "TargetSavingsPct",
+        "ContractMonths",
+        "BidsSubmitted",
+        "BidsRemoved",
+        "SurrogateBids",
+        "NumQuestions",
+        "InvitedSuppliers",
+        "AcceptedSuppliers",
+        "DeclinedSuppliers",
+        "ParticipSuppliers"
+    ],
+    "filterExpressions": [
+        {
+            "name": "updatedDateTo",
+            "field": "TimeUpdated",
+            "op": "<=",
+            "defaultValue": null
+        },
+        {
+            "name": "updatedDateFrom",
+            "field": "TimeUpdated",
+            "op": ">",
+            "defaultValue": null
+        }
+    ]
+}

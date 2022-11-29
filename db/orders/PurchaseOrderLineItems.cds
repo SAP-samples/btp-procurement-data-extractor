@@ -1,0 +1,136 @@
+namespace sap.ariba;
+using { managed } from '@sap/cds/common';
+
+using sap.ariba.type as types from '../types';
+
+
+/**
+    Name:	                Purchase Order (Procurement & Invoicing)
+    Class Name:	            ariba.analytics.fact.SSPPOLineItem
+    Description:	        Purchase Order
+    Database Table Name:	FACT_SSPPO_LINE_ITEM
+*/
+entity PurchaseOrderLineItems: managed,types.customFields  {
+    key POId                                : String(50);
+    key OrderID                             : String(50);
+    key POLineNumber                        : String(50);
+    key SplitAccountingNumber               : Integer;
+    key Realm                               : String(50);
+        LoadCreateTime                      : DateTime;
+        LoadUpdateTime                      : DateTime;
+        VersionNumber                       : Double;
+        IsRetroactive                       : Boolean;
+        ParentPOLineNumber                  : Double;
+        Title                               : String(100);
+        PaymentTermsTitle                   : String(100);
+        NeedByDate                          : types.day;
+        DeliverTo                           : String(100);
+        RetroEffectiveDate                  : types.day;
+        BillToLocation                      : types.location;
+        AccountType                         : String(50);
+        PCard                               : types.pcard;
+        ReceivingTypeString                 : String(50);
+
+        ServiceStartDate                    : types.day;
+        ServiceEndDate                      : types.day;
+        RequiresServiceEntry                : Boolean;
+        ServiceOrder                        : Boolean;
+        Description                         : String(1000);
+        isPunchOutItem                      : String(10);
+        PriceVarCost                        : Double;
+        Amount                              : Double;
+        POChargeAmountInvoiced              : Double;
+        DiscountAmount                      : Double;
+        POTaxAmountInvoiced                 : Double;
+        LineItemCount                       : Double;
+        POCount                             : Double;
+        Quantity                            : Double;
+        MaxAmount                           : Double;
+        ExpectedAmount                      : Double;
+        AmountLeftToInvoice                 : Double;
+        AmountLeftToReconcile               : Double;
+        EstimatedSavings                    : Double;
+        TaxAmount                           : Double;
+        ChargeAmount                        : Double;
+        OrderedDate                         : types.day;
+        UNSPSC                              : types.unspsc;
+        Commodity                           : types.commodity;
+        Supplier                            : types.supplier;
+        Part                                : types.part;
+        NonCatalogSupplierPartNumber        : String(255);
+        NonCatalogSupplierPartAuxiliaryId   : String(255);
+        UnitOfMeasure                       : types.uom;
+        PriceBasisQuantity                  : Double;
+        PriceBasisQuantityUOM               : types.uom;
+        ConversionFactor                    : Double;
+        PriceBasisQuantityDesc              : String(100);
+        TaxCodeName                         : String(255);
+        TaxCodeId                           : String(255);
+        TaxCodeDescription                  : String(255);
+        ReceiptBasedLine                    : Boolean;
+        ERPCommodity                        : types.erpCommodity;
+        PurchaseGroup                       : types.group;
+        AccountAssignment                   : String(50);
+        ItemCategory                        : String(50);
+        CompanyCode                         : types.companyCode;
+        CostCenter                          : types.costCenter;
+        AccountingCompany                   : types.group;
+        PurchasingCompany                   : types.group;
+        SubAccount                          : types.subAccount;
+        AccountingRegion                    : types.region;
+        AccountingProject                   : types.project;
+        Product                             : types.product;
+        Asset                               : types.asset;
+        InternalOrder                       : types.internalOrder;
+        StatisticsCode                      : types.statisticsCode;
+        ProcurementUnit                     : types.unit;
+        ShipToLocation                      : types.location;
+        Requester                           : types.user;
+        Account                             : types.account;
+        LineType                            : String(25);
+        Contract                            : types.contract;
+        SourceSystem                        : types.sourceSystem;
+        StatusString                        : String(50);
+        Network                             : types.network;
+        ActivityNumber                      : types.activityNumber;
+        CompanySite                         : types.site;
+        Duration                            : Double;
+        AmountAccepted                      : Double;
+        NumberAccepted                      : Double;
+        AmountInvoiced                      : Double;
+        ServiceAmountApproved               : Double;
+        ServiceAmountUnderApproval          : Double;
+        NumberInvoiced                      : Double;
+        AmountReconciled                    : Double;
+        NumberReconciled                    : Double;
+        AmountBilled                        : Double;
+        NumberBilled                        : Double;
+        AmountCleared                       : Double;
+        NumberCleared                       : Double;
+        OriginatingSystemLineNumber         : Double;
+        OriginatingSystem                   : String(50);
+        OriginatingSystemReferenceID        : String(50);
+        OrderClosedStatus                   : String(100);
+        LineClosedStatus                    : String(100);
+        OrderType                           : String(10);
+        ProjectID                           : String(50);
+        ProjectTitle                        : String(255);
+        IsExternalAppDocumentCopy           : String(25);
+        MarketPlaceItemSupplierId           : String(255);
+        NumberConfirmedAccepted             : Double;
+        NumberConfirmedAcceptedWithChanges  : Double;
+        NumberConfirmedRejected             : Double;
+        NumberConfirmedBackOrdered          : Double;
+        NumberConfirmedSubstituted          : Double;
+        OrderConfirmationStatus             : String(50);
+        POLineOrderConfirmationStatus       : String(50);
+        SubContractor                       : String(25);
+        OrigCurrencyCode                    : String(10);
+        OrigAmount                          : Double;
+        OrigAmountAccepted                  : Double;
+        OrigAmountInvoiced                  : Double;
+        OrigAmountBilled                    : Double;
+        OrigAmountCleared                   : Double;
+        OrigAmountReconciled                : Double;
+        AmountRange                         : types.range;
+}

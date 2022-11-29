@@ -1,0 +1,39 @@
+{
+  "status": "published",
+  "documentType": "CommodityDim",
+  "selectAttributes": [
+    "CommodityName",
+    "CommodityId",
+    "ParentCommodityId",
+    "SourceCommodityDomain",
+    "UNSPSCCodeName",
+    "UNSPSCCodeId",
+    "UNSPSCParentCodeId",
+    "CategoryL1",
+    "CategoryL2",
+    "CategoryL3",
+    "CategoryIdL1",
+    "CategoryIdL2",
+    "CategoryIdL3",
+    "UNSPSCCategoryL1",
+    "UNSPSCCategoryL2",
+    "UNSPSCCategoryL3",
+    "UNSPSCCategoryIdL1",
+    "UNSPSCCategoryIdL2",
+    "UNSPSCCategoryIdL3"
+  ],
+  "filterExpressions": [
+    {
+      "name": "updatedDateTo",
+      "field": "TimeUpdated",
+      "op": "<=",
+      "defaultValue": null
+    },
+    {
+      "name": "updatedDateFrom",
+      "field": "TimeUpdated",
+      "op": ">",
+      "defaultValue": null
+    }
+  ]
+}

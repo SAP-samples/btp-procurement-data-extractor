@@ -1,0 +1,34 @@
+{
+  "status": "published",
+  "documentType": "ProjectGroupFact",
+  "selectAttributes": [
+    "LoadCreateTime",
+    "LoadUpdateTime",
+    "ProjectId",
+    "Name",
+    "UniqueName",
+    "MemberUniqueName",
+    "MemberPasswordAdapter",
+    "MemberName",
+    "IsMemberActive",
+    "ProjectInfo",
+    "AclId",
+    "BeginDate",
+    "DueDate",
+    "EndDate"
+  ],
+  "filterExpressions": [
+    {
+      "name": "updatedDateTo",
+      "field": "TimeUpdated",
+      "op": "<=",
+      "defaultValue": null
+    },
+    {
+      "name": "updatedDateFrom",
+      "field": "TimeUpdated",
+      "op": ">",
+      "defaultValue": null
+    }
+  ]
+}

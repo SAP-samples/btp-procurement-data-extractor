@@ -1,0 +1,38 @@
+{
+  "status": "published",
+  "documentType": "SMSurveyTemplateQuestionDim",
+  "selectAttributes": [
+    "AclId",
+    "GroupItemCount",      
+    "LevelId",
+    "OrderingNumber",      
+    "ParentSectionId",     
+    "QuestionDescription", 
+    "QuestionId",
+    "QuestionName",        
+    "SectionDescriptionL1",
+    "SectionDescriptionL2",
+    "SectionIdL1",
+    "SectionIdL2",
+    "SectionNameL1",
+    "SectionNameL2",
+    "SourceSystem",
+    "TimeCreated",
+    "TimeUpdated",
+    "UpdateGroupCount"
+  ],
+  "filterExpressions": [
+    {
+      "name": "updatedDateTo",
+      "field": "TimeUpdated",
+      "op": "<=",
+      "defaultValue": null
+    },
+    {
+      "name": "updatedDateFrom",
+      "field": "TimeUpdated",
+      "op": ">",
+      "defaultValue": null
+    }
+  ]
+}

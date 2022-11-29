@@ -1,0 +1,30 @@
+{
+    "status": "published",
+    "documentType": "SSPRejectedInvoiceFact",
+    "selectAttributes": [
+        "LoadCreateTime",
+        "LoadUpdateTime",
+        "InvoiceNumber",
+        "InvoiceId",
+        "InvoiceDate",
+        "IRStatus",
+        "RejectionReasonCode",
+        "RejectionReasonText",
+        "InvoiceWithReasonsCount",
+        "SourceSystem"
+    ],
+    "filterExpressions": [
+        {
+            "name": "updatedDateTo",
+            "field": "TimeUpdated",
+            "op": "<=",
+            "defaultValue": null
+        },
+        {
+            "name": "updatedDateFrom",
+            "field": "TimeUpdated",
+            "op": ">",
+            "defaultValue": null
+        }
+    ]
+}

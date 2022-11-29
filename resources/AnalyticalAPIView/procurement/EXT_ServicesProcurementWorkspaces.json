@@ -1,0 +1,53 @@
+{
+  "status": "published",
+  "documentType": "ServicesProcurementWorkspaceFactFact",
+  "selectAttributes": [
+    "LoadCreateTime",
+    "LoadUpdateTime",
+    "ProjectId",
+    "Description",
+    "AclId",
+    "Duration",
+    "BeginDate",
+    "DueDate",
+    "EndDate",
+    "Status",
+    "State",
+    "OnTimeOrLate",
+    "Owner",
+    "ProjectInfo",
+    "DependsOnProject",
+    "ContainerProject",
+    "Process",
+    "Commodity.Commodity",
+    "Organization.Organization",
+    "Region.Region",
+    "IsTestProject",
+    "SourceSystem",
+    "ProcessStatus",
+    "AllOwners.AllOwners",
+    "ProjectDeliverables",
+    "ProcurementStartDate",
+    "ProcurementEndDate",
+    "ProcurementType",
+    "PricingStructure",
+    "ProjectLead",
+    "Suppliers.Suppliers",
+    "TotalSpend",
+    "InvoicedSpend"
+  ],
+  "filterExpressions": [
+    {
+      "name": "updatedDateTo",
+      "field": "TimeUpdated",
+      "op": "<=",
+      "defaultValue": null
+    },
+    {
+      "name": "updatedDateFrom",
+      "field": "TimeUpdated",
+      "op": ">",
+      "defaultValue": null
+    }
+  ]
+}

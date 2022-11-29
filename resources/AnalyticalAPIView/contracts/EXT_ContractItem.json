@@ -1,0 +1,42 @@
+{
+
+    "status": "published",
+    "documentType": "ContractItemFactFact",
+    "selectAttributes": [
+        "AclId",
+        "AllowAdvancedPricingConditions",
+        "AllowPeriodQuantityForEvent",
+        "AllowSupplierScales",
+        "AllowSupplierToViewPeriodQuantity",
+        "CommodityEscalationClause.CommodityEscalationClause",
+        "Contract",
+        "CreatedDate",
+        "ItemCommodity.ItemCommodity",
+        "ItemDescription",
+        "ItemId",
+        "ItemTitle",
+        "LoadCreateTime",
+        "LoadUpdateTime",
+        "MaxVolumeThreshold",
+        "PricingConditionValidityPeriodType",
+        "SourceSystem",
+        "TimeCreated",
+        "TimeUpdated",
+        "ValidityPeriodDuration",
+        "VolumeScaleEnabled"
+    ],
+    "filterExpressions": [
+        {
+            "name": "updatedDateTo",
+            "field": "TimeUpdated",
+            "op": "<=",
+            "defaultValue": null
+        },
+        {
+            "name": "updatedDateFrom",
+            "field": "TimeUpdated",
+            "op": ">",
+            "defaultValue": null
+        }
+    ]
+}

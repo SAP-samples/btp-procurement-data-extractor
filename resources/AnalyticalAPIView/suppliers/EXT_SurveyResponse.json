@@ -1,0 +1,59 @@
+{
+ 
+    "status": "published",
+    "documentType": "SurveyResponseFact",
+    "selectAttributes": [
+        "LoadCreateTime",
+        "LoadUpdateTime",
+        "Survey",
+        "SourceSystem",
+        "Respondent",
+        "Question",
+        "QuestionOrderNumber",
+        "SurveyStartDate",
+        "SurveyEndDate",
+        "ReviewEndDate",
+        "Project",
+        "Supplier",
+        "Contractor",
+        "Owner",
+        "Commodity.Commodity",
+        "Region.Region",
+        "Department.Department",
+        "IsInternalRespondent",
+        "RespondentDepartment",
+        "Scorecard",
+        "KPI",
+        "IsQuantitative",
+        "StringValue",
+        "AclId",
+        "BooleanValue",
+        "DateValue",
+        "ResponseCommodityValue.ResponseCommodityValue",
+        "ResponseRegionValue.ResponseRegionValue",
+        "ResponseDepartmentValue.ResponseDepartmentValue",
+        "ResponseSupplierValue.ResponseSupplierValue",
+        "ResponseUserValue.ResponseUserValue",
+        "QuantitativeCount",
+        "Value",
+        "Weight",
+        "Target",
+        "Grade",
+        "SystemGrade",
+        "V_responsetextmultivalue.V_responsetextmultivalue"
+    ],
+    "filterExpressions": [
+        {
+            "name": "updatedDateTo",
+            "field": "TimeUpdated",
+            "op": "<=",
+            "defaultValue": null
+        },
+        {
+            "name": "updatedDateFrom",
+            "field": "TimeUpdated",
+            "op": ">",
+            "defaultValue": null
+        }
+    ]
+}

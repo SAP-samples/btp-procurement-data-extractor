@@ -1,0 +1,55 @@
+{
+  "status": "published",
+  "documentType": "SupplierRegistrationProjectFact",
+  "selectAttributes": [
+    "LoadCreateTime",
+    "LoadUpdateTime",
+    "ProjectId",
+    "Description",
+    "AclId",
+    "Duration",
+    "BeginDate",
+    "DueDate",
+    "EndDate",
+    "Status",
+    "State",
+    "OnTimeOrLate",
+    "Owner",
+    "ProjectInfo",
+    "DependsOnProject",
+    "ContainerProject",
+    "Process",
+    "Commodity.Commodity",
+    "Organization.Organization",
+    "Region.Region",
+    "IsTestProject",
+    "SourceSystem",
+    "ProcessStatus",
+    "AllOwners.AllOwners",
+    "SMProjectInfo",
+    "Supplier",
+    "QuestionnaireSubmissionDate",
+    "ReinviteDate",
+    "ReinviteCount",
+    "ApprovedDate",
+    "UpdateApprovedDate",
+    "DeniedDate",
+    "UpdateDeniedDate",
+    "RegistrationStatus",
+    "RegistrationUpdateStatus"
+  ],
+  "filterExpressions": [
+    {
+      "name": "updatedDateTo",
+      "field": "TimeUpdated",
+      "op": "<=",
+      "defaultValue": null
+    },
+    {
+      "name": "updatedDateFrom",
+      "field": "TimeUpdated",
+      "op": ">",
+      "defaultValue": null
+    }
+  ]
+}

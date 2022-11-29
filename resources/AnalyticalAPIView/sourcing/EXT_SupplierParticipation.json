@@ -1,0 +1,66 @@
+{
+
+    "status": "published",
+    "documentType": "SupplierParticipationFact",
+    "selectAttributes": [
+        "LoadCreateTime",
+        "LoadUpdateTime",
+        "Supplier",
+        "SourceSystem",
+        "Bidder",
+        "Event",
+        "EventInfo",
+        "ItemCommodity.ItemCommodity",
+        "EventStartDate",
+        "EventEndDate",
+        "EstAwardDate",
+        "ContractEffectiveDate",
+        "EventCreateDate",
+        "PreviewBeginDate",
+        "BiddingStartDate",
+        "BiddingEndDate",
+        "Owner",
+        "IncumbentFlag",
+        "SurrogateFlag",
+        "Surrogate",
+        "AwardedFlag",
+        "InvitedFlag",
+        "AcceptedFlag",
+        "DeclinedFlag",
+        "DeclinedReason",
+        "DeclinedReasonName",
+        "DeclinedComment",
+        "ParticipatedFlag",
+        "Region.Region",
+        "Department.Department",
+        "AclId",
+        "DeclineToRespondReason",
+        "BaselineSpend",
+        "TargetSavingsPct",
+        "ContractMonths",
+        "BidQuantity",
+        "BidTotalCost",
+        "AwardedAmount",
+        "PotentialSavings",
+        "SupplierAwardedHist",
+        "NumItemAwarded",
+        "NumItemAccepted",
+        "NumItemDeclined",
+        "NumItemBidOn",
+        "BidsSubmitted"
+    ],
+    "filterExpressions": [
+        {
+            "name": "updatedDateTo",
+            "field": "TimeUpdated",
+            "op": "<=",
+            "defaultValue": null
+        },
+        {
+            "name": "updatedDateFrom",
+            "field": "TimeUpdated",
+            "op": ">",
+            "defaultValue": null
+        }
+    ]
+}

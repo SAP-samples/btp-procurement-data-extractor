@@ -1,0 +1,33 @@
+{
+  "status": "published",
+  "documentType": "RegionDim",
+  "selectAttributes": [
+    "RegionName",
+    "RegionId",
+    "ParentRegionId",
+    "RegionNameL1",
+    "RegionNameL2",
+    "RegionNameL3",
+    "RegionNameL4",
+    "RegionNameL5",
+    "RegionIdL1",
+    "RegionIdL2",
+    "RegionIdL3",
+    "RegionIdL4",
+    "RegionIdL5"
+  ],
+  "filterExpressions": [
+    {
+      "name": "updatedDateTo",
+      "field": "TimeUpdated",
+      "op": "<=",
+      "defaultValue": null
+    },
+    {
+      "name": "updatedDateFrom",
+      "field": "TimeUpdated",
+      "op": ">",
+      "defaultValue": null
+    }
+  ]
+}

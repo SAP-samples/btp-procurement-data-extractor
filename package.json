@@ -1,0 +1,110 @@
+{
+  "name": "btp-procurement-data-extractor",
+  "version": "1.0.0",
+  "description": "BTP application for extracting procurement data",
+  "private": true,
+  "dependencies": {
+    "@sap-cloud-sdk/core": "^1.54.0",
+    "@sap-cloud-sdk/util": "^2.1.0",
+    "@sap/cds": "5.9.7",
+    "@sap/cds-dk": "4.9.7",
+    "@sap/xsenv": "^3.3.2",
+    "@sap/xssec": "^3.2.13",
+    "axios": "^0.27.2",
+    "cds-dbm": "^0.0.36",
+    "cds-pg": "^0.1.29",
+    "express": "^4.18.1",
+    "flat": "^5.0.2",
+    "fs": "*",
+    "moment": "^2.29.3",
+    "passport": "^0.6.0",
+    "path": "^0.12.7",
+    "unzipper": "^0.10.11",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "sqlite3": "^5.0.2"
+  },
+  "engines": {
+    "node": "^14",
+    "npm": "^8"
+  },
+  "cds": {
+    "features": {
+      "cds_tx_inheritance": false,
+      "cds_tx_protection": false
+    },
+    "odata": {
+      "version": "v4"
+    },
+    "query": {
+      "limit": {
+        "default": 100,
+        "max": 5000
+      }
+    },
+    "build": {
+      "tasks": [
+        {
+          "for": "node-cf",
+          "src": "srv",
+          "options": {
+            "model": [
+              "db",
+              "srv",
+              "app"
+            ]
+          }
+        },
+        {
+          "use": "cds-dbm/dist/build/postgres-cf",
+          "for": "postgres-cf",
+          "src": "db",
+          "options": {
+            "deployCmd": "npx cds-dbm deploy --load-via delta --auto-undeploy"
+          }
+        }
+      ]
+    },
+    "requires": {
+      "db": {
+        "kind": "database"
+      },
+      "database": {
+        "dialect": "plain",
+        "impl": "cds-pg",
+        "model": [
+          "srv",
+          "db"
+        ]
+      },
+      "auth": {
+        "kind": "xsuaa"
+      }
+    },
+    "migrations": {
+      "db": {
+        "schema": {
+          "default": "public",
+          "clone": "_cdsdbm_clone",
+          "reference": "_cdsdbm_ref"
+        },
+        "deploy": {
+          "tmpFile": "tmp/_autodeploy.json",
+          "undeployFile": "db/undeploy.json"
+        }
+      }
+    }
+  },
+  "scripts": {
+    "start": "cds run",
+    "local:docker:run": "docker-compose up",
+    "local:db:build": "npx cds-dbm deploy --create-db",
+    "local:debug": "node --inspect node_modules/@sap/cds/bin/cds run",
+    "mta:package": "mbt build --mtar mta-btp-procurement-data-extractor --platform cf",
+    "mta:deploy": "cf deploy mta_archives/mta-btp-procurement-data-extractor -f",
+    "mta:package:deploy": "npm run mta:package && npm run mta:deploy",
+    "mta:deploy:db": "cf deploy mta_archives/mta-btp-procurement-data-extractor.mtar -f -m btp-procurement-data-extractor-pgdb-deployer",
+    "mta:package:deploy:db": "npm run mta:package && npm run mta:deploy:db"
+  }
+}

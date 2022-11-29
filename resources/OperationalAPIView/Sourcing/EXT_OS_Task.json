@@ -1,0 +1,38 @@
+{
+    "viewTemplateName": "EXT_OS_Task",
+    "type": "custom",
+    "status": "published",
+    "documentType": "Task",
+    "selectAttributes": [
+        "Status",
+        "InternalId",
+        "Owner",
+        "ParentPlan",
+        "Title",
+        "CreateDate",
+        "EndDate",
+        "TimeUpdated",
+        "BeginDate",
+        "TemplateObject",
+        "TimeCreated",
+        "Active",
+        "ParentWorkspace",
+        "EndDateTime",
+        "RoundNumber",
+        "DueDate"
+    ],
+    "filterExpressions": [
+        {
+            "name": "updatedDateTo",
+            "field": "TimeUpdated",
+            "op": "<=",
+            "defaultValue": null
+        },
+        {
+            "name": "updatedDateFrom",
+            "field": "TimeUpdated",
+            "op": ">",
+            "defaultValue": null
+        }
+    ]
+}

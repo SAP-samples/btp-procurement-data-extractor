@@ -1,0 +1,32 @@
+{
+
+    "status": "published",
+    "documentType": "ContractClauseFact",
+    "selectAttributes": [
+        "LoadCreateTime",
+        "LoadUpdateTime",
+        "ClauseId",
+        "CreatedDate",
+        "Project",
+        "Title",
+        "Type",
+        "Folder",
+        "Modified",
+        "SourceSystem",
+        "AclId"
+    ],
+    "filterExpressions": [
+        {
+            "name": "updatedDateTo",
+            "field": "TimeUpdated",
+            "op": "<=",
+            "defaultValue": null
+        },
+        {
+            "name": "updatedDateFrom",
+            "field": "TimeUpdated",
+            "op": ">",
+            "defaultValue": null
+        }
+    ]
+}

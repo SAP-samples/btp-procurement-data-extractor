@@ -1,0 +1,122 @@
+## Generated mta.yaml based on template version 0.2.0
+## appName = dataextraction
+## language=nodejs; multiTenant=false
+## approuter=
+_schema-version: '3.1'
+ID: btp-procurement-data-extractor
+version: 1.0.0
+description: "SAP Procurement Extraction Data Lake"
+parameters:
+  enable-parallel-deployments: true
+  
+build-parameters:
+  before-all:
+   - builder: custom
+     commands:
+      - npm install --production
+      - cds build --production
+
+modules:
+
+ # --------------------- SERVER MODULE ------------------------
+ - name: btp-procurement-data-extractor-srv
+ # ------------------------------------------------------------
+   type: nodejs
+   path: gen/srv
+   properties:
+     EXIT: 1  # required by deploy.js task to terminate 
+     SAP_JWT_TRUST_ACL:
+     - clientid: "*"
+     identityzone: "*"
+   parameters:
+     app-name: btp-procurement-data-extractor-srv
+     disk-quota: 4G
+     memory: 4G
+   requires:
+    # Resources extracted from CAP configuration
+    - name: btp-procurement-data-extractor-pgdatabase
+    - name: btp-procurement-data-extractor-uaa
+    - name: btp-procurement-data-extractor-dest
+    - name: btp-procurement-data-extractor-conn
+    - name: btp-procurement-data-extractor-log
+    - name: btp-procurement-data-extractor-jobscheduler
+   provides:
+    - name: srv-api      # required by consumers of CAP services (e.g. approuter)
+      public: true
+      properties:
+        url: ${default-url}
+
+ - name: btp-procurement-data-extractor-pgdb-deployer
+   type: custom
+   path: gen/db
+   parameters:
+     buildpacks: [https://github.com/cloudfoundry/apt-buildpack#v0.2.2, nodejs_buildpack] 
+     no-route: true
+     no-start: true
+     disk-quota: 2GB
+     memory: 512MB
+     tasks:
+     - name: deploy_to_postgresql
+       command: chmod 755 deploy.sh && ./deploy.sh
+       disk-quota: 2GB
+       memory: 512MB      
+   build-parameters:
+     ignore: ["node_modules/"]
+   requires:
+     - name: btp-procurement-data-extractor-pgdatabase
+
+resources:
+# ------------------------------------------------------------
+ - name: btp-procurement-data-extractor-pgdatabase
+# ------------------------------------------------------------
+   parameters:
+     path: ./pg-options.json
+     service: postgresql-db
+     service-plan: standard
+     skip-service-updates:
+      parameters: true
+     service-tags:
+       - plain
+   type: org.cloudfoundry.managed-service
+
+# ------------------------------------------------------------
+ - name: btp-procurement-data-extractor-jobscheduler
+# ------------------------------------------------------------
+   type: org.cloudfoundry.managed-service
+   parameters:
+     service-plan: standard
+     service: jobscheduler
+     config:
+      enable-xsuaa-support: true 
+
+# ------------------------------------------------------------
+ - name: btp-procurement-data-extractor-uaa
+# ------------------------------------------------------------
+   type: org.cloudfoundry.managed-service
+   parameters:
+     service: xsuaa
+     service-plan: application  
+     path: ./xs-security.json
+
+# ------------------------------------------------------------
+ - name: btp-procurement-data-extractor-dest
+# ------------------------------------------------------------
+   type: org.cloudfoundry.managed-service
+   parameters:
+     service-plan: lite
+     service: destination
+
+# ------------------------------------------------------------
+ - name: btp-procurement-data-extractor-conn
+# ------------------------------------------------------------
+   type: org.cloudfoundry.managed-service
+   parameters:
+     service-plan: lite
+     service: connectivity
+# ------------------------------------------------------------
+ - name: btp-procurement-data-extractor-log
+# ------------------------------------------------------------
+   type: org.cloudfoundry.managed-service
+   parameters:
+     service-plan: lite
+     service: application-logs

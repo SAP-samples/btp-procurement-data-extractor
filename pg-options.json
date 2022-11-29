@@ -1,0 +1,23 @@
+{
+    "audit_log_level": [
+        "DDL",
+        "ROLE"
+    ],
+    "engine_version": "11",
+    "locale": "en_US",
+    "memory": 4,
+    "multi_az": false,
+    "postgresql_extensions": [
+        "ltree",
+        "citext",
+        "pg_stat_statements",
+        "pgcrypto",
+        "fuzzystrmatch",
+        "hstore",
+        "btree_gist",
+        "btree_gin",
+        "pg_trgm",
+        "uuid-ossp"
+    ],
+    "storage": 12
+}

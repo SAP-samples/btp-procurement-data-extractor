@@ -1,0 +1,45 @@
+{
+
+    "status": "published",
+    "documentType": "ContractDim",
+    "selectAttributes": [
+        "AclId",
+        "AgreementDate",
+        "Amount",
+        "ContractCurrency",
+        "ContractId",
+        "ContractIdL1",
+        "ContractLevel",
+        "ContractName",
+        "ContractNameL1",
+        "ContractType",
+        "EffectiveDate",
+        "ExpirationDate",
+        "IsEvergreen",
+        "MaxLimit",
+        "MinLimit",
+        "ParentContractId",
+        "ProposedAmount",
+        "RelatedId",
+        "ReleaseType",
+        "SavingsPercentage",
+        "SourceSystem",
+        "TimeCreated",
+        "TimeUpdated"
+    ],
+    "filterExpressions": [
+        {
+            "name": "updatedDateTo",
+            "field": "TimeUpdated",
+            "op": "<=",
+            "defaultValue": null
+        },
+        {
+            "name": "updatedDateFrom",
+            "field": "TimeUpdated",
+            "op": ">",
+            "defaultValue": null
+        }
+    ]
+}
+

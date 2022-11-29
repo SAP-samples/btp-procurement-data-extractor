@@ -1,0 +1,44 @@
+{
+  "status": "published",
+  "documentType": "ApprovalHistoryFact",
+  "selectAttributes": [
+    "LoadCreateTime",
+    "LoadUpdateTime",
+    "Count",
+    "ApprovableId",
+    "ApprovableTitle",
+    "ApprovableType",
+    "ApprovableTypeUIName",
+    "ApprovableStatus",
+    "ApprovableSubmitDate",
+    "ApprovedDate",
+    "Requester",
+    "Preparer",
+    "ApprovalRecordUser",
+    "ApprovalRecordDate",
+    "ApprovalRecordType",
+    "ApprovalRecordActivationDate",
+    "ApprovalRecordApprover",
+    "ApprovalRecordReason",
+    "ApprovalRecordState",
+    "ApprovalRecordRealUser",
+    "ApprovalRecordReportingExtendEscalationReason",
+    "ApprovalRecordExtendEscalationUserComments",
+    "ApprovalRecordEscalationExtensionDate",
+    "SourceSystem"
+  ],
+  "filterExpressions": [
+    {
+      "name": "updatedDateTo",
+      "field": "TimeUpdated",
+      "op": "<=",
+      "defaultValue": null
+    },
+    {
+      "name": "updatedDateFrom",
+      "field": "TimeUpdated",
+      "op": ">",
+      "defaultValue": null
+    }
+  ]
+}

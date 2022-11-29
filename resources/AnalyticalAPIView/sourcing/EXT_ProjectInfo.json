@@ -1,0 +1,28 @@
+{
+  "status": "published",
+  "documentType": "ProjectInfoDim",
+  "selectAttributes": [
+    "ProjectName",
+    "ProjectId",
+    "SourceSystem",
+    "AclId",
+    "TemplateName",
+    "TemplateId",
+    "ProjectTypeName",
+    "ProjectTypeId"
+  ],
+  "filterExpressions": [
+    {
+      "name": "updatedDateTo",
+      "field": "TimeUpdated",
+      "op": "<=",
+      "defaultValue": null
+    },
+    {
+      "name": "updatedDateFrom",
+      "field": "TimeUpdated",
+      "op": ">",
+      "defaultValue": null
+    }
+  ]
+}

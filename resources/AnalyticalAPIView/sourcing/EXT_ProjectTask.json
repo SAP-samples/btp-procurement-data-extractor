@@ -1,0 +1,46 @@
+{
+
+    "status": "published",
+    "documentType": "ProjectTaskFact",
+    "selectAttributes": [
+        "LoadCreateTime",
+        "LoadUpdateTime",
+        "TaskId",
+        "DocumentId",
+        "Description",
+        "Duration",
+        "BeginDate",
+        "DueDate",
+        "EndDate",
+        "CommittedDueDate",
+        "EndDateTime",
+        "Status",
+        "AltStatus",
+        "TaskType",
+        "TaskName",
+        "RequiredOrOptional",
+        "OnTimeOrLate",
+        "Project",
+        "ProjectOwner",
+        "IsTestProject",
+        "SourceSystem",
+        "AllOwners.AllOwners",
+        "AclId",
+        "Observers.Observers",
+        "ActiveApprovers.ActiveApprovers"
+    ],
+    "filterExpressions": [
+        {
+            "name": "updatedDateTo",
+            "field": "TimeUpdated",
+            "op": "<=",
+            "defaultValue": null
+        },
+        {
+            "name": "updatedDateFrom",
+            "field": "TimeUpdated",
+            "op": ">",
+            "defaultValue": null
+        }
+    ]
+}

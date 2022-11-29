@@ -1,0 +1,41 @@
+{
+  "status": "published",
+  "documentType": "S4ApprovalFlowFact",
+  "selectAttributes": [
+    "LoadCreateTime",
+    "LoadUpdateTime",
+    "TaskId",
+    "RequestId",
+    "ApproverId",
+    "Task",
+    "Project",
+    "SourceSystem",
+    "ApproverName",
+    "ApprovedBy",
+    "ApproverGroup",
+    "Rounds",
+    "ApproverType",
+    "Reason",
+    "BeginDate",
+    "ActionDate",
+    "StepState",
+    "TaskAltStatus",
+    "StepStatus",
+    "Comments",
+    "ActivationDate"
+  ],
+  "filterExpressions": [
+    {
+      "name": "updatedDateTo",
+      "field": "TimeUpdated",
+      "op": "<=",
+      "defaultValue": null
+    },
+    {
+      "name": "updatedDateFrom",
+      "field": "TimeUpdated",
+      "op": ">",
+      "defaultValue": null
+    }
+  ]
+}

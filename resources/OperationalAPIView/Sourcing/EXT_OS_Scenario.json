@@ -1,0 +1,43 @@
+{
+    "status": "published",
+    "documentType": "Scenario",
+    "selectAttributes": [
+        "AwardStatus",
+        "AlternativeStatus",
+        "SavedBy",
+        "SliceType",
+        "SubmitBy",
+        "SubmitFor",
+        "ObjectiveFunction",
+        "SavedDate",
+        "Title",
+        "SliceId",
+        "IsEmailBid",
+        "SubmissionDate",
+        "TimeUpdated",
+        "NumberofSelectedItems",
+        "ProcessedDate",
+        "TimeCreated",
+        "AlternativeId",
+        "Active",
+        "NumberOfSelectedSuppliers",
+        "ScenarioStatus",
+        "AlternativeType",
+        "ScenarioType",
+        "ContentDocumentReference"
+    ],
+    "filterExpressions": [
+        {
+            "name": "updatedDateTo",
+            "field": "TimeUpdated",
+            "op": "<=",
+            "defaultValue": null
+        },
+        {
+            "name": "updatedDateFrom",
+            "field": "TimeUpdated",
+            "op": ">",
+            "defaultValue": null
+        }
+    ]
+}

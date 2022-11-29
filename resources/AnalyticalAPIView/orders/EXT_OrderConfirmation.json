@@ -1,0 +1,40 @@
+{
+
+    "status": "published",
+    "documentType": "OrderConfirmationFact",
+    "selectAttributes": [
+        "LoadCreateTime",
+        "LoadUpdateTime",
+        "OCId",
+        "OCLineNumber",
+        "OrderId",
+        "OrderLineNumber",
+        "NumberConfirmedAccepted",
+        "NumberConfirmedAcceptedWithChanges",
+        "NumberConfirmedRejected",
+        "NumberConfirmedBackOrdered",
+        "NumberConfirmedSubstituted",
+        "DeliveryDate",
+        "ShipmentDate",
+        "Description",
+        "Amount",
+        "Shipping",
+        "Tax",
+        "OrderConfirmationDate",
+        "SourceSystem"
+    ],
+    "filterExpressions": [
+        {
+            "name": "updatedDateTo",
+            "field": "TimeUpdated",
+            "op": "<=",
+            "defaultValue": null
+        },
+        {
+            "name": "updatedDateFrom",
+            "field": "TimeUpdated",
+            "op": ">",
+            "defaultValue": null
+        }
+    ]
+}

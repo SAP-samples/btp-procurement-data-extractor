@@ -1,0 +1,48 @@
+{
+    "status": "published",
+    "documentType": "ScorecardFact",
+    "selectAttributes": [
+        "LoadCreateTime",
+        "LoadUpdateTime",
+        "Scorecard",
+        "SourceSystem",
+        "Status",
+        "PeriodFrom",
+        "PeriodTo",
+        "Project",
+        "Supplier",
+        "Owner",
+        "Commodity.Commodity",
+        "Region.Region",
+        "Department.Department",
+        "KPI",
+        "KPIOrderNumber",
+        "AclId",
+        "GradeCount",
+        "Value",
+        "Weight",
+        "Target",
+        "Grade",
+        "SystemGrade",
+        "RespondentUser",
+        "IsInternalRespondent",
+        "RespondentDepartment",
+        "RespGradeCount",
+        "RespondentValue",
+        "RespondentGrade"
+    ],
+    "filterExpressions": [
+        {
+            "name": "updatedDateTo",
+            "field": "TimeUpdated",
+            "op": "<=",
+            "defaultValue": null
+        },
+        {
+            "name": "updatedDateFrom",
+            "field": "TimeUpdated",
+            "op": ">",
+            "defaultValue": null
+        }
+    ]
+}

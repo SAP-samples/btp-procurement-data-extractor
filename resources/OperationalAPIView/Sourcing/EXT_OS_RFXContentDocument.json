@@ -1,0 +1,39 @@
+{
+
+    "status": "published",
+    "documentType": "RFXContentDocument",
+    "selectAttributes": [
+        "LastModifiedBy",
+        "Owner",
+        
+        "DocumentId",
+        "LastModified",
+        "TimeCreated",
+        "DocumentVersion",
+        "Status",
+        "InternalId",
+        "IsVersionPinned",
+        "IsPublishRequired",
+        "Title",
+        "TimeUpdated",
+        "TemplateObject",
+        "Active",
+        "ParentWorkspace",
+        "Content",
+        "NextVersion"
+    ],
+    "filterExpressions": [
+        {
+            "name": "updatedDateTo",
+            "field": "TimeUpdated",
+            "op": "<=",
+            "defaultValue": null
+        },
+        {
+            "name": "updatedDateFrom",
+            "field": "TimeUpdated",
+            "op": ">",
+            "defaultValue": null
+        }
+    ]
+}

@@ -1,0 +1,42 @@
+{
+
+    "status": "published",
+    "documentType": "InvoiceExceptionsFact",
+    "selectAttributes": [
+        "LoadCreateTime",
+        "LoadUpdateTime",
+        "InvoiceNumber",
+        "InvoiceId",
+        "InvoiceLineNumber",
+        "ProcurementUnit",
+        "InvoiceWithExceptionCount",
+        "ExceptionType",
+        "InvoiceDate",
+        "AccountingDate",
+        "Supplier",
+        "Requester",
+        "POId",
+        "OrderID",
+        "POLineNumber",
+        "ReconciledBy",
+        "IRStatus",
+        "ExceptionStatus",
+        "InvoiceSubmissionMethod",
+        "InvoiceSourceDocument",
+        "SourceSystem"
+    ],
+    "filterExpressions": [
+        {
+            "name": "updatedDateTo",
+            "field": "TimeUpdated",
+            "op": "<=",
+            "defaultValue": null
+        },
+        {
+            "name": "updatedDateFrom",
+            "field": "TimeUpdated",
+            "op": ">",
+            "defaultValue": null
+        }
+    ]
+}

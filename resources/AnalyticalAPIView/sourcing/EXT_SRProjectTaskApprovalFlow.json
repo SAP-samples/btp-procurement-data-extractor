@@ -1,0 +1,42 @@
+{
+    "status": "published",
+    "documentType": "SRProjectTaskApprovalFlowFact",
+    "selectAttributes": [
+        "LoadCreateTime",
+        "LoadUpdateTime",
+        "TaskId",
+        "RequestId",
+        "ApproverId",
+        "Task",
+        "Project",
+        "SourceSystem",
+        "ApproverName",
+        "ApprovedBy",
+        "ApproverGroup",
+        "Rounds",
+        "ApproverType",
+        "Reason",
+        "BeginDate",
+        "ActionDate",
+        "StepState",
+        "TaskAltStatus",
+        "StepStatus",
+        "Comments",
+        "ActivationDate",
+        "SRProject"
+    ],
+    "filterExpressions": [
+        {
+            "name": "updatedDateTo",
+            "field": "TimeUpdated",
+            "op": "<=",
+            "defaultValue": null
+        },
+        {
+            "name": "updatedDateFrom",
+            "field": "TimeUpdated",
+            "op": ">",
+            "defaultValue": null
+        }
+    ]
+}

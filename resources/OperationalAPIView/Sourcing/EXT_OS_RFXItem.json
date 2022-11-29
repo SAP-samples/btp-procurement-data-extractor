@@ -1,0 +1,47 @@
+{
+    "status": "published",
+    "documentType": "RFXItem",
+    "selectAttributes": [
+      "Description",
+        "EnvelopeId",      
+        "IsRealItem",      
+        "SoftDelete",      
+        "ItemType",        
+        "DecimalPrecision",
+        "ItemId",
+        "ItemSubType",
+        "TimeCreated",
+        "Commodity",
+        "Numbering",
+        "Currency",
+        "TargetScore",
+        "VersionId",
+        "KPIUniversalSourceId",
+        "ParticipantReadOnlyItem",
+        "IncumbentsSet",
+        "Title",
+        "TimeUpdated",
+        "Weight",
+        "ParentItemId",
+        "Active",
+        "NextVersion",
+        "LinkedItemId",
+        "RootItemId",
+        "ExternalSystemCorrelationId",
+        "LastUpdateDate"
+    ],
+    "filterExpressions": [
+        {
+            "name": "updatedDateTo",
+            "field": "TimeUpdated",
+            "op": "<=",
+            "defaultValue": null
+        },
+        {
+            "name": "updatedDateFrom",
+            "field": "TimeUpdated",
+            "op": ">",
+            "defaultValue": null
+        }
+    ]
+}

@@ -1,0 +1,52 @@
+{
+  "status": "published",
+  "documentType": "SMSurveyResponseFact",
+  "selectAttributes": [
+    "LoadCreateTime",
+    "LoadUpdateTime",
+    "Survey",
+    "SourceSystem",
+    "Respondent",
+    "QuestionId",
+    "TemplateQuestion",
+    "QuestionOrderNumber",
+    "SurveyStartDate",
+    "SurveyEndDate",
+    "Project",
+    "Supplier",
+    "Owner",
+    "IsInternalRespondent",
+    "RespondentDepartment",
+    "IsQuantitative",
+    "StringValue",
+    "AclId",
+    "BooleanValue",
+    "DateValue",
+    "ResponseCommodityValue.ResponseCommodityValue",
+    "ResponseRegionValue.ResponseRegionValue",
+    "ResponseDepartmentValue.ResponseDepartmentValue",
+    "ResponseSupplierValue.ResponseSupplierValue",
+    "SensitiveDataMaskPattern",
+    "QuantitativeCount",
+    "Value",
+    "Weight",
+    "Target",
+    "Grade",
+    "SystemGrade",
+    "V_responsetextmultivalue.V_responsetextmultivalue"
+  ],
+  "filterExpressions": [
+    {
+      "name": "updatedDateTo",
+      "field": "TimeUpdated",
+      "op": "<=",
+      "defaultValue": null
+    },
+    {
+      "name": "updatedDateFrom",
+      "field": "TimeUpdated",
+      "op": ">",
+      "defaultValue": null
+    }
+  ]
+}

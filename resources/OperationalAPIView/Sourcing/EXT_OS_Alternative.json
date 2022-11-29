@@ -1,0 +1,34 @@
+{
+    "status": "published",
+    "documentType": "Alternative",
+    "selectAttributes": [
+        "AlternativeStatus",
+        "SliceType",
+        "SubmitBy",
+        "SubmitFor",
+        "SliceId",
+        "IsEmailBid",
+        "SubmissionDate",
+        "TimeUpdated",
+        "ProcessedDate",
+        "TimeCreated",
+        "AlternativeId",
+        "Active",
+        "AlternativeType",
+        "ContentDocumentReference"
+    ],
+    "filterExpressions": [
+        {
+            "name": "updatedDateTo",
+            "field": "TimeUpdated",
+            "op": "<=",
+            "defaultValue": null
+        },
+        {
+            "name": "updatedDateFrom",
+            "field": "TimeUpdated",
+            "op": ">",
+            "defaultValue": null
+        }
+    ]
+}

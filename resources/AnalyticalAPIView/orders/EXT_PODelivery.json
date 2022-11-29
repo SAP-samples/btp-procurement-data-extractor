@@ -1,0 +1,46 @@
+{
+
+    "status": "published",
+    "documentType": "PODeliveryFact",
+    "selectAttributes": [
+        "LoadCreateTime",
+        "LoadUpdateTime",
+        "POId",
+        "OrderID",
+        "POName",
+        "ProcurementUnit",
+        "Amount",
+        "ConfirmationTime",
+        "DeliveryTime",
+        "ReceiptTime",
+        "InvoiceTime",
+        "OnTimeDeliveryShip",
+        "OnTimeDeliveryReceipt",
+        "OnTimeOrLate",
+        "BackOrderedItems",
+        "RejectedItems",
+        "SubstitutedItems",
+        "OrderConfirmation",
+        "AdvancedShipNotice",
+        "Receipt",
+        "OrderedDate",
+        "NeedByDate",
+        "Supplier",
+        "Requester",
+        "SourceSystem"
+    ],
+    "filterExpressions": [
+        {
+            "name": "updatedDateTo",
+            "field": "TimeUpdated",
+            "op": "<=",
+            "defaultValue": null
+        },
+        {
+            "name": "updatedDateFrom",
+            "field": "TimeUpdated",
+            "op": ">",
+            "defaultValue": null
+        }
+    ]
+}

@@ -1,0 +1,47 @@
+{
+    "status": "published",
+    "documentType": "AdvancePaymentIncludesLineLevelFact",
+    "selectAttributes": [
+        "LoadCreateTime",
+        "LoadUpdateTime",
+        "PaymentId",
+        "APMTLineNumber",
+        "GLIndicatorUniqueName",
+        "GLIndicatorName",
+        "DocumentTypeUniqueName",
+        "DocumentTypeName",
+        "CompanyCodeDescription",
+        "CompanyCodeUniqueName",
+        "Supplier",
+        "Name",
+        "NetDueDate",
+        "CreatedTime",
+        "OrderID",
+        "Status",
+        "PaymentMethodTypeUniqueName",
+        "PaymentMethodTypeName",
+        "PaymentMethodTypeDescription",
+        "Amount",
+        "POTotalCost",
+        "ConsumedAmount",
+        "AmountToBeConsumed",
+        "SourceSystem",
+        "APMTLI_Amount",
+        "APMTLI_ConsumedAmount",
+        "APMTLI_AmountToBeConsumed"
+    ],
+    "filterExpressions": [
+        {
+            "name": "updatedDateTo",
+            "field": "TimeUpdated",
+            "op": "<=",
+            "defaultValue": null
+        },
+        {
+            "name": "updatedDateFrom",
+            "field": "TimeUpdated",
+            "op": ">",
+            "defaultValue": null
+        }
+    ]
+}

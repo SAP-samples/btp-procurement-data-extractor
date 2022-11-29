@@ -1,0 +1,29 @@
+{
+  "status": "published",
+  "documentType": "UserActivityFact",
+  "selectAttributes": [
+    "LoadCreateTime",
+    "LoadUpdateTime",
+    "DocumentCount",
+    "UserData",
+    "ActivityDate",
+    "DocumentType",
+    "ActivityType",
+    "SourceSystem",
+    "ProcurementUnit"
+  ],
+  "filterExpressions": [
+    {
+      "name": "updatedDateTo",
+      "field": "TimeUpdated",
+      "op": "<=",
+      "defaultValue": null
+    },
+    {
+      "name": "updatedDateFrom",
+      "field": "TimeUpdated",
+      "op": ">",
+      "defaultValue": null
+    }
+  ]
+}

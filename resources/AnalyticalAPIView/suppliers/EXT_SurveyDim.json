@@ -1,0 +1,37 @@
+{
+  "status": "published",
+  "documentType": "SurveyDim",
+  "selectAttributes": [
+    "AclId",
+    "IsLastVersion",
+    "SourceSystem",
+    "StationaryDescription",
+    "StationaryName",
+    "SurveyDescription",
+    "SurveyId",
+    "SurveyName",
+    "SurveyStationaryId",
+    "SurveyStatus",
+    "SurveyTemplateId",
+    "TemplateDescription",
+    "TemplateName",
+    "TestSurvey",
+    "TimeCreated",
+    "TimeUpdated",
+    "VersionNumber"
+  ],
+  "filterExpressions": [
+    {
+      "name": "updatedDateTo",
+      "field": "TimeUpdated",
+      "op": "<=",
+      "defaultValue": null
+    },
+    {
+      "name": "updatedDateFrom",
+      "field": "TimeUpdated",
+      "op": ">",
+      "defaultValue": null
+    }
+  ]
+}

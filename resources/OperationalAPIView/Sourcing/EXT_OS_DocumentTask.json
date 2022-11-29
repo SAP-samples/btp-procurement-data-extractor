@@ -1,0 +1,50 @@
+{
+    "status": "published",
+    "documentType": "DocumentTask",
+    "selectAttributes": [
+      "ExternalApprovalEnabled",
+        "Owner",
+        "Description",
+        "CommittedDueDate",
+        "DocumentId",
+        "TimeCreated",
+        "Required",
+        "EndDateTime",
+        "Approvers",
+        "BoardingType",
+        "RoundNumber",
+        "ActiveApprovers",
+        "DueDate",
+        "Status",
+        "ApprovalRuleFlowType",
+        "InternalId",
+        "CreatedBy",
+        "Observers",
+        "Title",
+        "EndDate",
+        "IsMilestone",
+        "TimeUpdated",
+        "BeginDate",
+        "TemplateObject",
+        "TaskApprovable",
+        "Active",
+        "Type",
+        "Alert",
+        "IsAutoComplete",
+        "AltStatus"
+    ],
+    "filterExpressions": [
+        {
+            "name": "updatedDateTo",
+            "field": "TimeUpdated",
+            "op": "<=",
+            "defaultValue": null
+        },
+        {
+            "name": "updatedDateFrom",
+            "field": "TimeUpdated",
+            "op": ">",
+            "defaultValue": null
+        }
+    ]
+}

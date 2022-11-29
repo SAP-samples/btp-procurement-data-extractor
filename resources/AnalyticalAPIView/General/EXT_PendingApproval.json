@@ -1,0 +1,41 @@
+{
+  "status": "published",
+  "documentType": "PendingApprovalFact",
+  "selectAttributes": [
+    "LoadCreateTime",
+    "LoadUpdateTime",
+    "ApprovalCount",
+    "ApprovableId",
+    "ApprovableTitle",
+    "ApprovableType",
+    "ApprovableTypeUIName",
+    "ApprovableSubmitDate",
+    "ApprovableStatus",
+    "Requester",
+    "Preparer",
+    "ApprovalRequestApprover",
+    "ApprovalRequestActivationDate",
+    "ApprovalRequestReason",
+    "ApprovalRequestEscalationExtendedByUser",
+    "ApprovalRequestEscalationDate",
+    "ApprovalRequestExtendEscalationReason",
+    "ApprovalRequestExtendEscalationUserComments",
+    "ApprovalRequestIsEscalationExtended",
+    "ApprovalRequestExtendEscalationDate",
+    "SourceSystem"
+  ],
+  "filterExpressions": [
+    {
+      "name": "updatedDateTo",
+      "field": "TimeUpdated",
+      "op": "<=",
+      "defaultValue": null
+    },
+    {
+      "name": "updatedDateFrom",
+      "field": "TimeUpdated",
+      "op": ">",
+      "defaultValue": null
+    }
+  ]
+}

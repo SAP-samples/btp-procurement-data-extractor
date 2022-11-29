@@ -1,0 +1,45 @@
+{
+  "status": "published",
+  "documentType": "SPMProjectFact",
+  "selectAttributes": [
+    "LoadCreateTime",
+    "LoadUpdateTime",
+    "ProjectId",
+    "Description",
+    "AclId",
+    "Duration",
+    "BeginDate",
+    "DueDate",
+    "EndDate",
+    "Status",
+    "State",
+    "OnTimeOrLate",
+    "Owner",
+    "ProjectInfo",
+    "DependsOnProject",
+    "ContainerProject",
+    "Process",
+    "Commodity.Commodity",
+    "Organization.Organization",
+    "Region.Region",
+    "IsTestProject",
+    "SourceSystem",
+    "ProcessStatus",
+    "AllOwners.AllOwners",
+    "Supplier"
+  ],
+  "filterExpressions": [
+    {
+      "name": "updatedDateTo",
+      "field": "TimeUpdated",
+      "op": "<=",
+      "defaultValue": null
+    },
+    {
+      "name": "updatedDateFrom",
+      "field": "TimeUpdated",
+      "op": ">",
+      "defaultValue": null
+    }
+  ]
+}

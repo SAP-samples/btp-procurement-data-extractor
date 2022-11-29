@@ -1,0 +1,55 @@
+{
+    "status": "published",
+    "documentType": "EventParticipationFact",
+    "selectAttributes": [
+        "LoadCreateTime",
+        "LoadUpdateTime",
+        "Event",
+        "Bidder",
+        "SourceSystem",
+        "Supplier",
+        "Commodity.Commodity",
+        "EventStartDate",
+        "EventEndDate",
+        "EstAwardDate",
+        "ContractEffectiveDate",
+        "EventCreateDate",
+        "PreviewBeginDate",
+        "BiddingStartDate",
+        "BiddingEndDate",
+        "Owner",
+        "AcceptedFlag",
+        "DeclinedFlag",
+        "IntendToRespondFlag",
+        "DeclinedToRespondFlag",
+        "ParticipatedFlag",
+        "AwardedFlag",
+        "Region.Region",
+        "Department.Department",
+        "AclId",
+        "BaselineSpend",
+        "TargetSavingsPct",
+        "ContractMonths",
+        "NumEventAwarded",
+        "NumEventAccepted",
+        "NumEventDeclined",
+        "NumIntendToRespond",
+        "NumDeclinedToRespond",
+        "NumEventBidOn",
+        "BidsSubmitted"
+    ],
+    "filterExpressions": [
+        {
+            "name": "updatedDateTo",
+            "field": "TimeUpdated",
+            "op": "<=",
+            "defaultValue": null
+        },
+        {
+            "name": "updatedDateFrom",
+            "field": "TimeUpdated",
+            "op": ">",
+            "defaultValue": null
+        }
+    ]
+}

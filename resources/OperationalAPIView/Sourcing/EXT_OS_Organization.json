@@ -1,0 +1,43 @@
+{
+    "status": "published",
+    "documentType": "Organization",
+    "selectAttributes": [
+        "OrganizationID.Ids.Domain",
+        "Contacts.OrganizationRole",    
+        "BlockingReason",
+        "Parent",
+        "SystemID",
+        "Name",
+        "TimeCreated",
+        "BusinessContacts.EmailAddress",
+        "SMVendorID",
+        "BusinessContacts.Phone",       
+        "BusinessContacts.Fax",
+        "VendorKeys.SiteID",
+        "VendorKeys.VendorID",
+        "OrganizationID.Ids.Value",
+        "Contacts.User",
+        "BusinessContacts.IsBusinessContactApproved",
+        "VendorKeys.BusinessSystemID",
+        "CorporateAddress",
+        "TimeUpdated",
+        "BusinessContacts.PostalAddress",
+        "Active",
+        "VendorKeys.LocationID",
+        "OrganizationID.Ids"
+    ],
+    "filterExpressions": [
+        {
+            "name": "updatedDateTo",
+            "field": "TimeUpdated",
+            "op": "<=",
+            "defaultValue": null
+        },
+        {
+            "name": "updatedDateFrom",
+            "field": "TimeUpdated",
+            "op": ">",
+            "defaultValue": null
+        }
+    ]
+}

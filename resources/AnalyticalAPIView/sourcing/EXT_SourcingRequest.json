@@ -1,0 +1,62 @@
+{
+
+    "status": "published",
+    "documentType": "SourcingRequestFact",
+    "selectAttributes": [
+        "LoadCreateTime",
+        "LoadUpdateTime",
+        "ProjectId",
+        "Description",
+        "AclId",
+        "Duration",
+        "BeginDate",
+        "DueDate",
+        "EndDate",
+        "Status",
+        "State",
+        "OnTimeOrLate",
+        "Owner",
+        "ProjectInfo",
+        "DependsOnProject",
+        "ContainerProject",
+        "Process",
+        "Commodity.Commodity",
+        "Organization.Organization",
+        "Region.Region",
+        "IsTestProject",
+        "SourceSystem",
+        "ProcessStatus",
+        "AllOwners.AllOwners",
+        "BaselineSpend",
+        "ActualSaving",
+        "TargetSavingsPct",
+        "ContractMonths",
+        "Currency",
+        "EventType",
+        "ContractEffectiveDate",
+        "ResultsDescription",
+        "AwardJustification",
+        "PlannedStartDate",
+        "PlannedEndDate",
+        "SourcingMechanism",
+        "ExecutionStrategy",
+        "ProjectReason",
+        "PlannedEventType",
+        "Origin",
+        "Suppliers.Suppliers"
+    ],
+    "filterExpressions": [
+        {
+            "name": "updatedDateTo",
+            "field": "TimeUpdated",
+            "op": "<=",
+            "defaultValue": null
+        },
+        {
+            "name": "updatedDateFrom",
+            "field": "TimeUpdated",
+            "op": ">",
+            "defaultValue": null
+        }
+    ]
+}
