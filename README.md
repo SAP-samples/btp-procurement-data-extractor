@@ -1,33 +1,25 @@
-# SAP-samples/repository-template
-This default template for SAP Samples repositories includes files for README, LICENSE, and .reuse/dep5. All repositories on github.com/SAP-samples will be created based on this template.
+# Welcome to BTP Data Extractor App for Procurement
+Welcome to the sample use case of extracting SAP Procurement data into a BTP application. 
+This application retrieves SAP Ariba Cloud Services data through the standard APIs and captures the relevant data into a BTP database. 
+The scenario is meant to provide an easy to access approach for procurement data.
 
-# Containing Files
+This repository contains the sample code for the [Activate the Data Extractor](https://google.com) Mission in SAP Discovery Center.
 
-1. The LICENSE file:
-In most cases, the license for SAP sample projects is `Apache 2.0`.
-
-2. The .reuse/dep5 file: 
-The [Reuse Tool](https://reuse.software/) must be used for your samples project. You can find the .reuse/dep5 in the project initial. Please replace the parts inside the single angle quotation marks < > by the specific information for your repository.
-
-3. The README.md file (this file):
-Please edit this file as it is the primary description file for your project. You can find some placeholder titles for sections below.
-
-# [Title]
-<!-- Please include descriptive title -->
-
-<!--- Register repository https://api.reuse.software/register, then add REUSE badge:
-[![REUSE status](https://api.reuse.software/badge/github.com/SAP-samples/REPO-NAME)](https://api.reuse.software/info/github.com/SAP-samples/REPO-NAME)
--->
-
-## Description
-<!-- Please include SEO-friendly description -->
+_This code is only one part of the mission, so please follow the tutorial before attempting to use this code._
 
 ## Requirements
+Please see the pre-requisites and the required BTP services in the [Activate the Data Extractor](https://google.com) Mission in SAP Discovery Center.
 
-## Download and Installation
+## Deploy the App
+Simply run the following command to create the deployable file and deploy it to your BTP Cloud Foundry environment.
+
+```
+npm run mta:package:deploy
+```
+
 
 ## Known Issues
-<!-- You may simply state "No known issues. -->
+No known issues.
 
 ## How to obtain support
 [Create an issue](https://github.com/SAP-samples/<repository-name>/issues) in this repository if you find a bug or have questions about the content.
