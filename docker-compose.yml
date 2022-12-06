@@ -5,7 +5,7 @@ services:
     image: postgres:alpine
     restart: always
     environment:
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_PASSWORD: <<local-db-password>>
     ports:
       - '5432:5432'
   adminer:
