@@ -1,3 +1,6 @@
+[![REUSE status](https://api.reuse.software/badge/github.com/SAP-samples/btp-procurement-data-extractor)](https://api.reuse.software/info/github.com/SAP-samples/btp-procurement-data-extractor)
+
+
 # Welcome to BTP Data Extractor App for Procurement
 Welcome to the sample use case of extracting SAP Procurement data into a BTP application. 
 This application retrieves SAP Ariba Cloud Services data through the standard APIs and captures the relevant data into a BTP database. 
