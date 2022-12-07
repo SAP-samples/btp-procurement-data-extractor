@@ -32,6 +32,8 @@ modules:
      app-name: btp-procurement-data-extractor-srv
      disk-quota: 4G
      memory: 4G
+   build-parameters:
+     ignore: ["node_modules/"]
    requires:
     # Resources extracted from CAP configuration
     - name: btp-procurement-data-extractor-pgdatabase

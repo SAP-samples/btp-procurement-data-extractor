@@ -14,10 +14,10 @@ _This code is only one part of the mission, so please follow the tutorial before
 Please see the pre-requisites and the required BTP services in the [Activate the Data Extractor](https://google.com) Mission in SAP Discovery Center.
 
 ## Deploy the App
-Simply run the following command to create the deployable file and deploy it to your BTP Cloud Foundry environment.
+Simply run the following command to deploy the deployable file to your BTP Cloud Foundry environment.
 
 ```
-npm run mta:package:deploy
+npm run mta:deploy
 ```
 
 
