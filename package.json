@@ -102,7 +102,7 @@
     "local:db:build": "npx cds-dbm deploy --create-db",
     "local:debug": "node --inspect node_modules/@sap/cds/bin/cds run",
     "mta:package": "mbt build --mtar mta-btp-procurement-data-extractor --platform cf",
-    "mta:deploy": "cf deploy mta_archives/mta-btp-procurement-data-extractor -f",
+    "mta:deploy": "cf deploy mta_archives/mta-btp-procurement-data-extractor.mtar -f",
     "mta:package:deploy": "npm run mta:package && npm run mta:deploy",
     "mta:deploy:db": "cf deploy mta_archives/mta-btp-procurement-data-extractor.mtar -f -m btp-procurement-data-extractor-pgdb-deployer",
     "mta:package:deploy:db": "npm run mta:package && npm run mta:deploy:db"
