@@ -1,13 +1,10 @@
 "use strict";
 
 const cds = require("@sap/cds");
-const logger = require("../../utils/logger");
+const logger = cds.log('logger');
 const utils = require("../../utils/Utils");
 
 
-
-const { EventSummary, EventSummary_Department, EventSummary_Region,
-    EventSummary_Commodity, EventSummary_BiddedSuppliers } = cds.entities('sap.ariba');
 
 //Amount fields in object
 function _getAmountPropertiesForDataCleaning () {
@@ -41,7 +38,7 @@ function insertData(aData, realm)  {
             var oDataCleansed = utils.processCustomFields(oDataCleansed);
             try {
                 //Select record by Unique key
-                let res =  await srv.run ( SELECT.from (EventSummary).where(
+                let res =  await srv.run ( SELECT.from ("sap.ariba.EventSummary").where(
                     { 
                         Realm : oDataCleansed.Realm ,
                         EventId : oDataCleansed.EventId ,
@@ -51,7 +48,7 @@ function insertData(aData, realm)  {
 
                  if(res.length==0){
                      //New record, insert
-                    await srv.run( INSERT .into (EventSummary) .entries (oDataCleansed) ); 
+                    await srv.run( INSERT .into ("sap.ariba.EventSummary") .entries (oDataCleansed) );
                                   
                  }else{
                      //Update existing record
@@ -69,7 +66,7 @@ function insertData(aData, realm)  {
                      let regions = oDataCleansed["Region"];
                      delete oDataCleansed["Region"];           
                     
-                     await srv.run ( UPDATE (EventSummary) .set (oDataCleansed) .where(
+                     await srv.run ( UPDATE ("sap.ariba.EventSummary") .set (oDataCleansed) .where(
                         { 
                             Realm : oDataCleansed.Realm ,
                             EventId : oDataCleansed.EventId ,
@@ -110,7 +107,7 @@ async function _FullLoadRegions(regions,Realm,EventId,ItemId,EventVersion,srv){
        // const srv = cds.transaction(regions); 
         //Delete old records
         try {
-            await srv.run(DELETE(EventSummary_Region).where({
+            await srv.run(DELETE("sap.ariba.EventSummary_Region").where({
                 EventSummary_Realm : Realm ,
                 EventSummary_EventId : EventId ,
                 EventSummary_ItemId : ItemId ,
@@ -130,7 +127,7 @@ async function _FullLoadRegions(regions,Realm,EventId,ItemId,EventVersion,srv){
                 re["EventSummary_EventId"] = EventId;
                 re["EventSummary_ItemId"] = ItemId;
                 re["EventSummary_EventVersion"] = EventVersion;
-                await srv.run( INSERT .into (EventSummary_Region) .entries (re) ); 
+                await srv.run( INSERT .into ("sap.ariba.EventSummary_Region") .entries (re) );
            
             } catch (e) {                
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);
@@ -147,7 +144,7 @@ async function _FullLoadSuppliers(suppliers,Realm,EventId,ItemId,EventVersion,sr
        // const srv = cds.transaction(suppliers); 
         //Delete old records
         try {
-            await srv.run(DELETE(EventSummary_BiddedSuppliers).where({
+            await srv.run(DELETE("sap.ariba.EventSummary_BiddedSuppliers").where({
                 EventSummary_Realm : Realm ,
                 EventSummary_EventId : EventId ,
                 EventSummary_ItemId : ItemId ,
@@ -167,7 +164,7 @@ async function _FullLoadSuppliers(suppliers,Realm,EventId,ItemId,EventVersion,sr
                 supp["EventSummary_EventId"] = EventId;
                 supp["EventSummary_ItemId"] = ItemId;
                 supp["EventSummary_EventVersion"] = EventVersion;
-                await srv.run( INSERT .into (EventSummary_BiddedSuppliers) .entries (supp) ); 
+                await srv.run( INSERT .into ("sap.ariba.EventSummary_BiddedSuppliers") .entries (supp) );
            
             } catch (e) {                
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);
@@ -184,7 +181,7 @@ async function _FullLoadCommodities(commodities,Realm,EventId,ItemId,EventVersio
        // const srv = cds.transaction(commodities); 
         //Delete old records
         try {
-            await srv.run(DELETE(EventSummary_Commodity).where({
+            await srv.run(DELETE("sap.ariba.EventSummary_Commodity").where({
                 EventSummary_Realm : Realm ,
                 EventSummary_EventId : EventId ,
                 EventSummary_ItemId : ItemId ,
@@ -204,7 +201,7 @@ async function _FullLoadCommodities(commodities,Realm,EventId,ItemId,EventVersio
                 comm["EventSummary_EventId"] = EventId;
                 comm["EventSummary_ItemId"] = ItemId;
                 comm["EventSummary_EventVersion"] = EventVersion;
-                await srv.run( INSERT .into (EventSummary_Commodity) .entries (comm) ); 
+                await srv.run( INSERT .into ("sap.ariba.EventSummary_Commodity") .entries (comm) );
            
             } catch (e) {                
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);
@@ -222,7 +219,7 @@ async function _FullLoadOrganization(organizations,Realm,EventId,ItemId,EventVer
         //const srv = cds.transaction(organizations); 
         //Delete old records
         try {
-            await srv.run(DELETE(EventSummary_Department).where({
+            await srv.run(DELETE("sap.ariba.EventSummary_Department").where({
                 EventSummary_Realm : Realm ,
                 EventSummary_EventId : EventId ,
                 EventSummary_ItemId : ItemId ,
@@ -243,7 +240,7 @@ async function _FullLoadOrganization(organizations,Realm,EventId,ItemId,EventVer
                 org["EventSummary_ItemId"] = ItemId;
                 org["EventSummary_EventVersion"] = EventVersion;
 
-                await srv.run( INSERT .into (EventSummary_Department) .entries (org) ); 
+                await srv.run( INSERT .into ("sap.ariba.EventSummary_Department") .entries (org) );
            
             } catch (e) {                
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);

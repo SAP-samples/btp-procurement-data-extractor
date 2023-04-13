@@ -1,11 +1,9 @@
 "use strict";
 
 const cds = require("@sap/cds");
-const logger = require("../../utils/logger");
+const logger = cds.log('logger');
 const utils = require("../../utils/Utils");
 
-
-const { Task } = cds.entities('sap.ariba');
 
 //Amount fields in object
 function _getAmountPropertiesForDataCleaning () {
@@ -50,7 +48,7 @@ function insertData(aData, realm)  {
                 //1 Delete potential record dependencies
                 try {
 
-                    await srv.run(DELETE(Task).where({
+                    await srv.run(DELETE("sap.ariba.Task").where({
                         Realm : sRealm ,
                         InternalId: sInternalId,
                     }));
@@ -62,7 +60,7 @@ function insertData(aData, realm)  {
                 }
 
                 //New record, insert
-                await srv.run( INSERT .into (Task) .entries (oDataCleansed) ); 
+                await srv.run( INSERT .into ("sap.ariba.Task") .entries (oDataCleansed) );
                          
            
             } catch (e) {                

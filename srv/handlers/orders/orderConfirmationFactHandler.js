@@ -1,9 +1,7 @@
 "use strict";
 
 const cds = require("@sap/cds");
-const { OrderConfirmation } = cds.entities('sap.ariba');
-
-const logger = require("../../utils/logger");
+const logger = cds.log('logger');
 const utils = require("../../utils/Utils");
 
 
@@ -30,18 +28,18 @@ async function insertData(aData, realm)  {
             var oDataCleansed = utils.processCustomFields(oDataCleansed);
             try {
                 //Select record by Unique key
-                let res =  await srv.run ( SELECT.from (OrderConfirmation).where(
+                let res =  await srv.run ( SELECT.from ("sap.ariba.OrderConfirmation").where(
                     { OCId : oDataCleansed.OCId ,
                       Realm : oDataCleansed.Realm } )
                  );
 
                  if(res.length==0){
                      //New record, insert
-                    await srv.run( INSERT .into (OrderConfirmation) .entries (oDataCleansed) ); 
+                    await srv.run( INSERT .into ("sap.ariba.OrderConfirmation") .entries (oDataCleansed) );
                                   
                  }else{
                      //Update existing record
-                    await srv.run ( UPDATE (OrderConfirmation) .set (oDataCleansed) .where(
+                    await srv.run ( UPDATE ("sap.ariba.OrderConfirmation") .set (oDataCleansed) .where(
                         { OCId : oDataCleansed.OCId ,
                           Realm : oDataCleansed.Realm } )
                      );

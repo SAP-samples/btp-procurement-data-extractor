@@ -1,12 +1,9 @@
 "use strict";
 
 const cds = require("@sap/cds");
-const logger = require("../../utils/logger");
+const logger = cds.log('logger');
 const utils = require("../../utils/Utils");
 
-
-const { Scorecard, Scorecard_Commodity, Scorecard_Region,
-    Scorecard_Department} = cds.entities('sap.ariba');
 
 //Amount fields in object
 function _getAmountPropertiesForDataCleaning () {
@@ -47,7 +44,7 @@ function insertData(aData, realm)  {
             oDataCleansed = _FlatteningData(oDataCleansed);
             try {
                 //Select record by Unique key
-                let res =  await srv.run ( SELECT.from (Scorecard).where(
+                let res =  await srv.run ( SELECT.from ("sap.ariba.Scorecard").where(
                     {
                         Realm : oDataCleansed.Realm ,
                         ScorecardId : oDataCleansed.ScorecardId,
@@ -65,7 +62,7 @@ function insertData(aData, realm)  {
 
                  if(res.length==0){
                      //New record, insert
-                    await srv.run( INSERT .into (Scorecard) .entries (oDataCleansed) );
+                    await srv.run( INSERT .into ("sap.ariba.Scorecard") .entries (oDataCleansed) );
 
                  }else{
 
@@ -81,7 +78,7 @@ function insertData(aData, realm)  {
 
 
                      //Update existing record
-                    await srv.run ( UPDATE (Scorecard) .set (oDataCleansed) .where(
+                    await srv.run ( UPDATE ("sap.ariba.Scorecard") .set (oDataCleansed) .where(
                         {
                             Realm : oDataCleansed.Realm ,
                             ScorecardId : oDataCleansed.ScorecardId,
@@ -138,7 +135,7 @@ async function _FullLoadCommodities(commodities,Realm,ScorecardId,ScorecardSourc
        // const srv = cds.transaction(commodities);
         //Delete old records
         try {
-            await srv.run(DELETE(SurveyResponse_Commodity).where({
+            await srv.run(DELETE("sap.ariba.SurveyResponse_Commodity").where({
                 Scorecard_Realm : Realm ,
                 Scorecard_ScorecardId : ScorecardId,
                 Scorecard_ScorecardSourceSystem : ScorecardSourceSystem,
@@ -171,7 +168,7 @@ async function _FullLoadCommodities(commodities,Realm,ScorecardId,ScorecardSourc
                 o["Scorecard_RespondentUserId"] = RespondentUserId;
                 o["Scorecard_RespondentUserPasswordAdapter"] = RespondentUserPasswordAdapter;
 
-                await srv.run( INSERT .into (SurveyResponse_Commodity) .entries (o) );
+                await srv.run( INSERT .into ("sap.ariba.SurveyResponse_Commodity") .entries (o) );
 
             } catch (e) {
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);
@@ -189,7 +186,7 @@ async function _FullLoadRegions(regions,Realm,ScorecardId,ScorecardSourceSystem,
     return new Promise(async (resolve,reject) =>{
         //Delete old records
         try {
-            await srv.run(DELETE(Scorecard_Region).where({
+            await srv.run(DELETE("sap.ariba.Scorecard_Region").where({
                 Scorecard_Realm : Realm ,
                 Scorecard_ScorecardId : ScorecardId,
                 Scorecard_ScorecardSourceSystem : ScorecardSourceSystem,
@@ -222,7 +219,7 @@ async function _FullLoadRegions(regions,Realm,ScorecardId,ScorecardSourceSystem,
                 o["Scorecard_RespondentUserId"] = RespondentUserId;
                 o["Scorecard_RespondentUserPasswordAdapter"] = RespondentUserPasswordAdapter;
 
-                await srv.run( INSERT .into (Scorecard_Region) .entries (o) );
+                await srv.run( INSERT .into ("sap.ariba.Scorecard_Region") .entries (o) );
 
             } catch (e) {
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);
@@ -241,7 +238,7 @@ async function _FullLoadDepartments(departments,Realm,ScorecardId,ScorecardSourc
     return new Promise(async (resolve,reject) =>{
         //Delete old records
         try {
-            await srv.run(DELETE(Scorecard_Department).where({
+            await srv.run(DELETE("sap.ariba.Scorecard_Department").where({
                 Scorecard_Realm : Realm ,
                 Scorecard_ScorecardId : ScorecardId,
                 Scorecard_ScorecardSourceSystem : ScorecardSourceSystem,
@@ -274,7 +271,7 @@ async function _FullLoadDepartments(departments,Realm,ScorecardId,ScorecardSourc
                 o["Scorecard_RespondentUserId"] = RespondentUserId;
                 o["Scorecard_RespondentUserPasswordAdapter"] = RespondentUserPasswordAdapter;
 
-                await srv.run( INSERT .into (Scorecard_Department) .entries (o) );
+                await srv.run( INSERT .into ("sap.ariba.Scorecard_Department") .entries (o) );
 
             } catch (e) {
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);

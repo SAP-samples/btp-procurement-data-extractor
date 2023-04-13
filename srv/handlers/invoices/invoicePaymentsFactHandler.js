@@ -1,11 +1,9 @@
 "use strict";
 
 const cds = require("@sap/cds");
-const logger = require("../../utils/logger");
+const logger = cds.log('logger');
 const utils = require("../../utils/Utils");
 
-
-const { InvoicePayments } = cds.entities('sap.ariba');
 
 //Amount fields in object
 function _getAmountPropertiesForDataCleaning () {
@@ -43,7 +41,7 @@ function insertData(aData, realm)  {
             var oDataCleansed = utils.processCustomFields(oDataCleansed);
             try {
                 //Select record by Unique key
-                let res =  await srv.run ( SELECT.from (InvoicePayments).where(
+                let res =  await srv.run ( SELECT.from ("sap.ariba.InvoicePayments").where(
                     {
                         Realm : oDataCleansed.Realm ,
                         PaymentId : oDataCleansed.PaymentId
@@ -52,11 +50,11 @@ function insertData(aData, realm)  {
 
                  if(res.length==0){
                      //New record, insert
-                    await srv.run( INSERT .into (InvoicePayments) .entries (oDataCleansed) );
+                    await srv.run( INSERT .into ("sap.ariba.InvoicePayments") .entries (oDataCleansed) );
 
                  }else{
                      //Update existing record
-                    await srv.run ( UPDATE (InvoicePayments) .set (oDataCleansed) .where(
+                    await srv.run ( UPDATE ("sap.ariba.InvoicePayments") .set (oDataCleansed) .where(
                         {
                             Realm : oDataCleansed.Realm ,
                             PaymentId : oDataCleansed.PaymentId

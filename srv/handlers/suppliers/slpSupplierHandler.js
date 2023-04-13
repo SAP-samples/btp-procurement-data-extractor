@@ -1,10 +1,9 @@
 "use strict";
 
 const cds = require("@sap/cds");
-const logger = require("../../utils/logger");
+const logger = cds.log('logger');
 const utils = require("../../utils/Utils");
 
-const { SLPSuppliers, SLPSuppliers_Qualifications, SLPSuppliers_Questionnaires, SLPSuppliers_RiskCategoryExposures, Suppliers, SLPSuppliers_Certificates } = cds.entities('sap.ariba');
 
 //Amount fields in object
 function _getAmountPropertiesForDataCleaning () {
@@ -122,7 +121,7 @@ function insertData(aData, realm)  {
             var oDataCleansed = _mapEntityStructure(oDataCleansed);
             try {
                 //Select record by Unique key
-                let res =  await srv.run ( SELECT.from (SLPSuppliers)
+                let res =  await srv.run ( SELECT.from ("sap.ariba.SLPSuppliers")
                     .where( { Realm : oDataCleansed.Realm, SMVendorId : oDataCleansed.SMVendorId }  ) );
 
                  let qualifications = oDataCleansed["Qualifications"];
@@ -133,10 +132,10 @@ function insertData(aData, realm)  {
 
                  if (res.length == 0) {
                      //New record, insert
-                    await srv.run( INSERT .into (SLPSuppliers) .entries (oDataCleansed) );
+                    await srv.run( INSERT .into ("sap.ariba.SLPSuppliers") .entries (oDataCleansed) );
                  } else {
                      //Update existing record
-                    await srv.run ( UPDATE (SLPSuppliers) .set (oDataCleansed)
+                    await srv.run ( UPDATE ("sap.ariba.SLPSuppliers") .set (oDataCleansed)
                         .where( { Realm : oDataCleansed.Realm, SMVendorId : oDataCleansed.SMVendorId } ) );
                  }
                  await _FullLoadQualifications(qualifications,oDataCleansed.Realm,oDataCleansed.SMVendorId,srv);
@@ -167,7 +166,7 @@ async function _FullLoadQualifications( Qualifications, Realm, SMVendorId, srv )
        // const srv = cds.transaction(regions);
         //Delete old records
         try {
-            await srv.run( DELETE (SLPSuppliers_Qualifications).where({
+            await srv.run( DELETE ("sap.ariba.SLPSuppliers_Qualifications").where({
                 SLPSupplier_Realm : Realm ,
                 SLPSupplier_SMVendorId : SMVendorId
             }) );
@@ -183,7 +182,7 @@ async function _FullLoadQualifications( Qualifications, Realm, SMVendorId, srv )
 
                 Qualification["SLPSupplier_Realm"] = Realm;
                 Qualification["SLPSupplier_SMVendorId"] = SMVendorId;
-                await srv.run( INSERT .into (SLPSuppliers_Qualifications) .entries (Qualification) );
+                await srv.run( INSERT .into ("sap.ariba.SLPSuppliers_Qualifications") .entries (Qualification) );
 
             } catch (e) {
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);
@@ -200,7 +199,7 @@ async function _FullLoadQuestionnaires( Questionnaires, Realm, SMVendorId, srv )
        // const srv = cds.transaction(regions);
         //Delete old records
         try {
-            await srv.run( DELETE (SLPSuppliers_Questionnaires).where({
+            await srv.run( DELETE ("sap.ariba.SLPSuppliers_Questionnaires").where({
                 SLPSupplier_Realm : Realm ,
                 SLPSupplier_SMVendorId : SMVendorId
             }) );
@@ -216,7 +215,7 @@ async function _FullLoadQuestionnaires( Questionnaires, Realm, SMVendorId, srv )
 
                 Questionnaire["SLPSupplier_Realm"] = Realm;
                 Questionnaire["SLPSupplier_SMVendorId"] = SMVendorId;
-                await srv.run( INSERT .into (SLPSuppliers_Questionnaires) .entries (Questionnaire) );
+                await srv.run( INSERT .into ("sap.ariba.SLPSuppliers_Questionnaires") .entries (Questionnaire) );
 
             } catch (e) {
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);
@@ -237,7 +236,7 @@ function insertRiskData (oData, sRealm, sSMVendorId) {
             // TODO: discuss if Risk history shall be maintained per extraction run or only if newer timestamp on the Risk calculation date
             // construct the structure
             // Update parent entity with overall score
-            await srv.run ( UPDATE (SLPSuppliers)
+            await srv.run ( UPDATE ("sap.ariba.SLPSuppliers")
                 .set ({ ExposureLevel: oData.exposureLevel, Exposure: oData.exposure })
                 .where({ Realm: sRealm, SMVendorId: sSMVendorId })
             );
@@ -272,13 +271,13 @@ function insertRiskData (oData, sRealm, sSMVendorId) {
             });
 
             // Update each Risk Category to "latest = false"
-            await srv.run ( UPDATE (SLPSuppliers_RiskCategoryExposures)
+            await srv.run ( UPDATE ("sap.ariba.SLPSuppliers_RiskCategoryExposures")
                 .set ({ Latest: false })
                 .where({ SLPSupplier_Realm: sRealm, SLPSupplier_SMVendorId: sSMVendorId })
             );
 
             // Insert the new Risk Categories
-            await srv.run( INSERT .into (SLPSuppliers_RiskCategoryExposures) .entries (aRiskCategories) );
+            await srv.run( INSERT .into ("sap.ariba.SLPSuppliers_RiskCategoryExposures") .entries (aRiskCategories) );
             await srv.commit();
         } catch (e) {
             logger.error(`Error on inserting data in database, aborting supplier risk processing, details ${e} `);
@@ -306,13 +305,13 @@ function insertCertificateData (aData, sRealm, sSMVendorId) {
             }
 
             // Update parent entity with isCertified flag
-            await srv.run ( UPDATE (SLPSuppliers)
+            await srv.run ( UPDATE ("sap.ariba.SLPSuppliers")
                 .set ({ IsCertified: true })
                 .where({ Realm: sRealm, SMVendorId: sSMVendorId })
             );
 
             // Delete old records
-            await srv.run( DELETE (SLPSuppliers_Certificates).where({
+            await srv.run( DELETE ("sap.ariba.SLPSuppliers_Certificates").where({
                 SLPSupplier_Realm : sRealm,
                 SLPSupplier_SMVendorId : sSMVendorId
             }) );
@@ -330,7 +329,7 @@ function insertCertificateData (aData, sRealm, sSMVendorId) {
             });
 
             // Insert new records
-            await srv.run( INSERT .into (SLPSuppliers_Certificates) .entries (aCertificates) );
+            await srv.run( INSERT .into ("sap.ariba.SLPSuppliers_Certificates") .entries (aCertificates) );
             await srv.commit();
 
         } catch (e) {
@@ -350,15 +349,15 @@ async function enrichSupplierId (context, realm, loadMode) {
     await srv.begin(context);
 
     // Due to supplier id mismatch, we need to manually add it to the SLPSuppliers entity
-    var aSuppliersInRealm = await srv.run ( SELECT `SupplierId, Realm, SMVendorId` .from (Suppliers)
+    var aSuppliersInRealm = await srv.run ( SELECT `SupplierId, Realm, SMVendorId` .from ("sap.ariba.Suppliers")
         .where( { Realm : realm }  ) );
 
     var aSLPSuppliersInRealm = [];
     if (!loadMode || loadMode !='F') {
-        aSLPSuppliersInRealm = await srv.run ( SELECT `Realm, SMVendorId` .from (SLPSuppliers)
+        aSLPSuppliersInRealm = await srv.run ( SELECT `Realm, SMVendorId` .from ("sap.ariba.SLPSuppliers")
            .where( { Realm : realm,  SupplierId : null }  ) );
     } else {
-        aSLPSuppliersInRealm = await srv.run ( SELECT `Realm, SMVendorId` .from (SLPSuppliers)
+        aSLPSuppliersInRealm = await srv.run ( SELECT `Realm, SMVendorId` .from ("sap.ariba.SLPSuppliers")
            .where( { Realm : realm }  ) );
     }
     logger.info(`Amount of Suppliers to be enriched: ${aSLPSuppliersInRealm.length}`);
@@ -374,24 +373,24 @@ async function enrichSupplierId (context, realm, loadMode) {
             oSLPSupplier.SupplierId = oSupplierMatch && oSupplierMatch.SupplierId;
 
             //Update existing record
-            await srv.run ( UPDATE (SLPSuppliers)
+            await srv.run ( UPDATE ("sap.ariba.SLPSuppliers")
                 .set ({ SupplierId: oSLPSupplier.SupplierId })
                 .where( { Realm : oSLPSupplier.Realm, SMVendorId : oSLPSupplier.SMVendorId } ) );
 
             // Update also child entities
-            await srv.run ( UPDATE (SLPSuppliers_Qualifications)
+            await srv.run ( UPDATE ("sap.ariba.SLPSuppliers_Qualifications")
                 .set ({ SupplierId: oSLPSupplier.SupplierId })
                 .where( { SLPSupplier_Realm : oSLPSupplier.Realm, SLPSupplier_SMVendorId : oSLPSupplier.SMVendorId } ) );
 
-            await srv.run ( UPDATE (SLPSuppliers_Questionnaires)
+            await srv.run ( UPDATE ("sap.ariba.SLPSuppliers_Questionnaires")
                 .set ({ SupplierId: oSLPSupplier.SupplierId })
                 .where( { SLPSupplier_Realm : oSLPSupplier.Realm, SLPSupplier_SMVendorId : oSLPSupplier.SMVendorId } ) );
 
-            await srv.run ( UPDATE (SLPSuppliers_RiskCategoryExposures)
+            await srv.run ( UPDATE ("sap.ariba.SLPSuppliers_RiskCategoryExposures")
                 .set ({ SupplierId: oSLPSupplier.SupplierId })
                 .where( { SLPSupplier_Realm : oSLPSupplier.Realm, SLPSupplier_SMVendorId : oSLPSupplier.SMVendorId } ) );
 
-            await srv.run ( UPDATE (SLPSuppliers_Certificates)
+            await srv.run ( UPDATE ("sap.ariba.SLPSuppliers_Certificates")
                 .set ({ SupplierId: oSLPSupplier.SupplierId })
                 .where( { SLPSupplier_Realm : oSLPSupplier.Realm, SLPSupplier_SMVendorId : oSLPSupplier.SMVendorId } ) );
 

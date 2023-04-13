@@ -1,11 +1,9 @@
 "use strict";
 
 const cds = require("@sap/cds");
-const logger = require("../../utils/logger");
+const logger = cds.log('logger');
 const utils = require("../../utils/Utils");
 
-
-const { RFXDocument,RFXDocument_Region,RFXDocument_Commodity,RFXDocument_Client,RFXDocument_Invitees } = cds.entities('sap.ariba');
 
 //Amount fields in object
 function _getAmountPropertiesForDataCleaning () {
@@ -61,23 +59,23 @@ function insertData(aData, realm)  {
 
                 //1 Delete potential record dependencies
                 try {
-                    await srv.run(DELETE(RFXDocument_Region).where({
+                    await srv.run(DELETE("sap.ariba.RFXDocument_Region").where({
                         RFXDocument_Realm : sRealm ,
                         RFXDocument_InternalId : sInternalId
                     }));
-                    await srv.run(DELETE(RFXDocument_Commodity).where({
+                    await srv.run(DELETE("sap.ariba.RFXDocument_Commodity").where({
                         RFXDocument_Realm : sRealm ,
                         RFXDocument_InternalId : sInternalId
                     }));
-                    await srv.run(DELETE(RFXDocument_Client).where({
+                    await srv.run(DELETE("sap.ariba.RFXDocument_Client").where({
                         RFXDocument_Realm : sRealm ,
                         RFXDocument_InternalId : sInternalId
                     }));
-                    await srv.run(DELETE(RFXDocument_Invitees).where({
+                    await srv.run(DELETE("sap.ariba.RFXDocument_Invitees").where({
                         RFXDocument_Realm : sRealm ,
                         RFXDocument_InternalId : sInternalId
                     }));
-                    await srv.run(DELETE(RFXDocument).where({
+                    await srv.run(DELETE("sap.ariba.RFXDocument").where({
                         Realm : sRealm ,
                         InternalId : sInternalId
                     }));
@@ -89,7 +87,7 @@ function insertData(aData, realm)  {
                 }
 
                 //New record, insert
-                await srv.run( INSERT .into (RFXDocument) .entries (oDataCleansed) ); 
+                await srv.run( INSERT .into ("sap.ariba.RFXDocument") .entries (oDataCleansed) );
                          
            
             } catch (e) {                

@@ -1,13 +1,9 @@
 "use strict";
 
 const cds = require("@sap/cds");
-const logger = require("../../utils/logger");
+const logger = cds.log('logger');
 const utils = require("../../utils/Utils");
 
-
-const { SurveyResponse, SurveyResponse_Commodity, SurveyResponse_Region,
-    SurveyResponse_Department, SurveyResponse_ResponseCommodityValue,SurveyResponse_ResponseRegionValue,
-    SurveyResponse_ResponseDepartmentValue,SurveyResponse_ResponseSupplierValue,SurveyResponse_ResponseUserValue,SurveyResponse_V_responsetextmultivalue } = cds.entities('sap.ariba');
 
 //Amount fields in object
 function _getAmountPropertiesForDataCleaning () {
@@ -49,7 +45,7 @@ function insertData(aData, realm)  {
             oDataCleansed = utils.removeNullValues(oDataCleansed);
             try {
                 //Select record by Unique key
-                let res =  await srv.run ( SELECT.from (SurveyResponse).where(
+                let res =  await srv.run ( SELECT.from ("sap.ariba.SurveyResponse").where(
                     {
                         Realm : oDataCleansed.Realm ,
                         SurveyId : oDataCleansed.SurveyId,
@@ -66,7 +62,7 @@ function insertData(aData, realm)  {
 
                  if(res.length==0){
                      //New record, insert
-                    await srv.run( INSERT .into (SurveyResponse) .entries (oDataCleansed) );
+                    await srv.run( INSERT .into ("sap.ariba.SurveyResponse") .entries (oDataCleansed) );
 
                  }else{
 
@@ -99,7 +95,7 @@ function insertData(aData, realm)  {
 
 
                      //Update existing record
-                    await srv.run ( UPDATE (SurveyResponse) .set (oDataCleansed) .where(
+                    await srv.run ( UPDATE ("sap.ariba.SurveyResponse") .set (oDataCleansed) .where(
                         {
                             Realm : oDataCleansed.Realm ,
                             SurveyId : oDataCleansed.SurveyId,
@@ -172,7 +168,7 @@ async function _FullLoadCommodities(commodities,Realm,SurveyId,SurveySourceSyste
        // const srv = cds.transaction(commodities);
         //Delete old records
         try {
-            await srv.run(DELETE(SurveyResponse_Commodity).where({
+            await srv.run(DELETE("sap.ariba.SurveyResponse_Commodity").where({
                 SurveyResponse_Realm : Realm ,
                 SurveyResponse_SurveyId : SurveyId,
                 SurveyResponse_SurveySourceSystem : SurveySourceSystem,
@@ -203,7 +199,7 @@ async function _FullLoadCommodities(commodities,Realm,SurveyId,SurveySourceSyste
                 o["SurveyResponse_QuestionId"] = QuestionId;
                 o["SurveyResponse_QuestionSourceSystem"] = QuestionSourceSystem;
 
-                await srv.run( INSERT .into (SurveyResponse_Commodity) .entries (o) );
+                await srv.run( INSERT .into ("sap.ariba.SurveyResponse_Commodity") .entries (o) );
 
             } catch (e) {
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);
@@ -220,7 +216,7 @@ async function _FullLoadRegions(regions,Realm,SurveyId,SurveySourceSystem,Survey
     return new Promise(async (resolve,reject) =>{
         //Delete old records
         try {
-            await srv.run(DELETE(SurveyResponse_Region).where({
+            await srv.run(DELETE("sap.ariba.SurveyResponse_Region").where({
                 SurveyResponse_Realm : Realm ,
                 SurveyResponse_SurveyId : SurveyId,
                 SurveyResponse_SurveySourceSystem : SurveySourceSystem,
@@ -251,7 +247,7 @@ async function _FullLoadRegions(regions,Realm,SurveyId,SurveySourceSystem,Survey
                 o["SurveyResponse_QuestionId"] = QuestionId;
                 o["SurveyResponse_QuestionSourceSystem"] = QuestionSourceSystem;
 
-                await srv.run( INSERT .into (SurveyResponse_Region) .entries (o) );
+                await srv.run( INSERT .into ("sap.ariba.SurveyResponse_Region") .entries (o) );
 
             } catch (e) {
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);
@@ -269,7 +265,7 @@ async function _FullLoadDepartments(departments,Realm,SurveyId,SurveySourceSyste
     return new Promise(async (resolve,reject) =>{
         //Delete old records
         try {
-            await srv.run(DELETE(SurveyResponse_Department).where({
+            await srv.run(DELETE("sap.ariba.SurveyResponse_Department").where({
                 SurveyResponse_Realm : Realm ,
                 SurveyResponse_SurveyId : SurveyId,
                 SurveyResponse_SurveySourceSystem : SurveySourceSystem,
@@ -300,7 +296,7 @@ async function _FullLoadDepartments(departments,Realm,SurveyId,SurveySourceSyste
                 o["SurveyResponse_QuestionId"] = QuestionId;
                 o["SurveyResponse_QuestionSourceSystem"] = QuestionSourceSystem;
 
-                await srv.run( INSERT .into (SurveyResponse_Department) .entries (o) );
+                await srv.run( INSERT .into ("sap.ariba.SurveyResponse_Department") .entries (o) );
 
             } catch (e) {
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);
@@ -318,7 +314,7 @@ async function _FullLoadResponseCommodityValue(responseCommodityValues,Realm,Sur
     return new Promise(async (resolve,reject) =>{
         //Delete old records
         try {
-            await srv.run(DELETE(SurveyResponse_ResponseCommodityValue).where({
+            await srv.run(DELETE("sap.ariba.SurveyResponse_ResponseCommodityValue").where({
                 SurveyResponse_Realm : Realm ,
                 SurveyResponse_SurveyId : SurveyId,
                 SurveyResponse_SurveySourceSystem : SurveySourceSystem,
@@ -349,7 +345,7 @@ async function _FullLoadResponseCommodityValue(responseCommodityValues,Realm,Sur
                 o["SurveyResponse_QuestionId"] = QuestionId;
                 o["SurveyResponse_QuestionSourceSystem"] = QuestionSourceSystem;
 
-                await srv.run( INSERT .into (SurveyResponse_ResponseCommodityValue) .entries (o) );
+                await srv.run( INSERT .into ("sap.ariba.SurveyResponse_ResponseCommodityValue") .entries (o) );
 
             } catch (e) {
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);
@@ -367,7 +363,7 @@ async function _FullLoadResponseRegionValue(responseRegionValue,Realm,SurveyId,S
     return new Promise(async (resolve,reject) =>{
         //Delete old records
         try {
-            await srv.run(DELETE(SurveyResponse_ResponseRegionValue).where({
+            await srv.run(DELETE("sap.ariba.SurveyResponse_ResponseRegionValue").where({
                 SurveyResponse_Realm : Realm ,
                 SurveyResponse_SurveyId : SurveyId,
                 SurveyResponse_SurveySourceSystem : SurveySourceSystem,
@@ -398,7 +394,7 @@ async function _FullLoadResponseRegionValue(responseRegionValue,Realm,SurveyId,S
                 o["SurveyResponse_QuestionId"] = QuestionId;
                 o["SurveyResponse_QuestionSourceSystem"] = QuestionSourceSystem;
 
-                await srv.run( INSERT .into (SurveyResponse_ResponseRegionValue) .entries (o) );
+                await srv.run( INSERT .into ("sap.ariba.SurveyResponse_ResponseRegionValue") .entries (o) );
 
             } catch (e) {
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);
@@ -416,7 +412,7 @@ async function _FullLoadResponseDepartmentValue(responseDepartmentValue,Realm,Su
     return new Promise(async (resolve,reject) =>{
         //Delete old records
         try {
-            await srv.run(DELETE(SurveyResponse_ResponseDepartmentValue).where({
+            await srv.run(DELETE("sap.ariba.SurveyResponse_ResponseDepartmentValue").where({
                 SurveyResponse_Realm : Realm ,
                 SurveyResponse_SurveyId : SurveyId,
                 SurveyResponse_SurveySourceSystem : SurveySourceSystem,
@@ -447,7 +443,7 @@ async function _FullLoadResponseDepartmentValue(responseDepartmentValue,Realm,Su
                 o["SurveyResponse_QuestionId"] = QuestionId;
                 o["SurveyResponse_QuestionSourceSystem"] = QuestionSourceSystem;
 
-                await srv.run( INSERT .into (SurveyResponse_ResponseDepartmentValue) .entries (o) );
+                await srv.run( INSERT .into ("sap.ariba.SurveyResponse_ResponseDepartmentValue") .entries (o) );
 
             } catch (e) {
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);
@@ -464,7 +460,7 @@ async function _FullLoadResponseSupplierValue(responseSupplierValue,Realm,Survey
     return new Promise(async (resolve,reject) =>{
         //Delete old records
         try {
-            await srv.run(DELETE(SurveyResponse_ResponseSupplierValue).where({
+            await srv.run(DELETE("sap.ariba.SurveyResponse_ResponseSupplierValue").where({
                 SurveyResponse_Realm : Realm ,
                 SurveyResponse_SurveyId : SurveyId,
                 SurveyResponse_SurveySourceSystem : SurveySourceSystem,
@@ -495,7 +491,7 @@ async function _FullLoadResponseSupplierValue(responseSupplierValue,Realm,Survey
                 o["SurveyResponse_QuestionId"] = QuestionId;
                 o["SurveyResponse_QuestionSourceSystem"] = QuestionSourceSystem;
 
-                await srv.run( INSERT .into (SurveyResponse_ResponseSupplierValue) .entries (o) );
+                await srv.run( INSERT .into ("sap.ariba.SurveyResponse_ResponseSupplierValue") .entries (o) );
 
             } catch (e) {
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);
@@ -512,7 +508,7 @@ async function _FullLoadResponseUserValue(responseUserValue,Realm,SurveyId,Surve
     return new Promise(async (resolve,reject) =>{
         //Delete old records
         try {
-            await srv.run(DELETE(SurveyResponse_ResponseUserValue).where({
+            await srv.run(DELETE("sap.ariba.SurveyResponse_ResponseUserValue").where({
                 SurveyResponse_Realm : Realm ,
                 SurveyResponse_SurveyId : SurveyId,
                 SurveyResponse_SurveySourceSystem : SurveySourceSystem,
@@ -543,7 +539,7 @@ async function _FullLoadResponseUserValue(responseUserValue,Realm,SurveyId,Surve
                 o["SurveyResponse_QuestionId"] = QuestionId;
                 o["SurveyResponse_QuestionSourceSystem"] = QuestionSourceSystem;
 
-                await srv.run( INSERT .into (SurveyResponse_ResponseUserValue) .entries (o) );
+                await srv.run( INSERT .into ("sap.ariba.SurveyResponse_ResponseUserValue") .entries (o) );
 
             } catch (e) {
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);
@@ -560,7 +556,7 @@ async function _FullLoadV_responsetextmultivalue(v_responsetextmultivalue,Realm,
     return new Promise(async (resolve,reject) =>{
         //Delete old records
         try {
-            await srv.run(DELETE(SurveyResponse_V_responsetextmultivalue).where({
+            await srv.run(DELETE("sap.ariba.SurveyResponse_V_responsetextmultivalue").where({
                 SurveyResponse_Realm : Realm ,
                 SurveyResponse_SurveyId : SurveyId,
                 SurveyResponse_SurveySourceSystem : SurveySourceSystem,
@@ -591,7 +587,7 @@ async function _FullLoadV_responsetextmultivalue(v_responsetextmultivalue,Realm,
                 o["SurveyResponse_QuestionId"] = QuestionId;
                 o["SurveyResponse_QuestionSourceSystem"] = QuestionSourceSystem;
 
-                await srv.run( INSERT .into (SurveyResponse_V_responsetextmultivalue) .entries (o) );
+                await srv.run( INSERT .into ("sap.ariba.SurveyResponse_V_responsetextmultivalue") .entries (o) );
 
             } catch (e) {
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);

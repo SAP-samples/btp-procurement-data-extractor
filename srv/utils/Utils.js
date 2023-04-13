@@ -4,12 +4,10 @@
 const { default: axios } = require("axios");
 const cds = require("@sap/cds");
 
-const logger = require('./logger');
+const logger = cds.log('logger');
 
 const flatten = require("flat");
 const unflatten = require('flat').unflatten
-
-const { Jobs, Job_File,ContractLineItems} = cds.entities('sap.ariba');
 
 
 
@@ -48,7 +46,7 @@ async function executeRequest(oRequestConfig,retries){
                         reject(e);
                     }                    
                 } else{
-                    logger.error(`API Rate limit error - no reamining retries, call permanently failed `);;
+                    logger.error(`API Rate limit error - no remaining retries, call permanently failed `);;
                     
                     reject(error);
                 }

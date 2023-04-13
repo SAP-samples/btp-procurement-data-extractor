@@ -1,11 +1,9 @@
 "use strict";
 
 const cds = require("@sap/cds");
-const logger = require("../../utils/logger");
+const logger = cds.log('logger');
 const utils = require("../../utils/Utils");
 
-
-const { SourcingProject,SourcingProject_SubContent,SourcingProject_Client,SourcingProject_Region,SourcingProject_Commodity,SourcingProject_Suppliers } = cds.entities('sap.ariba');
 
 //Amount fields in object
 function _getAmountPropertiesForDataCleaning () {
@@ -48,27 +46,27 @@ function insertData(aData, realm)  {
 
                 //1 Delete potential record dependencies
                 try {
-                    await srv.run(DELETE(SourcingProject_SubContent).where({
+                    await srv.run(DELETE("sap.ariba.SourcingProject_SubContent").where({
                         SourcingProject_Realm : sRealm ,
                         SourcingProject_InternalId : sInternalId
                     }));
-                    await srv.run(DELETE(SourcingProject_Client).where({
+                    await srv.run(DELETE("sap.ariba.SourcingProject_Client").where({
                         SourcingProject_Realm : sRealm ,
                         SourcingProject_InternalId : sInternalId
                     }));
-                    await srv.run(DELETE(SourcingProject_Region).where({
+                    await srv.run(DELETE("sap.ariba.SourcingProject_Region").where({
                         SourcingProject_Realm : sRealm ,
                         SourcingProject_InternalId : sInternalId
                     }));
-                    await srv.run(DELETE(SourcingProject_Commodity).where({
+                    await srv.run(DELETE("sap.ariba.SourcingProject_Commodity").where({
                         SourcingProject_Realm : sRealm ,
                         SourcingProject_InternalId : sInternalId
                     }));
-                    await srv.run(DELETE(SourcingProject_Suppliers).where({
+                    await srv.run(DELETE("sap.ariba.SourcingProject_Suppliers").where({
                         SourcingProject_Realm : sRealm ,
                         SourcingProject_InternalId : sInternalId
                     }));
-                    await srv.run(DELETE(SourcingProject).where({
+                    await srv.run(DELETE("sap.ariba.SourcingProject").where({
                         Realm : sRealm ,
                         InternalId : sInternalId
                     }));
@@ -80,7 +78,7 @@ function insertData(aData, realm)  {
                 }
 
                 //New record, insert
-                await srv.run( INSERT .into (SourcingProject) .entries (oDataCleansed) ); 
+                await srv.run( INSERT .into ("sap.ariba.SourcingProject") .entries (oDataCleansed) );
                          
            
             } catch (e) {                

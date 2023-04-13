@@ -1,11 +1,9 @@
 "use strict";
 
 const cds = require("@sap/cds");
-const logger = require("../../utils/logger");
+const logger = cds.log('logger');
 const utils = require("../../utils/Utils");
 
-
-const { DocumentTask,DocumentTask_Approver,DocumentTask_ActiveApprovers,DocumentTask_ApprovalRequests } = cds.entities('sap.ariba');
 
 //Amount fields in object
 function _getAmountPropertiesForDataCleaning () {
@@ -63,19 +61,19 @@ function insertData(aData, realm)  {
 
                 //1 Delete potential record dependencies
                 try {
-                    await srv.run(DELETE(DocumentTask_Approver).where({
+                    await srv.run(DELETE("sap.ariba.DocumentTask_Approver").where({
                         DocumentTask_Realm : sRealm ,
                         DocumentTask_InternalId : sInternalId
                     }));
-                    await srv.run(DELETE(DocumentTask_ActiveApprovers).where({
+                    await srv.run(DELETE("sap.ariba.DocumentTask_ActiveApprovers").where({
                         DocumentTask_Realm : sRealm ,
                         DocumentTask_InternalId : sInternalId
                     }));
-                    await srv.run(DELETE(DocumentTask_ApprovalRequests).where({
+                    await srv.run(DELETE("sap.ariba.DocumentTask_ApprovalRequests").where({
                         DocumentTask_Realm : sRealm ,
                         DocumentTask_InternalId : sInternalId
                     }));
-                    await srv.run(DELETE(DocumentTask).where({
+                    await srv.run(DELETE("sap.ariba.DocumentTask").where({
                         Realm : sRealm ,
                         InternalId : sInternalId
                     }));
@@ -87,7 +85,7 @@ function insertData(aData, realm)  {
                 }
 
                 //New record, insert
-                await srv.run( INSERT .into (DocumentTask) .entries (oDataCleansed) ); 
+                await srv.run( INSERT .into ("sap.ariba.DocumentTask") .entries (oDataCleansed) );
                          
            
             } catch (e) {                

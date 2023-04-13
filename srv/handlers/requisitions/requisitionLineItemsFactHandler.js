@@ -1,9 +1,7 @@
 "use strict";
 
 const cds = require("@sap/cds");
-const { RequisitionLineItem } = cds.entities('sap.ariba');
-
-const logger = require("../../utils/logger");
+const logger = cds.log('logger');
 const utils = require("../../utils/Utils");
 
 
@@ -52,7 +50,7 @@ async function insertData(aData, realm)  {
             var oDataCleansed = utils.processCustomFields(oDataCleansed);
             try {
                 //Select record by Unique key
-                let res =  await srv.run ( SELECT.from (RequisitionLineItem).where(
+                let res =  await srv.run ( SELECT.from ("sap.ariba.RequisitionLineItem").where(
                     {
                       RequisitionId : oDataCleansed.RequisitionId ,
                       RequisitionLineNumber : oDataCleansed.RequisitionLineNumber ,
@@ -62,11 +60,11 @@ async function insertData(aData, realm)  {
 
                  if(res.length==0){
                      //New record, insert
-                    await srv.run( INSERT .into (RequisitionLineItem) .entries (oDataCleansed) ); 
+                    await srv.run( INSERT .into ("sap.ariba.RequisitionLineItem") .entries (oDataCleansed) );
                                   
                  }else{
                      //Update existing record
-                    await srv.run ( UPDATE (RequisitionLineItem) .set (oDataCleansed) .where(
+                    await srv.run ( UPDATE ("sap.ariba.RequisitionLineItem") .set (oDataCleansed) .where(
                         {
                             RequisitionId : oDataCleansed.RequisitionId ,
                             RequisitionLineNumber : oDataCleansed.RequisitionLineNumber ,

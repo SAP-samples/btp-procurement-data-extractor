@@ -1,9 +1,7 @@
 "use strict";
 
 const cds = require("@sap/cds");
-const { Invoice, Invoice_ApprovalRecords, Invoice_ApprovalRequests, Invoice_ApprovalRequests_Approver, Invoice_LineItem ,Invoice_LineItem_SplitAccountings } = cds.entities('sap.ariba');
-
-const logger = require("../../utils/logger");
+const logger = cds.log('logger');
 const utils = require("../../utils/Utils");
 
 
@@ -60,27 +58,27 @@ async function insertData(aData, realm)  {
 
                 //1 Delete potential record dependencies
                 try {
-                    await srv.run(DELETE(Invoice_ApprovalRequests_Approver).where({
+                    await srv.run(DELETE("sap.ariba.Invoice_ApprovalRequests_Approver").where({
                         InvoiceApprovalRequests_Invoice_Realm : sRealm ,
                         InvoiceApprovalRequests_Invoice_UniqueName : sUniqueName
                     }));
-                    await srv.run(DELETE(Invoice_ApprovalRequests).where({
+                    await srv.run(DELETE("sap.ariba.Invoice_ApprovalRequests").where({
                         Invoice_Realm : sRealm ,
                         Invoice_UniqueName : sUniqueName
                     }));
-                    await srv.run(DELETE(Invoice_ApprovalRecords).where({
+                    await srv.run(DELETE("sap.ariba.Invoice_ApprovalRecords").where({
                         Invoice_Realm : sRealm ,
                         Invoice_UniqueName : sUniqueName
                     }));
-                    await srv.run(DELETE(Invoice_LineItem).where({
+                    await srv.run(DELETE("sap.ariba.Invoice_LineItem").where({
                         Invoice_Realm : sRealm ,
                         Invoice_UniqueName : sUniqueName
                     }));
-                    await srv.run(DELETE(Invoice_LineItem_SplitAccountings).where({
+                    await srv.run(DELETE("sap.ariba.Invoice_LineItem_SplitAccountings").where({
                         LineItem_Invoice_Realm : sRealm ,
                         LineItem_Invoice_UniqueName : sUniqueName
                     }));
-                    await srv.run(DELETE(Invoice).where({
+                    await srv.run(DELETE("sap.ariba.Invoice").where({
                         Realm : sRealm ,
                         UniqueName : sUniqueName
                     }));
@@ -93,7 +91,7 @@ async function insertData(aData, realm)  {
 
 
                 //New record, insert
-                await srv.run( INSERT .into (Invoice) .entries (oDataCleansed) );
+                await srv.run( INSERT .into ("sap.ariba.Invoice") .entries (oDataCleansed) );
 
 
 

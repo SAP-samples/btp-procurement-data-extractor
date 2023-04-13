@@ -1,11 +1,9 @@
 "use strict";
 
 const cds = require("@sap/cds");
-const logger = require("../../utils/logger");
+const logger = cds.log('logger');
 const utils = require("../../utils/Utils");
 
-
-const { ContractWorkspaceOS,ContractWorkspaceOS_AllOwners,ContractWorkspaceOS_ComplexSpendReleaseApprovers,ContractWorkspaceOS_ExpiringEmailRecipients,ContractWorkspaceOS_ComplexSpendReleaseCreators,ContractWorkspaceOS_NoticeEmailRecipients,ContractWorkspaceOS_NotificationProfiles,ContractWorkspaceOS_AdhocSpendUsers,ContractWorkspaceOS_Client,ContractWorkspaceOS_Region,ContractWorkspaceOS_AffectedParties,ContractWorkspaceOS_Commodity} = cds.entities('sap.ariba');
 
 //Amount fields in object
 function _getAmountPropertiesForDataCleaning () {
@@ -67,51 +65,51 @@ function insertData(aData, realm)  {
                 //1 Delete potential record dependencies
                 try {
                    
-                    await srv.run(DELETE(ContractWorkspaceOS_AllOwners).where({
+                    await srv.run(DELETE("sap.ariba.ContractWorkspaceOS_AllOwners").where({
                         ContractWorkspaceOS_Realm : sRealm ,
                         ContractWorkspaceOS_InternalId : sInternalId
                     }));
-                    await srv.run(DELETE(ContractWorkspaceOS_NotificationProfiles).where({
+                    await srv.run(DELETE("sap.ariba.ContractWorkspaceOS_NotificationProfiles").where({
                         ContractWorkspaceOS_Realm : sRealm ,
                         ContractWorkspaceOS_InternalId : sInternalId
                     }));
-                    await srv.run(DELETE(ContractWorkspaceOS_AdhocSpendUsers).where({
+                    await srv.run(DELETE("sap.ariba.ContractWorkspaceOS_AdhocSpendUsers").where({
                         ContractWorkspaceOS_Realm : sRealm ,
                         ContractWorkspaceOS_InternalId : sInternalId
                     }));
-                    await srv.run(DELETE(ContractWorkspaceOS_Client).where({
+                    await srv.run(DELETE("sap.ariba.ContractWorkspaceOS_Client").where({
                         ContractWorkspaceOS_Realm : sRealm ,
                         ContractWorkspaceOS_InternalId : sInternalId
                     }));
-                    await srv.run(DELETE(ContractWorkspaceOS_NoticeEmailRecipients).where({
+                    await srv.run(DELETE("sap.ariba.ContractWorkspaceOS_NoticeEmailRecipients").where({
                         ContractWorkspaceOS_Realm : sRealm ,
                         ContractWorkspaceOS_InternalId : sInternalId
                     }));
-                    await srv.run(DELETE(ContractWorkspaceOS_Region).where({
+                    await srv.run(DELETE("sap.ariba.ContractWorkspaceOS_Region").where({
                         ContractWorkspaceOS_Realm : sRealm ,
                         ContractWorkspaceOS_InternalId : sInternalId
                     }));
-                    await srv.run(DELETE(ContractWorkspaceOS_AffectedParties).where({
+                    await srv.run(DELETE("sap.ariba.ContractWorkspaceOS_AffectedParties").where({
                         ContractWorkspaceOS_Realm : sRealm ,
                         ContractWorkspaceOS_InternalId : sInternalId
                     }));
-                    await srv.run(DELETE(ContractWorkspaceOS_Commodity).where({
+                    await srv.run(DELETE("sap.ariba.ContractWorkspaceOS_Commodity").where({
                         ContractWorkspaceOS_Realm : sRealm ,
                         ContractWorkspaceOS_InternalId : sInternalId
                     }));
-                    await srv.run(DELETE(ContractWorkspaceOS_ExpiringEmailRecipients).where({
+                    await srv.run(DELETE("sap.ariba.ContractWorkspaceOS_ExpiringEmailRecipients").where({
                         ContractWorkspaceOS_Realm : sRealm ,
                         ContractWorkspaceOS_InternalId : sInternalId
                     }));     
-                    await srv.run(DELETE(ContractWorkspaceOS_ComplexSpendReleaseCreators).where({
+                    await srv.run(DELETE("sap.ariba.ContractWorkspaceOS_ComplexSpendReleaseCreators").where({
                         ContractWorkspaceOS_Realm : sRealm ,
                         ContractWorkspaceOS_InternalId : sInternalId
                     }));       
-                    await srv.run(DELETE(ContractWorkspaceOS_ComplexSpendReleaseApprovers).where({
+                    await srv.run(DELETE("sap.ariba.ContractWorkspaceOS_ComplexSpendReleaseApprovers").where({
                         ContractWorkspaceOS_Realm : sRealm ,
                         ContractWorkspaceOS_InternalId : sInternalId
                     }));                     
-                    await srv.run(DELETE(ContractWorkspaceOS).where({
+                    await srv.run(DELETE("sap.ariba.ContractWorkspaceOS").where({
                         Realm : sRealm ,
                         InternalId : sInternalId,
                     }));
@@ -123,7 +121,7 @@ function insertData(aData, realm)  {
                 }
 
                 //New record, insert
-                await srv.run( INSERT .into (ContractWorkspaceOS) .entries (oDataCleansed) ); 
+                await srv.run( INSERT .into ("sap.ariba.ContractWorkspaceOS") .entries (oDataCleansed) );
                          
            
             } catch (e) {                

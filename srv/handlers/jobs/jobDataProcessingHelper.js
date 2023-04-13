@@ -1,7 +1,7 @@
 "use strict";
 
 //Libs
-const logger = require('../../utils/logger');
+const logger = cds.log('logger');
 
 //Analytical Data Handlers
 const contractsFactHandler = require('../contracts/contractsFactHandler');

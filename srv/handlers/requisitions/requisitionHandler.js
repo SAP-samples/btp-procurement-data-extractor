@@ -1,9 +1,7 @@
 "use strict";
 
 const cds = require("@sap/cds");
-const { Requisition, Requisition_ApprovalRecords,Requisition_ApprovalRequests, Requisition_LineItem, Requisition_ApprovalRequests_Approver, Requisition_LineItem_SplitAccountings } = cds.entities('sap.ariba');
-
-const logger = require("../../utils/logger");
+const logger = cds.log('logger');
 const utils = require("../../utils/Utils");
 
 
@@ -64,27 +62,27 @@ async function insertData(aData, realm)  {
 
                 //1 Delete potential record dependencies
                 try {
-                    await srv.run(DELETE(Requisition_ApprovalRequests_Approver).where({
+                    await srv.run(DELETE("sap.ariba.Requisition_ApprovalRequests_Approver").where({
                         RequisitionApprovalRequests_Requisition_Realm : sRealm ,
                         RequisitionApprovalRequests_Requisition_UniqueName : sUniqueName
                     }));
-                    await srv.run(DELETE(Requisition_ApprovalRequests).where({
+                    await srv.run(DELETE("sap.ariba.Requisition_ApprovalRequests").where({
                         Requisition_Realm : sRealm ,
                         Requisition_UniqueName : sUniqueName
                     }));
-                    await srv.run(DELETE(Requisition_ApprovalRecords).where({
+                    await srv.run(DELETE("sap.ariba.Requisition_ApprovalRecords").where({
                         Requisition_Realm : sRealm ,
                         Requisition_UniqueName : sUniqueName
                     }));
-                    await srv.run(DELETE(Requisition_LineItem).where({
+                    await srv.run(DELETE("sap.ariba.Requisition_LineItem").where({
                         Requisition_Realm : sRealm ,
                         Requisition_UniqueName : sUniqueName
                     }));
-                    await srv.run(DELETE(Requisition).where({
+                    await srv.run(DELETE("sap.ariba.Requisition").where({
                         Realm : sRealm ,
                         UniqueName : sUniqueName
                     }));
-                    await srv.run(DELETE(Requisition_LineItem_SplitAccountings).where({
+                    await srv.run(DELETE("sap.ariba.Requisition_LineItem_SplitAccountings").where({
                         LineItem_Requisition_Realm : sRealm ,
                         LineItem_Requisition_UniqueName : sUniqueName
                     }));
@@ -97,7 +95,7 @@ async function insertData(aData, realm)  {
 
 
                 //New record, insert
-                await srv.run( INSERT .into (Requisition) .entries (oDataCleansed) ); 
+                await srv.run( INSERT .into ("sap.ariba.Requisition") .entries (oDataCleansed) );
                                   
                  
            

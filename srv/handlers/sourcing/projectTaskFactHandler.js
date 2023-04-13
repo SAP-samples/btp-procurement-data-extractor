@@ -1,11 +1,9 @@
 "use strict";
 
 const cds = require("@sap/cds");
-const logger = require("../../utils/logger");
+const logger = cds.log('logger');
 const utils = require("../../utils/Utils");
 
-
-const { ProjectTasks,ProjectTasks_AllOwners, ProjectTasks_ActiveApprovers, ProjectTasks_Observers } = cds.entities('sap.ariba');
 
 //Amount fields in object
 function _getAmountPropertiesForDataCleaning () {
@@ -41,7 +39,7 @@ function insertData(aData, realm)  {
 
             try {
                 //Select record by Unique key
-                let res =  await srv.run ( SELECT.from (ProjectTasks).where(
+                let res =  await srv.run ( SELECT.from ("sap.ariba.ProjectTasks").where(
                     { 
                         Realm : oDataCleansed.Realm ,
                         TaskId : oDataCleansed.TaskId }  )
@@ -49,7 +47,7 @@ function insertData(aData, realm)  {
 
                  if(res.length==0){
                      //New record, insert
-                    await srv.run( INSERT .into (ProjectTasks) .entries (oDataCleansed) ); 
+                    await srv.run( INSERT .into ("sap.ariba.ProjectTasks") .entries (oDataCleansed) );
                                   
                  }else{
                      //Update existing record
@@ -104,7 +102,7 @@ async function _FullLoadActiveApprovers(activeApprovers,Realm,TaskId,srv){
        // const srv = cds.transaction(activeApprovers); 
         //Delete old records
         try {
-            await srv.run(DELETE(ProjectTasks_ActiveApprovers).where({
+            await srv.run(DELETE("sap.ariba.ProjectTasks_ActiveApprovers").where({
                 ProjectTasks_Realm : Realm ,
                 ProjectTasks_TaskId : TaskId 
             }));
@@ -120,7 +118,7 @@ async function _FullLoadActiveApprovers(activeApprovers,Realm,TaskId,srv){
                 
                 approver["ProjectTasks_Realm"] = Realm;
                 approver["ProjectTasks_TaskId"] = TaskId;
-                await srv.run( INSERT .into (ProjectTasks_ActiveApprovers) .entries (approver) ); 
+                await srv.run( INSERT .into ("sap.ariba.ProjectTasks_ActiveApprovers") .entries (approver) );
            
             } catch (e) {                
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);
@@ -137,7 +135,7 @@ async function _FullLoadObservers(observers,Realm,TaskId,srv){
         //const srv = cds.transaction(observers); 
         //Delete old records
         try {
-            await srv.run(DELETE(ProjectTasks_Observers).where({
+            await srv.run(DELETE("sap.ariba.ProjectTasks_Observers").where({
                 ProjectTasks_Realm : Realm ,
                 ProjectTasks_TaskId : TaskId 
             }));
@@ -153,7 +151,7 @@ async function _FullLoadObservers(observers,Realm,TaskId,srv){
                 
                 observer["ProjectTasks_Realm"] = Realm;
                 observer["ProjectTasks_TaskId"] = TaskId;
-                await srv.run( INSERT .into (ProjectTasks_Observers) .entries (observer) ); 
+                await srv.run( INSERT .into ("sap.ariba.ProjectTasks_Observers") .entries (observer) );
            
             } catch (e) {                
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);
@@ -170,7 +168,7 @@ async function _FullLoadAllOwners(owners,Realm,TaskId,srv){
         //const srv = cds.transaction(owner); 
         //Delete old records
         try {
-            await srv.run(DELETE(ProjectTasks_AllOwners).where({
+            await srv.run(DELETE("sap.ariba.ProjectTasks_AllOwners").where({
                 ProjectTasks_Realm : Realm ,
                 ProjectTasks_TaskId : TaskId 
             }));
@@ -186,7 +184,7 @@ async function _FullLoadAllOwners(owners,Realm,TaskId,srv){
                 
                 owner["ProjectTasks_Realm"] = Realm;
                 owner["ProjectTasks_TaskId"] = TaskId;
-                await srv.run( INSERT .into (ProjectTasks_AllOwners) .entries (owner) ); 
+                await srv.run( INSERT .into ("sap.ariba.ProjectTasks_AllOwners") .entries (owner) );
            
             } catch (e) {                
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);

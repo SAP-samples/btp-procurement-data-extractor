@@ -1,10 +1,9 @@
 "use strict";
 
 const cds = require("@sap/cds");
-const logger = require("../../utils/logger");
+const logger = cds.log('logger');
 const utils = require("../../utils/Utils");
 
-const { OneTimeVendors } = cds.entities('sap.ariba');
 
 //Amount fields in object
 function _getAmountPropertiesForDataCleaning () {
@@ -29,7 +28,7 @@ function insertData(aData, realm)  {
 
             try {
                 //Select record by Unique key
-                let res =  await srv.run ( SELECT.from (OneTimeVendors).where(
+                let res =  await srv.run ( SELECT.from ("sap.ariba.OneTimeVendors").where(
                     {
                         Realm : oDataCleansed.Realm ,
                         ReferenceClusterRootId : oDataCleansed.ReferenceClusterRootId
@@ -38,11 +37,11 @@ function insertData(aData, realm)  {
 
                  if(res.length==0){
                      //New record, insert
-                    await srv.run( INSERT .into (OneTimeVendors) .entries (oDataCleansed) );
+                    await srv.run( INSERT .into ("sap.ariba.OneTimeVendors") .entries (oDataCleansed) );
 
                  }else{
                      //Update existing record
-                    await srv.run ( UPDATE (OneTimeVendors) .set (oDataCleansed) .where(
+                    await srv.run ( UPDATE ("sap.ariba.OneTimeVendors") .set (oDataCleansed) .where(
                         {
                             Realm : oDataCleansed.Realm ,
                             ReferenceClusterRootId : oDataCleansed.ReferenceClusterRootId

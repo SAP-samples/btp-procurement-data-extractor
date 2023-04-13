@@ -1,13 +1,9 @@
 "use strict";
 
 const cds = require("@sap/cds");
-const logger = require("../../utils/logger");
+const logger = cds.log('logger');
 const utils = require("../../utils/Utils");
 
-
-const { SMProjectQuestionnaireResponses, SMProjectQuestionnaireResponses_ResponseCommodityValue,
-    SMProjectQuestionnaireResponses_ResponseRegionValue, SMProjectQuestionnaireResponses_ResponseDepartmentValue,
-    SMProjectQuestionnaireResponses_ResponseSupplierValue, SMProjectQuestionnaireResponses_V_responsetextmultivalue } = cds.entities('sap.ariba');
 
 //Amount fields in object
 function _getAmountPropertiesForDataCleaning () {
@@ -50,7 +46,7 @@ function insertData(aData, realm)  {
 
             try {
                 //Select record by Unique key
-                let res =  await srv.run ( SELECT.from (SMProjectQuestionnaireResponses).where(
+                let res =  await srv.run ( SELECT.from ("sap.ariba.SMProjectQuestionnaireResponses").where(
                     {
                         Realm : oDataCleansed.Realm ,
                         QuestionId : oDataCleansed.QuestionId,
@@ -63,7 +59,7 @@ function insertData(aData, realm)  {
 
                  if(res.length==0){
                      //New record, insert
-                    await srv.run( INSERT .into (SMProjectQuestionnaireResponses) .entries (oDataCleansed) );
+                    await srv.run( INSERT .into ("sap.ariba.SMProjectQuestionnaireResponses") .entries (oDataCleansed) );
 
                  }else{
 
@@ -83,7 +79,7 @@ function insertData(aData, realm)  {
                      delete oDataCleansed["V_responsetextmultivalue"];
 
                      //Update existing record
-                    await srv.run ( UPDATE (SMProjectQuestionnaireResponses) .set (oDataCleansed) .where(
+                    await srv.run ( UPDATE ("sap.ariba.SMProjectQuestionnaireResponses") .set (oDataCleansed) .where(
                         {
                             Realm : oDataCleansed.Realm ,
                             QuestionId : oDataCleansed.QuestionId,
@@ -128,7 +124,7 @@ async function _FullLoadResponseCommodityValue(responseCommodityValue,Realm,Ques
        // const srv = cds.transaction(regions);
         //Delete old records
         try {
-            await srv.run(DELETE(SMProjectQuestionnaireResponses_ResponseCommodityValue).where({
+            await srv.run(DELETE("sap.ariba.SMProjectQuestionnaireResponses_ResponseCommodityValue").where({
                 SMProjectQuestionnaireResponse_Realm : Realm ,
                 SMProjectQuestionnaireResponse_QuestionId : QuestionId,
                 SMProjectQuestionnaireResponse_UserId : UserId,
@@ -150,7 +146,7 @@ async function _FullLoadResponseCommodityValue(responseCommodityValue,Realm,Ques
                     re["SMProjectQuestionnaireResponse_UserId"] = UserId;
                     re["SMProjectQuestionnaireResponse_SurveyId"] = SurveyId;
                     re["SMProjectQuestionnaireResponse_VersionNumber"] = VersionNumber;
-                    await srv.run( INSERT .into (SMProjectQuestionnaireResponses_ResponseCommodityValue) .entries (re) );
+                    await srv.run( INSERT .into ("sap.ariba.SMProjectQuestionnaireResponses_ResponseCommodityValue") .entries (re) );
 
                 } catch (e) {
                     logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);
@@ -168,7 +164,7 @@ async function _FullLoadResponseRegionValue(responseRegionValue,Realm,QuestionId
         //Delete old records
         
         try {
-            await srv.run(DELETE(SMProjectQuestionnaireResponses_ResponseRegionValue).where({
+            await srv.run(DELETE("sap.ariba.SMProjectQuestionnaireResponses_ResponseRegionValue").where({
                 SMProjectQuestionnaireResponse_Realm : Realm ,
                 SMProjectQuestionnaireResponse_QuestionId : QuestionId,
                 SMProjectQuestionnaireResponse_UserId : UserId,
@@ -189,7 +185,7 @@ async function _FullLoadResponseRegionValue(responseRegionValue,Realm,QuestionId
                     re["SMProjectQuestionnaireResponse_UserId"] = UserId;
                     re["SMProjectQuestionnaireResponse_SurveyId"] = SurveyId;
                     re["SMProjectQuestionnaireResponse_VersionNumber"] = VersionNumber;
-                    await srv.run( INSERT .into (SMProjectQuestionnaireResponses_ResponseRegionValue) .entries (re) );
+                    await srv.run( INSERT .into ("sap.ariba.SMProjectQuestionnaireResponses_ResponseRegionValue") .entries (re) );
 
                 } catch (e) {
                     logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);
@@ -207,7 +203,7 @@ async function _FullLoadResponseDepartmentValue(responseDepartmentValue,Realm,Qu
         //Delete old records
         
         try {
-            await srv.run(DELETE(SMProjectQuestionnaireResponses_ResponseDepartmentValue).where({
+            await srv.run(DELETE("sap.ariba.SMProjectQuestionnaireResponses_ResponseDepartmentValue").where({
                 SMProjectQuestionnaireResponse_Realm : Realm ,
                 SMProjectQuestionnaireResponse_QuestionId : QuestionId,
                 SMProjectQuestionnaireResponse_UserId : UserId,
@@ -228,7 +224,7 @@ async function _FullLoadResponseDepartmentValue(responseDepartmentValue,Realm,Qu
                     re["SMProjectQuestionnaireResponse_UserId"] = UserId;
                     re["SMProjectQuestionnaireResponse_SurveyId"] = SurveyId;
                     re["SMProjectQuestionnaireResponse_VersionNumber"] = VersionNumber;
-                    await srv.run( INSERT .into (SMProjectQuestionnaireResponses_ResponseDepartmentValue) .entries (re) );
+                    await srv.run( INSERT .into ("sap.ariba.SMProjectQuestionnaireResponses_ResponseDepartmentValue") .entries (re) );
 
                 } catch (e) {
                     logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);
@@ -245,7 +241,7 @@ async function _FullLoadResponseSupplierValue(responseSupplierValue,Realm,Questi
        // const srv = cds.transaction(regions);
         //Delete old records
         try {
-            await srv.run(DELETE(SMProjectQuestionnaireResponses_ResponseSupplierValue).where({
+            await srv.run(DELETE("sap.ariba.SMProjectQuestionnaireResponses_ResponseSupplierValue").where({
                 SMProjectQuestionnaireResponse_Realm : Realm ,
                 SMProjectQuestionnaireResponse_QuestionId : QuestionId,
                 SMProjectQuestionnaireResponse_UserId : UserId,
@@ -266,7 +262,7 @@ async function _FullLoadResponseSupplierValue(responseSupplierValue,Realm,Questi
                     re["SMProjectQuestionnaireResponse_UserId"] = UserId;
                     re["SMProjectQuestionnaireResponse_SurveyId"] = SurveyId;
                     re["SMProjectQuestionnaireResponse_VersionNumber"] = VersionNumber;
-                    await srv.run( INSERT .into (SMProjectQuestionnaireResponses_ResponseSupplierValue) .entries (re) );
+                    await srv.run( INSERT .into ("sap.ariba.SMProjectQuestionnaireResponses_ResponseSupplierValue") .entries (re) );
 
                 } catch (e) {
                     logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);
@@ -284,7 +280,7 @@ async function _FullLoadV_responsetextmultivalue(vresponsetextmultivalue,Realm,Q
         //Delete old records
         
         try {
-            await srv.run(DELETE(SMProjectQuestionnaireResponses_V_responsetextmultivalue).where({
+            await srv.run(DELETE("sap.ariba.SMProjectQuestionnaireResponses_V_responsetextmultivalue").where({
                 SMProjectQuestionnaireResponse_Realm : Realm ,
                 SMProjectQuestionnaireResponse_QuestionId : QuestionId,
                 SMProjectQuestionnaireResponse_UserId : UserId,
@@ -305,7 +301,7 @@ async function _FullLoadV_responsetextmultivalue(vresponsetextmultivalue,Realm,Q
                     re["SMProjectQuestionnaireResponse_UserId"] = UserId;
                     re["SMProjectQuestionnaireResponse_SurveyId"] = SurveyId;
                     re["SMProjectQuestionnaireResponse_VersionNumber"] = VersionNumber;
-                    await srv.run( INSERT .into (SMProjectQuestionnaireResponses_V_responsetextmultivalue) .entries (re) );
+                    await srv.run( INSERT .into ("sap.ariba.SMProjectQuestionnaireResponses_V_responsetextmultivalue") .entries (re) );
 
                 } catch (e) {
                     logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);

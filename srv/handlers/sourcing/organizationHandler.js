@@ -1,11 +1,9 @@
 "use strict";
 
 const cds = require("@sap/cds");
-const logger = require("../../utils/logger");
+const logger = cds.log('logger');
 const utils = require("../../utils/Utils");
 
-
-const { Organization,Organization_BusinessContacts,Organization_Contacts,Organization_OrganizationIds,Organization_VendorKeys} = cds.entities('sap.ariba');
 
 //Amount fields in object
 function _getAmountPropertiesForDataCleaning () {
@@ -44,23 +42,23 @@ function insertData(aData, realm)  {
 
                 //1 Delete potential record dependencies
                 try {
-                    await srv.run(DELETE(Organization_BusinessContacts).where({
+                    await srv.run(DELETE("sap.ariba.Organization_BusinessContacts").where({
                         Organization_Realm : sRealm ,
                         Organization_SystemID : sSystemID
                     }));
-                    await srv.run(DELETE(Organization_Contacts).where({
+                    await srv.run(DELETE("sap.ariba.Organization_Contacts").where({
                         Organization_Realm : sRealm ,
                         Organization_SystemID : sSystemID
                     }));
-                    await srv.run(DELETE(Organization_OrganizationIds).where({
+                    await srv.run(DELETE("sap.ariba.Organization_OrganizationIds").where({
                         Organization_Realm : sRealm ,
                         Organization_SystemID : sSystemID
                     }));
-                    await srv.run(DELETE(Organization_VendorKeys).where({
+                    await srv.run(DELETE("sap.ariba.Organization_VendorKeys").where({
                         Organization_Realm : sRealm ,
                         Organization_SystemID : sSystemID
                     }));
-                    await srv.run(DELETE(Organization).where({
+                    await srv.run(DELETE("sap.ariba.Organization").where({
                         Realm : sRealm ,
                         SystemID : sSystemID
                     }));
@@ -72,7 +70,7 @@ function insertData(aData, realm)  {
                 }
 
                 //New record, insert
-                await srv.run( INSERT .into (Organization) .entries (oDataCleansed) ); 
+                await srv.run( INSERT .into ("sap.ariba.Organization") .entries (oDataCleansed) );
                          
            
             } catch (e) {                

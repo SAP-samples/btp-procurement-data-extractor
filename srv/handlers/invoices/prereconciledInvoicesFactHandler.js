@@ -1,11 +1,9 @@
 "use strict";
 
 const cds = require("@sap/cds");
-const logger = require("../../utils/logger");
+const logger = cds.log('logger');
 const utils = require("../../utils/Utils");
 
-
-const { PrereconciledInvoices } = cds.entities('sap.ariba');
 
 //Amount fields in object
 function _getAmountPropertiesForDataCleaning () {
@@ -42,7 +40,7 @@ function insertData(aData, realm)  {
             var oDataCleansed = utils.processCustomFields(oDataCleansed);
             try {
                 //Select record by Unique key
-                let res =  await srv.run ( SELECT.from (PrereconciledInvoices).where(
+                let res =  await srv.run ( SELECT.from ("sap.ariba.PrereconciledInvoices").where(
                     {
                         Realm : oDataCleansed.Realm ,
                         InvoiceId : oDataCleansed.InvoiceId,
@@ -52,11 +50,11 @@ function insertData(aData, realm)  {
 
                  if(res.length==0){
                      //New record, insert
-                    await srv.run( INSERT .into (PrereconciledInvoices) .entries (oDataCleansed) );
+                    await srv.run( INSERT .into ("sap.ariba.PrereconciledInvoices") .entries (oDataCleansed) );
 
                  }else{
                      //Update existing record
-                    await srv.run ( UPDATE (PrereconciledInvoices) .set (oDataCleansed) .where(
+                    await srv.run ( UPDATE ("sap.ariba.PrereconciledInvoices") .set (oDataCleansed) .where(
                         {
                             Realm : oDataCleansed.Realm ,
                             InvoiceId : oDataCleansed.InvoiceId,

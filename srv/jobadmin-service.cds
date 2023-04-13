@@ -1,13 +1,14 @@
 
 using sap.ariba as entities from '../db';
 
-@(requires: ['authenticated-user', 'identified-user', 'system-user'])
+//@(requires: ['authenticated-user', 'identified-user', 'system-user'])
 service JobAdminService @(path:'/jobadmin')    {
     entity Jobs as projection on entities.Jobs;
     entity Job_File as projection on entities.Job_File;
     entity Job_Pages as projection on entities.Job_Pages;
-    
-    action createJob (realm: entities.Jobs:Realm, viewTemplateName: String, loadMode: String,apiType: String) returns String;
+
+    type filter { updatedDateFrom: DateTime; updatedDateTo: DateTime };
+    action createJob (realm: entities.Jobs:Realm, viewTemplateName: String, loadMode: String,apiType: String, filterCriteria: filter) returns String;
     action UpdateJobStatus (realm: entities.Jobs:Realm) returns String;
     action ProcessFinishedJobs (realm: entities.Jobs:Realm) returns String;
 

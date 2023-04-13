@@ -1,11 +1,9 @@
 "use strict";
 
 const cds = require("@sap/cds");
-const logger = require("../../utils/logger");
+const logger = cds.log('logger');
 const utils = require("../../utils/Utils");
 
-
-const { Approval,Approval_Delegatees } = cds.entities('sap.ariba');
 
 //Amount fields in object
 function _getAmountPropertiesForDataCleaning () {
@@ -36,7 +34,7 @@ function insertData(aData, realm)  {
             var oDataCleansed = _FlatteningData(oDataCleansed);
             try {
                 //Select record by Unique key
-                let res =  await srv.run ( SELECT.from (Approval).where(
+                let res =  await srv.run ( SELECT.from ("sap.ariba.Approval").where(
                     { 
                         Realm : oDataCleansed.Realm ,
                         ApprovalActivationDate : oDataCleansed.ApprovalActivationDate,
@@ -49,7 +47,7 @@ function insertData(aData, realm)  {
 
                  if(res.length==0){
                      //New record, insert
-                    await srv.run( INSERT .into (Approval) .entries (oDataCleansed) ); 
+                    await srv.run( INSERT .into ("sap.ariba.Approval") .entries (oDataCleansed) );
                                   
                  }else{
                      //Update existing record
@@ -57,7 +55,7 @@ function insertData(aData, realm)  {
                      let delegatees = oDataCleansed["Delegatees"];
                      delete oDataCleansed["Delegatees"];
 
-                    await srv.run ( UPDATE (Approval) .set (oDataCleansed) .where(
+                    await srv.run ( UPDATE ("sap.ariba.Approval") .set (oDataCleansed) .where(
                         { 
                             Realm : oDataCleansed.Realm ,
                             ApprovalActivationDate : oDataCleansed.ApprovalActivationDate,
@@ -97,7 +95,7 @@ async function _FullLoadDelegatees(delegatees,Realm,ApprovalActivationDate,Appro
        // const srv = cds.transaction(regions);
         //Delete old records
         try {
-            await srv.run(DELETE(Approval_Delegatees).where({
+            await srv.run(DELETE("sap.ariba.Approval_Delegatees").where({
                 Approval_Realm : Realm ,
                 Approval_ApprovalActivationDate : ApprovalActivationDate ,
                 Approval_ApprovableType : ApprovableType ,
@@ -121,7 +119,7 @@ async function _FullLoadDelegatees(delegatees,Realm,ApprovalActivationDate,Appro
                 de["Approval_ApprovableId"] = ApprovableId;
                 de["Approval_SourceSystemId"] = SourceSystemId;
                 de["Approval_Approver"] = Approver;
-                await srv.run( INSERT .into (Approval_Delegatees) .entries (de) );
+                await srv.run( INSERT .into ("sap.ariba.Approval_Delegatees") .entries (de) );
 
             } catch (e) {
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);

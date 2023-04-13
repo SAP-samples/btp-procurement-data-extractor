@@ -1,13 +1,9 @@
 "use strict";
 
 const cds = require("@sap/cds");
-const logger = require("../../utils/logger");
+const logger = cds.log('logger');
 const utils = require("../../utils/Utils");
 
-
-
-const { SourcingRequests, SourcingRequests_Organization, SourcingRequests_Commodity,
-     SourcingRequests_Region, SourcingRequests_Suppliers, SourcingRequests_AllOwners } = cds.entities('sap.ariba');
 
 //Amount fields in object
 function _getAmountPropertiesForDataCleaning () {
@@ -37,7 +33,7 @@ function insertData(aData, realm)  {
             var oDataCleansed = utils.processCustomFields(oDataCleansed);
             try {
                 //Select record by Unique key
-                let res =  await srv.run ( SELECT.from (SourcingRequests).where(
+                let res =  await srv.run ( SELECT.from ("sap.ariba.SourcingRequests").where(
                     {
                         Realm : oDataCleansed.Realm ,
                         ProjectId : oDataCleansed.ProjectId }  )
@@ -45,7 +41,7 @@ function insertData(aData, realm)  {
 
                  if(res.length==0){
                      //New record, insert
-                    await srv.run( INSERT .into (SourcingRequests) .entries (oDataCleansed) );
+                    await srv.run( INSERT .into ("sap.ariba.SourcingRequests") .entries (oDataCleansed) );
 
                  }else{
                      //Update existing record
@@ -66,7 +62,7 @@ function insertData(aData, realm)  {
                      let regions = oDataCleansed["Region"];
                      delete oDataCleansed["Region"];
 
-                     await srv.run ( UPDATE (SourcingRequests) .set (oDataCleansed) .where(
+                     await srv.run ( UPDATE ("sap.ariba.SourcingRequests") .set (oDataCleansed) .where(
                         {
                             Realm : oDataCleansed.Realm ,
                             ProjectId : oDataCleansed.ProjectId } )
@@ -106,7 +102,7 @@ async function _FullLoadRegions(regions,Realm,ProjectId,srv){
        // const srv = cds.transaction(regions);
         //Delete old records
         try {
-            await srv.run(DELETE(SourcingRequests_Region).where({
+            await srv.run(DELETE("sap.ariba.SourcingRequests_Region").where({
                 SourcingRequests_Realm : Realm ,
                 SourcingRequests_ProjectId : ProjectId
             }));
@@ -122,7 +118,7 @@ async function _FullLoadRegions(regions,Realm,ProjectId,srv){
 
                 re["SourcingRequests_Realm"] = Realm;
                 re["SourcingRequests_ProjectId"] = ProjectId;
-                await srv.run( INSERT .into (SourcingRequests_Region) .entries (re) );
+                await srv.run( INSERT .into ("sap.ariba.SourcingRequests_Region") .entries (re) );
 
             } catch (e) {
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);
@@ -139,7 +135,7 @@ async function _FullLoadSuppliers(suppliers,Realm,ProjectId,srv){
        // const srv = cds.transaction(suppliers);
         //Delete old records
         try {
-            await srv.run(DELETE(SourcingRequests_Suppliers).where({
+            await srv.run(DELETE("sap.ariba.SourcingRequests_Suppliers").where({
                 SourcingRequests_Realm : Realm ,
                 SourcingRequests_ProjectId : ProjectId
             }));
@@ -155,7 +151,7 @@ async function _FullLoadSuppliers(suppliers,Realm,ProjectId,srv){
 
                 supp["SourcingRequests_Realm"] = Realm;
                 supp["SourcingRequests_ProjectId"] = ProjectId;
-                await srv.run( INSERT .into (SourcingRequests_Suppliers) .entries (supp) );
+                await srv.run( INSERT .into ("sap.ariba.SourcingRequests_Suppliers") .entries (supp) );
 
             } catch (e) {
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);
@@ -172,7 +168,7 @@ async function _FullLoadCommodities(commodities,Realm,ProjectId,srv){
        // const srv = cds.transaction(commodities);
         //Delete old records
         try {
-            await srv.run(DELETE(SourcingRequests_Commodity).where({
+            await srv.run(DELETE("sap.ariba.SourcingRequests_Commodity").where({
                 SourcingRequests_Realm : Realm ,
                 SourcingRequests_ProjectId : ProjectId
             }));
@@ -188,7 +184,7 @@ async function _FullLoadCommodities(commodities,Realm,ProjectId,srv){
 
                 comm["SourcingRequests_Realm"] = Realm;
                 comm["SourcingRequests_ProjectId"] = ProjectId;
-                await srv.run( INSERT .into (SourcingRequests_Commodity) .entries (comm) );
+                await srv.run( INSERT .into ("sap.ariba.SourcingRequests_Commodity") .entries (comm) );
 
             } catch (e) {
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);
@@ -205,7 +201,7 @@ async function _FullLoadOwners(owners,Realm,ProjectId,srv){
         //const srv = cds.transaction(owners);
         //Delete old records
         try {
-            await srv.run(DELETE(SourcingRequests_AllOwners).where({
+            await srv.run(DELETE("sap.ariba.SourcingRequests_AllOwners").where({
                 SourcingRequests_Realm : Realm ,
                 SourcingRequests_ProjectId : ProjectId
             }));
@@ -221,7 +217,7 @@ async function _FullLoadOwners(owners,Realm,ProjectId,srv){
 
                 owner["SourcingRequests_Realm"] = Realm;
                 owner["SourcingRequests_ProjectId"] = ProjectId;
-                await srv.run( INSERT .into (SourcingRequests_AllOwners) .entries (owner) );
+                await srv.run( INSERT .into ("sap.ariba.SourcingRequests_AllOwners") .entries (owner) );
 
             } catch (e) {
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);
@@ -238,7 +234,7 @@ async function _FullLoadOrganization(organizations,Realm,ProjectId,srv){
         //const srv = cds.transaction(organizations);
         //Delete old records
         try {
-            await srv.run(DELETE(SourcingRequests_Organization).where({
+            await srv.run(DELETE("sap.ariba.SourcingRequests_Organization").where({
                 SourcingRequests_Realm : Realm ,
                 SourcingRequests_ProjectId : ProjectId
             }));
@@ -254,7 +250,7 @@ async function _FullLoadOrganization(organizations,Realm,ProjectId,srv){
 
                 org["SourcingRequests_Realm"] = Realm;
                 org["SourcingRequests_ProjectId"] = ProjectId;
-                await srv.run( INSERT .into (SourcingRequests_Organization) .entries (org) );
+                await srv.run( INSERT .into ("sap.ariba.SourcingRequests_Organization") .entries (org) );
 
             } catch (e) {
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);

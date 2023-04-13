@@ -1,10 +1,9 @@
 "use strict";
 
 const cds = require("@sap/cds");
-const logger = require("../../utils/logger");
+const logger = cds.log('logger');
 const utils = require("../../utils/Utils");
 
-const { TaskApprovals } = cds.entities('sap.ariba');
 
 //Amount fields in object
 function _getAmountPropertiesForDataCleaning () {
@@ -37,7 +36,7 @@ function insertData(aData, realm)  {
 
             try {
                 //Select record by Unique key
-                let res =  await srv.run ( SELECT.from (TaskApprovals).where(
+                let res =  await srv.run ( SELECT.from ("sap.ariba.TaskApprovals").where(
                     {
                         Realm : oDataCleansed.Realm ,
                         TaskId : oDataCleansed.TaskId,
@@ -49,11 +48,11 @@ function insertData(aData, realm)  {
 
                 if(res.length==0){
                      //New record, insert
-                    await srv.run( INSERT .into (TaskApprovals) .entries (oDataCleansed) );
+                    await srv.run( INSERT .into ("sap.ariba.TaskApprovals") .entries (oDataCleansed) );
 
                 } else {
                     //Update existing record
-                    await srv.run ( UPDATE (TaskApprovals) .set (oDataCleansed) .where(
+                    await srv.run ( UPDATE ("sap.ariba.TaskApprovals") .set (oDataCleansed) .where(
                         {
                             Realm : oDataCleansed.Realm ,
                             TaskId : oDataCleansed.TaskId,

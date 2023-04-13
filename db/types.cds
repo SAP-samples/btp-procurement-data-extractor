@@ -1106,3 +1106,7 @@ type savingsFormInfo {
     SavingsFormId           : String(50);
     VersionNumber           : Integer;
 }
+
+type buyerItemMaster: {
+    BuyerPartNumber : String(255);
+}

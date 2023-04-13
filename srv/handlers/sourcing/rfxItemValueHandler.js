@@ -1,11 +1,9 @@
 "use strict";
 
 const cds = require("@sap/cds");
-const logger = require("../../utils/logger");
+const logger = cds.log('logger');
 const utils = require("../../utils/Utils");
 
-
-const { RFXItemValue} = cds.entities('sap.ariba');
 
 //Amount fields in object
 function _getAmountPropertiesForDataCleaning () {
@@ -51,7 +49,7 @@ function insertData(aData, realm)  {
                 //1 Delete potential record dependencies
                 try {
                    
-                    await srv.run(DELETE(RFXItemValue).where({
+                    await srv.run(DELETE("sap.ariba.RFXItemValue").where({
                         Realm : sRealm ,
                         ItemId : sItemId,
                         VersionId: sVersionId,
@@ -66,7 +64,7 @@ function insertData(aData, realm)  {
                 }
 
                 //New record, insert
-                await srv.run( INSERT .into (RFXItemValue) .entries (oDataCleansed) ); 
+                await srv.run( INSERT .into ("sap.ariba.RFXItemValue") .entries (oDataCleansed) );
                          
            
             } catch (e) {                

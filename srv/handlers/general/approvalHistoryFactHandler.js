@@ -1,10 +1,9 @@
 "use strict";
 
 const cds = require("@sap/cds");
-const logger = require("../../utils/logger");
+const logger = cds.log('logger');
 const utils = require("../../utils/Utils");
 
-const { ApprovalHistory } = cds.entities('sap.ariba');
 
 //Amount fields in object
 function _getAmountPropertiesForDataCleaning () {
@@ -38,7 +37,7 @@ function insertData(aData, realm)  {
 
             try {
                 //Select record by Unique key
-                let res =  await srv.run ( SELECT.from (ApprovalHistory).where(
+                let res =  await srv.run ( SELECT.from ("sap.ariba.ApprovalHistory").where(
                     {
                         Realm : oDataCleansed.Realm ,
                         ApprovableId : oDataCleansed.ApprovableId,
@@ -51,11 +50,11 @@ function insertData(aData, realm)  {
 
                 if(res.length==0){
                      //New record, insert
-                    await srv.run( INSERT .into (ApprovalHistory) .entries (oDataCleansed) );
+                    await srv.run( INSERT .into ("sap.ariba.ApprovalHistory") .entries (oDataCleansed) );
 
                 } else {
                     //Update existing record
-                    await srv.run ( UPDATE (ApprovalHistory) .set (oDataCleansed) .where(
+                    await srv.run ( UPDATE ("sap.ariba.ApprovalHistory") .set (oDataCleansed) .where(
                         {
                             Realm : oDataCleansed.Realm ,
                             ApprovableId : oDataCleansed.ApprovableId,

@@ -1,9 +1,7 @@
 "use strict";
 
 const cds = require("@sap/cds");
-const { Receipt } = cds.entities('sap.ariba');
-
-const logger = require("../../utils/logger");
+const logger = cds.log('logger');
 const utils = require("../../utils/Utils");
 
 
@@ -43,7 +41,7 @@ async function insertData(aData, realm)  {
 
             try {
                 //Select record by Unique key
-                let res =  await srv.run ( SELECT.from (Receipt).where(
+                let res =  await srv.run ( SELECT.from ("sap.ariba.Receipt").where(
                     {
                       ReceiptId : oDataCleansed.ReceiptId ,
                       Realm : oDataCleansed.Realm } )
@@ -51,11 +49,11 @@ async function insertData(aData, realm)  {
 
                  if(res.length==0){
                      //New record, insert
-                    await srv.run( INSERT .into (Receipt) .entries (oDataCleansed) ); 
+                    await srv.run( INSERT .into ("sap.ariba.Receipt") .entries (oDataCleansed) );
                                   
                  }else{
                      //Update existing record
-                    await srv.run ( UPDATE (Receipt) .set (oDataCleansed) .where(
+                    await srv.run ( UPDATE ("sap.ariba.Receipt") .set (oDataCleansed) .where(
                         {
                             ReceiptId : oDataCleansed.ReceiptId ,
                             Realm : oDataCleansed.Realm  } )

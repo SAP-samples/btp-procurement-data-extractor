@@ -1,12 +1,9 @@
 "use strict";
 
 const cds = require("@sap/cds");
-const logger = require("../../utils/logger");
+const logger = cds.log('logger');
 const utils = require("../../utils/Utils");
 
-
-const { SupplierParticipations, SupplierParticipations_Department, SupplierParticipations_Region,
-    SupplierParticipations_ItemCommodity} = cds.entities('sap.ariba');
 
 //Amount fields in object
 function _getAmountPropertiesForDataCleaning () {
@@ -40,7 +37,7 @@ function insertData(aData, realm)  {
             var oDataCleansed = utils.processCustomFields(oDataCleansed);
             try {
                 //Select record by Unique key
-                let res =  await srv.run ( SELECT.from (SupplierParticipations).where(
+                let res =  await srv.run ( SELECT.from ("sap.ariba.SupplierParticipations").where(
                     { 
                         Realm : oDataCleansed.Realm ,
                         EventId : oDataCleansed.EventId,
@@ -51,7 +48,7 @@ function insertData(aData, realm)  {
 
                  if(res.length==0){
                      //New record, insert
-                    await srv.run( INSERT .into (SupplierParticipations) .entries (oDataCleansed) ); 
+                    await srv.run( INSERT .into ("sap.ariba.SupplierParticipations") .entries (oDataCleansed) );
                                   
                  }else{
                      //Update existing record
@@ -66,7 +63,7 @@ function insertData(aData, realm)  {
                      let organizations = oDataCleansed["Department"];
                      delete oDataCleansed["Department"];   
                     
-                     await srv.run ( UPDATE (SupplierParticipations) .set (oDataCleansed) .where(
+                     await srv.run ( UPDATE ("sap.ariba.SupplierParticipations") .set (oDataCleansed) .where(
                         {                                 
                             Realm : oDataCleansed.Realm ,
                             EventId : oDataCleansed.EventId,
@@ -110,7 +107,7 @@ async function _FullLoadRegions(regions,Realm,EventId,ItemId,SupplierId,BidderUs
        // const srv = cds.transaction(regions); 
         //Delete old records
         try {
-            await srv.run(DELETE(SupplierParticipations_Region).where({
+            await srv.run(DELETE("sap.ariba.SupplierParticipations_Region").where({
                 SupplierParticipation_EventId : EventId ,
                 SupplierParticipation_Realm : Realm ,
                 SupplierParticipation_ItemId : ItemId ,
@@ -132,7 +129,7 @@ async function _FullLoadRegions(regions,Realm,EventId,ItemId,SupplierId,BidderUs
                 re["SupplierParticipation_ItemId"] = ItemId;
                 re["SupplierParticipation_SupplierId"] = SupplierId;
                 re["SupplierParticipation_BidderUserId"] = BidderUserId;
-                await srv.run( INSERT .into (SupplierParticipations_Region) .entries (re) ); 
+                await srv.run( INSERT .into ("sap.ariba.SupplierParticipations_Region") .entries (re) );
            
             } catch (e) {                
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);
@@ -149,7 +146,7 @@ async function _FullLoadItemCommodities(commodities,Realm,EventId,ItemId,Supplie
        // const srv = cds.transaction(commodities); 
         //Delete old records
         try {
-            await srv.run(DELETE(SupplierParticipations_ItemCommodity).where({
+            await srv.run(DELETE("sap.ariba.SupplierParticipations_ItemCommodity").where({
                 SupplierParticipation_EventId : EventId ,
                 SupplierParticipation_Realm : Realm ,
                 SupplierParticipation_ItemId : ItemId ,
@@ -171,7 +168,7 @@ async function _FullLoadItemCommodities(commodities,Realm,EventId,ItemId,Supplie
                 comm["SupplierParticipation_ItemId"] = ItemId;
                 comm["SupplierParticipation_SupplierId"] = SupplierId;
                 comm["SupplierParticipation_BidderUserId"] = BidderUserId;
-                await srv.run( INSERT .into (SupplierParticipations_ItemCommodity) .entries (comm) ); 
+                await srv.run( INSERT .into ("sap.ariba.SupplierParticipations_ItemCommodity") .entries (comm) );
            
             } catch (e) {                
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);
@@ -188,7 +185,7 @@ async function _FullLoadOrganization(organizations,Realm,EventId,ItemId,Supplier
         //const srv = cds.transaction(organizations); 
         //Delete old records
         try {
-            await srv.run(DELETE(SupplierParticipations_Department).where({
+            await srv.run(DELETE("sap.ariba.SupplierParticipations_Department").where({
                 SupplierParticipation_EventId : EventId ,
                 SupplierParticipation_Realm : Realm ,
                 SupplierParticipation_ItemId : ItemId ,
@@ -210,7 +207,7 @@ async function _FullLoadOrganization(organizations,Realm,EventId,ItemId,Supplier
                 org["SupplierParticipation_ItemId"] = ItemId;
                 org["SupplierParticipation_SupplierId"] = SupplierId;
                 org["SupplierParticipation_BidderUserId"] = BidderUserId;
-                await srv.run( INSERT .into (SupplierParticipations_Department) .entries (org) ); 
+                await srv.run( INSERT .into ("sap.ariba.SupplierParticipations_Department") .entries (org) );
            
             } catch (e) {                
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);

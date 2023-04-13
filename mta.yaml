@@ -14,7 +14,7 @@ build-parameters:
    - builder: custom
      commands:
       - npm install --production
-      - cds build --production
+      - npx cds build --production
 
 modules:
 
@@ -52,7 +52,7 @@ modules:
    type: custom
    path: gen/db
    parameters:
-     buildpacks: [https://github.com/cloudfoundry/apt-buildpack#v0.2.2, nodejs_buildpack] 
+     buildpacks: [https://github.com/cloudfoundry/apt-buildpack#v0.3.0, nodejs_buildpack]
      no-route: true
      no-start: true
      disk-quota: 2GB
@@ -61,7 +61,7 @@ modules:
      - name: deploy_to_postgresql
        command: chmod 755 deploy.sh && ./deploy.sh
        disk-quota: 2GB
-       memory: 512MB      
+       memory: 512MB
    build-parameters:
      ignore: ["node_modules/"]
    requires:

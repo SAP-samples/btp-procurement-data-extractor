@@ -1,9 +1,7 @@
 "use strict";
 
 const cds = require("@sap/cds");
-const { PODelivery } = cds.entities('sap.ariba');
-
-const logger = require("../../utils/logger");
+const logger = cds.log('logger');
 const utils = require("../../utils/Utils");
 
 
@@ -37,18 +35,18 @@ async function insertData(aData, realm)  {
             var oDataCleansed = utils.processCustomFields(oDataCleansed);
             try {
                 //Select record by Unique key
-                let res =  await srv.run ( SELECT.from (PODelivery).where(
+                let res =  await srv.run ( SELECT.from ("sap.ariba.PODelivery").where(
                     { POId : oDataCleansed.POId ,
                       Realm : oDataCleansed.Realm } )
                  );
 
                  if(res.length==0){
                      //New record, insert
-                    await srv.run( INSERT .into (PODelivery) .entries (oDataCleansed) ); 
+                    await srv.run( INSERT .into ("sap.ariba.PODelivery") .entries (oDataCleansed) );
                                   
                  }else{
                      //Update existing record
-                    await srv.run ( UPDATE (PODelivery) .set (oDataCleansed) .where(
+                    await srv.run ( UPDATE ("sap.ariba.PODelivery") .set (oDataCleansed) .where(
                         { POId : oDataCleansed.POId ,
                           Realm : oDataCleansed.Realm } )
                      );

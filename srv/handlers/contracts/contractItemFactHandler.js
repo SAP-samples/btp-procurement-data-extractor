@@ -1,11 +1,10 @@
 "use strict";
 
 const cds = require("@sap/cds");
-const logger = require("../../utils/logger");
+const logger = cds.log('logger');
 const utils = require("../../utils/Utils");
 
 
-const { ContractItem,ContractItem_ItemCommodity,ContractItem_CommodityEscalationClause } = cds.entities('sap.ariba');
 
 //Amount fields in object
 function _getAmountPropertiesForDataCleaning () {
@@ -46,15 +45,15 @@ function insertData(aData, realm)  {
 
                 //1 Delete potential record dependencies
                 try {
-                    await srv.run(DELETE(ContractItem_ItemCommodity).where({
+                    await srv.run(DELETE("sap.ariba.ContractItem_ItemCommodity").where({
                         ContractItem_Realm : sRealm ,
                         ContractItem_ItemId : sItemId
                     }));
-                    await srv.run(DELETE(ContractItem_CommodityEscalationClause).where({
+                    await srv.run(DELETE("sap.ariba.ContractItem_CommodityEscalationClause").where({
                         ContractItem_Realm : sRealm ,
                         ContractItem_ItemId : sItemId
                     }));
-                    await srv.run(DELETE(ContractItem).where({
+                    await srv.run(DELETE("sap.ariba.ContractItem").where({
                         Realm : sRealm ,
                         ItemId : sItemId
                     }));
@@ -66,7 +65,7 @@ function insertData(aData, realm)  {
                 }
 
                 //New record, insert
-                await srv.run( INSERT .into (ContractItem) .entries (oDataCleansed) ); 
+                await srv.run( INSERT .into ("sap.ariba.ContractItem") .entries (oDataCleansed) );
                          
            
             } catch (e) {                

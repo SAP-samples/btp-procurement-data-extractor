@@ -1,11 +1,9 @@
 "use strict";
 
 const cds = require("@sap/cds");
-const logger = require("../../utils/logger");
+const logger = cds.log('logger');
 const utils = require("../../utils/Utils");
 
-
-const { SMSurveyTemplateQuestion } = cds.entities('sap.ariba');
 
 //Amount fields in object
 function _getAmountPropertiesForDataCleaning () {
@@ -41,7 +39,7 @@ function insertData(aData, realm)  {
 
             try {
                 //Select record by Unique key
-                let res =  await srv.run ( SELECT.from (SMSurveyTemplateQuestion).where(
+                let res =  await srv.run ( SELECT.from ("sap.ariba.SMSurveyTemplateQuestion").where(
                     {
                         Realm : oDataCleansed.Realm ,
                         QuestionId : oDataCleansed.QuestionId }  )
@@ -49,11 +47,11 @@ function insertData(aData, realm)  {
 
                  if(res.length==0){
                      //New record, insert
-                    await srv.run( INSERT .into (SMSurveyTemplateQuestion) .entries (oDataCleansed) );
+                    await srv.run( INSERT .into ("sap.ariba.SMSurveyTemplateQuestion") .entries (oDataCleansed) );
 
                  }else{
                      //Update existing record
-                    await srv.run ( UPDATE (SMSurveyTemplateQuestion) .set (oDataCleansed) .where(
+                    await srv.run ( UPDATE ("sap.ariba.SMSurveyTemplateQuestion") .set (oDataCleansed) .where(
                         {
                             Realm : oDataCleansed.Realm ,
                             QuestionId : oDataCleansed.QuestionId} )

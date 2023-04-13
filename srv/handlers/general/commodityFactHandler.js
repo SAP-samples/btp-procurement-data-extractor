@@ -1,10 +1,9 @@
 "use strict";
 
 const cds = require("@sap/cds");
-const logger = require("../../utils/logger");
+const logger = cds.log('logger');
 const utils = require("../../utils/Utils");
 
-const { Commodity } = cds.entities('sap.ariba');
 
 //Amount fields in object
 function _getAmountPropertiesForDataCleaning () {
@@ -30,7 +29,7 @@ function insertData(aData, realm)  {
 
             try {
                 //Select record by Unique key
-                let res =  await srv.run ( SELECT.from (Commodity).where(
+                let res =  await srv.run ( SELECT.from ("sap.ariba.Commodity").where(
                     {
                         Realm : oDataCleansed.Realm ,
                         CommodityId : oDataCleansed.CommodityId,
@@ -40,11 +39,11 @@ function insertData(aData, realm)  {
 
                 if(res.length==0){
                      //New record, insert
-                    await srv.run( INSERT .into (Commodity) .entries (oDataCleansed) );
+                    await srv.run( INSERT .into ("sap.ariba.Commodity") .entries (oDataCleansed) );
 
                 } else {
                     //Update existing record
-                    await srv.run ( UPDATE (Commodity) .set (oDataCleansed) .where(
+                    await srv.run ( UPDATE ("sap.ariba.Commodity") .set (oDataCleansed) .where(
                         {
                             Realm : oDataCleansed.Realm ,
                             CommodityId : oDataCleansed.CommodityId,

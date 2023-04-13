@@ -1,9 +1,8 @@
 "use strict";
 
 const cds = require("@sap/cds");
-const { ContractsOS, ContractsOS_LineItem, ContractsOS_LineItem_SplitAccountings, ContractsOS_ForcastedSpendItem, ContractsOS_LineItem_TieredPricingSteps } = cds.entities('sap.ariba');
 
-const logger = require("../../utils/logger");
+const logger = cds.log('logger');
 const utils = require("../../utils/Utils");
 
 
@@ -79,23 +78,23 @@ async function insertData(aData, realm)  {
 
                 //1 Delete potential record dependencies
                 try {
-                    await srv.run(DELETE(ContractsOS_ForcastedSpendItem).where({
+                    await srv.run(DELETE("sap.ariba.ContractsOS_ForcastedSpendItem").where({
                         ContractOS_Realm : sRealm ,
                         ContractOS_UniqueName : sUniqueName
                     }));
-                    await srv.run(DELETE(ContractsOS_LineItem_TieredPricingSteps).where({
+                    await srv.run(DELETE("sap.ariba.ContractsOS_LineItem_TieredPricingSteps").where({
                         LineItem_ContractsOS_Realm : sRealm ,
                         LineItem_ContractsOS_UniqueName : sUniqueName
                     }));
-                    await srv.run(DELETE(ContractsOS_LineItem).where({
+                    await srv.run(DELETE("sap.ariba.ContractsOS_LineItem").where({
                         ContractsOS_Realm : sRealm ,
                         ContractsOS_UniqueName : sUniqueName
                     }));
-                    await srv.run(DELETE(ContractsOS_LineItem_SplitAccountings).where({
+                    await srv.run(DELETE("sap.ariba.ContractsOS_LineItem_SplitAccountings").where({
                         LineItem_ContractsOS_Realm : sRealm ,
                         LineItem_ContractsOS_UniqueName : sUniqueName
                     }));
-                    await srv.run(DELETE(ContractsOS).where({
+                    await srv.run(DELETE("sap.ariba.ContractsOS").where({
                         Realm : sRealm ,
                         UniqueName : sUniqueName
                     }));
@@ -108,7 +107,7 @@ async function insertData(aData, realm)  {
 
 
                 //New record, insert
-                await srv.run( INSERT .into (ContractsOS) .entries (oDataCleansed) );
+                await srv.run( INSERT .into ("sap.ariba.ContractsOS") .entries (oDataCleansed) );
 
 
 

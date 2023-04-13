@@ -1,12 +1,9 @@
 "use strict";
 
 const cds = require("@sap/cds");
-const logger = require("../../utils/logger");
+const logger = cds.log('logger');
 const utils = require("../../utils/Utils");
 
-
-const { SupplierRegistrationProjects, SupplierRegistrationProjects_Region, SupplierRegistrationProjects_Commodity,
-    SupplierRegistrationProjects_Organization, SupplierRegistrationProjects_AllOwners } = cds.entities('sap.ariba');
 
 //Amount fields in object
 function _getAmountPropertiesForDataCleaning () {
@@ -32,7 +29,7 @@ function insertData(aData, realm)  {
 
             try {
                 //Select record by Unique key
-                let res =  await srv.run ( SELECT.from (SupplierRegistrationProjects).where(
+                let res =  await srv.run ( SELECT.from ("sap.ariba.SupplierRegistrationProjects").where(
                     {
                         Realm : oDataCleansed.Realm ,
                         ProjectId : oDataCleansed.ProjectId
@@ -41,7 +38,7 @@ function insertData(aData, realm)  {
 
                  if(res.length==0){
                      //New record, insert
-                    await srv.run( INSERT .into (SupplierRegistrationProjects) .entries (oDataCleansed) );
+                    await srv.run( INSERT .into ("sap.ariba.SupplierRegistrationProjects") .entries (oDataCleansed) );
 
                  }else{
 
@@ -59,7 +56,7 @@ function insertData(aData, realm)  {
 
 
                      //Update existing record
-                    await srv.run ( UPDATE (SupplierRegistrationProjects) .set (oDataCleansed) .where(
+                    await srv.run ( UPDATE ("sap.ariba.SupplierRegistrationProjects") .set (oDataCleansed) .where(
                         {
                             Realm : oDataCleansed.Realm ,
                             ProjectId : oDataCleansed.ProjectId } )
@@ -99,7 +96,7 @@ async function _FullLoadRegions(regions,Realm,ProjectId,srv){
        // const srv = cds.transaction(regions);
         //Delete old records
         try {
-            await srv.run(DELETE(SupplierRegistrationProjects_Region).where({
+            await srv.run(DELETE("sap.ariba.SupplierRegistrationProjects_Region").where({
                 SupplierRegistrationProject_Realm : Realm ,
                 SupplierRegistrationProject_ProjectId : ProjectId
             }));
@@ -115,7 +112,7 @@ async function _FullLoadRegions(regions,Realm,ProjectId,srv){
 
                 re["SupplierRegistrationProject_Realm"] = Realm;
                 re["SupplierRegistrationProject_ProjectId"] = ProjectId;
-                await srv.run( INSERT .into (SupplierRegistrationProjects_Region) .entries (re) );
+                await srv.run( INSERT .into ("sap.ariba.SupplierRegistrationProjects_Region") .entries (re) );
 
             } catch (e) {
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);
@@ -132,7 +129,7 @@ async function _FullLoadAllOwners(allOwners,Realm,ProjectId,srv){
        // const srv = cds.transaction(allOwners);
         //Delete old records
         try {
-            await srv.run(DELETE(SupplierRegistrationProjects_AllOwners).where({
+            await srv.run(DELETE("sap.ariba.SupplierRegistrationProjects_AllOwners").where({
                 SupplierRegistrationProject_Realm : Realm ,
                 SupplierRegistrationProject_ProjectId : ProjectId
             }));
@@ -148,7 +145,7 @@ async function _FullLoadAllOwners(allOwners,Realm,ProjectId,srv){
 
                 owner["SupplierRegistrationProject_Realm"] = Realm;
                 owner["SupplierRegistrationProject_ProjectId"] = ProjectId;
-                await srv.run( INSERT .into (SupplierRegistrationProjects_AllOwners) .entries (owner) );
+                await srv.run( INSERT .into ("sap.ariba.SupplierRegistrationProjects_AllOwners") .entries (owner) );
 
             } catch (e) {
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);
@@ -165,7 +162,7 @@ async function _FullLoadCommodities(commodities,Realm,ProjectId,srv){
        // const srv = cds.transaction(commodities);
         //Delete old records
         try {
-            await srv.run(DELETE(SupplierRegistrationProjects_Commodity).where({
+            await srv.run(DELETE("sap.ariba.SupplierRegistrationProjects_Commodity").where({
                 SupplierRegistrationProject_Realm : Realm ,
                 SupplierRegistrationProject_ProjectId : ProjectId
             }));
@@ -181,7 +178,7 @@ async function _FullLoadCommodities(commodities,Realm,ProjectId,srv){
 
                 comm["SupplierRegistrationProject_Realm"] = Realm;
                 comm["SupplierRegistrationProject_ProjectId"] = ProjectId;
-                await srv.run( INSERT .into (SupplierRegistrationProjects_Commodity) .entries (comm) );
+                await srv.run( INSERT .into ("sap.ariba.SupplierRegistrationProjects_Commodity") .entries (comm) );
 
             } catch (e) {
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);
@@ -198,7 +195,7 @@ async function _FullLoadOrganization(organizations,Realm,ProjectId,srv){
         //const srv = cds.transaction(organizations);
         //Delete old records
         try {
-            await srv.run(DELETE(SupplierRegistrationProjects_Organization).where({
+            await srv.run(DELETE("sap.ariba.SupplierRegistrationProjects_Organization").where({
                 SupplierRegistrationProject_Realm : Realm ,
                 SupplierRegistrationProject_ProjectId : ProjectId
             }));
@@ -214,7 +211,7 @@ async function _FullLoadOrganization(organizations,Realm,ProjectId,srv){
 
                 org["SupplierRegistrationProject_Realm"] = Realm;
                 org["SupplierRegistrationProject_ProjectId"] = ProjectId;
-                await srv.run( INSERT .into (SupplierRegistrationProjects_Organization) .entries (org) );
+                await srv.run( INSERT .into ("sap.ariba.SupplierRegistrationProjects_Organization") .entries (org) );
 
             } catch (e) {
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);

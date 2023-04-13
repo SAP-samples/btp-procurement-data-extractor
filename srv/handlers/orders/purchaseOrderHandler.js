@@ -1,9 +1,7 @@
 "use strict";
 
 const cds = require("@sap/cds");
-const { PurchaseOrder, PurchaseOrder_LineItem, PurchaseOrder_LineItem_SplitAccountings } = cds.entities('sap.ariba');
-
-const logger = require("../../utils/logger");
+const logger = cds.log('logger');
 const utils = require("../../utils/Utils");
 
 
@@ -45,15 +43,15 @@ async function insertData(aData, realm)  {
 
                 //1 Delete potential record dependencies
                 try {
-                    await srv.run(DELETE(PurchaseOrder_LineItem).where({
+                    await srv.run(DELETE("sap.ariba.PurchaseOrder_LineItem").where({
                         PurchaseOrder_Realm : sRealm ,
                         PurchaseOrder_UniqueName : sUniqueName
                     }));
-                    await srv.run(DELETE(PurchaseOrder_LineItem_SplitAccountings).where({
+                    await srv.run(DELETE("sap.ariba.PurchaseOrder_LineItem_SplitAccountings").where({
                         LineItem_PurchaseOrder_Realm : sRealm ,
                         LineItem_PurchaseOrder_UniqueName : sUniqueName
                     }));
-                    await srv.run(DELETE(PurchaseOrder).where({
+                    await srv.run(DELETE("sap.ariba.PurchaseOrder").where({
                         Realm : sRealm ,
                         UniqueName : sUniqueName
                     }));
@@ -66,7 +64,7 @@ async function insertData(aData, realm)  {
 
 
                 //New record, insert
-                await srv.run( INSERT .into (PurchaseOrder) .entries (oDataCleansed) );
+                await srv.run( INSERT .into ("sap.ariba.PurchaseOrder") .entries (oDataCleansed) );
 
 
 

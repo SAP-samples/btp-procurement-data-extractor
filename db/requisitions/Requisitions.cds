@@ -111,7 +111,9 @@ entity Requisition_ApprovalRequests: cuid {
     AllowEscalationPeriodExtension      : Boolean;
     ApprovalRequired                    : Boolean;
     ApprovedBy                          : types.operationalUser;                                
-    Creator                             : types.operationalUser;      
+    Creator                             : types.operationalUser;
+    AssignedTo                          : types.operationalUser;
+    EscalationExtendedByUser            : types.operationalUser;
     ApproverComment                     : String(255);
     ExtendEscalationReasonCode          : String(25);
     ExtendEscalationUserComments        : String(255);
@@ -123,15 +125,18 @@ entity Requisition_ApprovalRequests: cuid {
     ReportingReason                     : String(255);
     RuleName                            : String(255);
     State                               : Integer;
+    AssignedDate                        : DateTime;
+    EscalationExtensionDate             : DateTime;
+    EscalationDate                      : DateTime;
 
     Approvers                            : Composition of many Requisition_ApprovalRequests_Approver on Approvers.RequisitionApprovalRequests = $self;
-  
+
 }
 entity Requisition_ApprovalRequests_Approver: cuid{
     key RequisitionApprovalRequests         : Association to Requisition_ApprovalRequests;
     UniqueName                          : String(50) default '';
     PasswordAdapter                     : String(50) default '';
-    
+
 }
 
 entity Requisition_LineItem: cuid {
@@ -207,10 +212,10 @@ entity Requisition_LineItem: cuid {
     SourcingRequest                     : types.alwaysnull; // always null
     Form                                : types.alwaysnull; // always null
     ItemMasterID                        : types.alwaysnull; // always null
-    TaxCode                             : types.operationalTaxCode; 
+    TaxCode                             : types.operationalTaxCode;
     MasterAgreement                     : types.masterAgreement;
-    BuyerItemMaster                     : types.alwaysnull; // always null
-    AccountingTemplate                  : types.alwaysnull; // always null
+    BuyerItemMaster                     : types.buyerItemMaster;
+    AccountingTemplate                  : types.genericRoot;
     ParentKit                           : types.parentKit;
     Kit                                 : types.alwaysnull; // always null
 
