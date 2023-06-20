@@ -378,6 +378,8 @@ type operationalUser {
 }
 type rfxOwner {
     UniqueName                          : String(50);
+    FirstName                           : String(255);
+    LastName                            : String(255);
     Name                                : String(100);
     Phone                                : String(100);
     Fax                                : String(100);
@@ -898,6 +900,7 @@ type rfxSupplierData{
 type parentWorkspaceSupplier{
     Name: String(255);
     SystemID: String(50);
+    SMVendorID: String(50);
 }
 
 type scheduleSearchFilter{

@@ -13,11 +13,11 @@ using sap.ariba.type as types from '../types';
 entity ProjectGroup: managed  {
     key Realm                   : String(50);
     key ProjectId               : String(50);
+    key UniqueName              : String(255);
 
         LoadCreateTime          : DateTime;
         LoadUpdateTime          : DateTime;
         Name                    : String(255);
-        UniqueName              : String(255);
         MemberUniqueName        : String(50);
         MemberPasswordAdapter   : String(50);
         MemberName              : String(255);

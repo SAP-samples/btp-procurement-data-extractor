@@ -187,6 +187,7 @@ entity ContractWorkspaceOS_Region:  cuid  {
 entity ContractWorkspaceOS_AffectedParties:  cuid  { //Todo Clean IDs
     Name: String(255);
     SystemID: String(50);
+    SMVendorID: String(50);
     ContractWorkspaceOS                   : Association to ContractWorkspaceOS;
 }
 entity ContractWorkspaceOS_Commodity:  cuid  { 

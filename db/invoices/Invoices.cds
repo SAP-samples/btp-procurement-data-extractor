@@ -219,6 +219,5 @@ entity Invoice_LineItem_SplitAccountings: cuid {
         Asset                       : types.operationalAsset;
         InternalOrder               : types.operationalInternalOrder;
         WBSElement                  : types.wbsElement;
-
-        ProcurementUnit             : types.alwaysnull; // always null
+        ProcurementUnit             : types.genericRoot;
 }
