@@ -22,12 +22,5 @@ service JobAdminService @(path:'/jobadmin')    {
     
     action extractSyncData (realm: entities.Jobs:Realm, viewTemplateName: String, apiType: String)  returns String;
 
-
-    // concur invoice
-    action extractPaymentRequests (realm: entities.Jobs:Realm, loadMode: String)  returns String;
-    action extractInvoices (realm: entities.Jobs:Realm, loadMode: String)  returns String;
-    action extractPurchaseOrders (realm: entities.Jobs:Realm, loadMode: String)  returns String;
-    action extractVendors (realm: entities.Jobs:Realm, loadMode: String)  returns String;
-
 }
 
