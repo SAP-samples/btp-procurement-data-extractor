@@ -2,87 +2,26 @@
 
 //libraries
 const cds = require("@sap/cds");
-const cloudSDK = require("@sap-cloud-sdk/core");
+const con = require("@sap-cloud-sdk/connectivity");
+const httpClient = require("@sap-cloud-sdk/http-client");
 const moment = require('moment');
 const { default: axios } = require("axios");
 const { v4: uuidv4 } = require('uuid');
 const logger = cds.log('logger');
-
 //internal modules
 const utils = require('../../utils/Utils');
 
-const slpSupplierHandler = require('../suppliers/slpSupplierHandler');
-const commodityCodesHandler = require('../masterdata/commodityCodesHandler');
+const slpSupplierHandler = require('../SupplierManagement/slpSupplierHandler');
+const commodityCodesHandler = require('../MasterData/commodityCodesHandler');
+const paymentTermsHandler = require('../MasterData/paymentTermsHandler');
 
 //Processing dataHandlers
 const jobDataProcessingHelper = require('./jobDataProcessingHelper');
 
 
-function _getJobFilterCriteria(sRealm, sType, srv) {
-    return new Promise(async (resolve,reject)=>{
-        try{
-            logger.info(`Checking previous  Jobs for Supplier Extractions for ${sType} in realm ${sRealm}`);
-            let oLastExecutionRun = await srv.run ( SELECT.one.from("sap.ariba.Jobs")
-                .where({
-                    "realm": sRealm,
-                    and : { "type": sType }
-                })
-                .orderBy ( {createdDate: 'desc'} ) );
-
-            // 1. If no operation at all -> start fresh extraction
-            // 2. If completed operation -> start from last extraction
-            // 3. If ongoing operation -> do nothing
-            // 4. If failed operation -> retry last extraction page
-
-            let oDeltaRange;
-            // found previous run, check for 2-4
-            if(oLastExecutionRun && oLastExecutionRun.length === undefined) {
-                // 2. -> start from last extraction
-                if (oLastExecutionRun.importStatus === "processed") {
-                    oDeltaRange = {
-                        type: "next",
-                        updatedDateTo: moment.utc().format(),
-                        updatedDateFrom : oLastExecutionRun.createdAt,
-                        initialLoad: false,
-                    }
-                }
-                // 4. -> re-try the failing page
-                else if (oLastExecutionRun.importStatus === "error")  {
-                    oDeltaRange = {
-                        type: "continue",
-                        pageToken: oLastExecutionRun.pageToken,
-                        filterCriteria: oLastExecutionRun.filterCriteria,
-                        initialLoad: false
-                    }
-                }
-                // 3. -> new requests shall do nothing, current extraction shall proceed
-                else {
-                    oDeltaRange = {
-                        type: "stop",
-                        doNothing: true
-                    }
-                }
-            }
-            // case 1
-            else {
-                oDeltaRange = {
-                    type: "new",
-                    initialLoad: true
-                };
-            }
-
-            resolve(oDeltaRange);
-
-        } catch(e) {
-            logger.error(`Error while checking previous execution runs for type ${sType} in realm ${sRealm} details: ${e}`);
-            reject(e);
-        }
-    });
-}
-
 async function _getSupplierDataRequestConfig (sRealm) {
     //Get API Details
-    let oDestination = await cloudSDK.getDestination(sRealm + "-slp-supplier-data");
+    let oDestination = await con.getDestination({ destinationName: sRealm + "-slp-supplier-data" });
 
     //Destination validation
     if(!oDestination || !oDestination.originalProperties.destinationConfiguration.apikey) {
@@ -91,7 +30,7 @@ async function _getSupplierDataRequestConfig (sRealm) {
     }
 
     //building request
-    let oRequestConfig = await cloudSDK.buildHttpRequest(oDestination);
+    let oRequestConfig = await httpClient.buildHttpRequest(oDestination);
     oRequestConfig.baseURL = oRequestConfig.baseURL + "/supplierdatapagination/v4/prod/vendorDataRequests";
     oRequestConfig.method = "post";
     oRequestConfig.params = { realm: sRealm };
@@ -113,7 +52,7 @@ async function extractSupplierData (context, next) {
 
         logger.info(`Extracting Supplier Data for ${realm} with Load Mode ${loadMode}`);
 
-        let oDeltaRange = await _getJobFilterCriteria(realm, sType, srv);
+        let oDeltaRange = await utils.getJobFilterCriteria(realm, sType);
 
         // If ongoing operation -> do nothing
         if(oDeltaRange.doNothing) {
@@ -127,8 +66,7 @@ async function extractSupplierData (context, next) {
             importStatus: "processing",
             type: sType
         };
-        await srv.run ( INSERT.into ("sap.ariba.Jobs") .entries (oJob) );
-        await srv.commit();
+        await INSERT.into ("sap.ariba.Jobs") .entries (oJob) ;
 
         let oRequestConfig = await _getSupplierDataRequestConfig(realm);
 
@@ -174,8 +112,8 @@ async function extractSupplierData (context, next) {
             }
 
             oJobPage = {
-                jobid_jobId: oJob.jobId,
-                jobid_Realm: oJob.Realm,
+                jobId_jobId: oJob.jobId,
+                jobId_Realm: oJob.Realm,
                 pageToken: oDeltaRange.pageToken,
                 processingPosition: oDeltaRange.pageToken ? oDeltaRange.pageToken : 0
             };
@@ -209,15 +147,13 @@ async function extractSupplierData (context, next) {
                 oJobPage.pageToken = oDeltaRange.pageToken;
                 oJobPage.completedDate = moment.utc().format();
 
-                await srv.begin(oJob);
-                await srv.run ( INSERT.into ("sap.ariba.Job_Pages") .entries (oJobPage) );
+                await INSERT.into ("sap.ariba.Job_Pages") .entries (oJobPage) ;
 
                 // Update Job with latest pageToken
                 oJob.pageToken = oDeltaRange.pageToken;
                 oJob.filterCriteria = oFilter;
 
-                await srv.run ( UPDATE ("sap.ariba.Jobs") .set (oJob) .where ({ jobId : oJob.jobId, Realm: oJob.Realm }) );
-                await srv.commit();
+                await UPDATE ("sap.ariba.Jobs") .set (oJob) .where ({ jobId : oJob.jobId, Realm: oJob.Realm }) ;
 
             } catch(e) {
                 // Rate limits HIT; store latest pageToken in DB and start from there once newly triggered
@@ -229,9 +165,7 @@ async function extractSupplierData (context, next) {
                 oJobPage.processingPosition = oDeltaRange.pageToken;
                 oJobPage.error = e.message;
 
-                await srv.begin(e);
-                await srv.run ( INSERT.into ("sap.ariba.Job_Pages") .entries (oJobPage) );
-                await srv.commit();
+                await INSERT.into ("sap.ariba.Job_Pages") .entries (oJobPage) ;
 
                 // Stop the Loop!
                 sRepeat = false;
@@ -259,9 +193,7 @@ async function extractSupplierData (context, next) {
             oJob.completedDate = moment.utc().format();
         }
 
-        await srv.begin(oJob);
-        await srv.run ( UPDATE ("sap.ariba.Jobs") .set (oJob) .where ({ jobId : oJob.jobId, Realm: oJob.Realm }) );
-        await srv.commit();
+        await UPDATE ("sap.ariba.Jobs") .set (oJob) .where ({ jobId : oJob.jobId, Realm: oJob.Realm }) ;
 
         logger.info(`Extraction run finished!`);
 
@@ -272,13 +204,9 @@ async function extractSupplierData (context, next) {
 
 
 
-
-async function extractSupplierQNAData (oRequestConfig, pageToken) { }
-
-
-async function _getSupplierCertificateRequestConfig (sRealm) {
+async function _getSupplierQNAeRequestConfig (sRealm) {
     //Get API Details
-    let oDestination = await cloudSDK.getDestination(sRealm + "-slp-supplier-data");
+    let oDestination = await con.getDestination({ destinationName: sRealm + "-slp-supplier-data" });
 
     //Destination validation
     if(!oDestination || !oDestination.originalProperties.destinationConfiguration.apikey) {
@@ -287,7 +215,86 @@ async function _getSupplierCertificateRequestConfig (sRealm) {
     }
 
     //building request
-    let oRequestConfig = await cloudSDK.buildHttpRequest(oDestination);
+    let oRequestConfig = await httpClient.buildHttpRequest(oDestination);
+    oRequestConfig.baseURL = oRequestConfig.baseURL + "/supplierdatapagination/v4/prod/vendors";
+    oRequestConfig.params = { realm: sRealm };
+    oRequestConfig.headers["Accept"] = oRequestConfig.headers["Content-Type"]="application/json";
+    oRequestConfig.headers["apikey"] = oDestination.originalProperties.destinationConfiguration.apikey;
+
+    return oRequestConfig
+}
+async function extractSupplierQNAData (context, next) {
+    return cds.tx (async srv => {
+        //Get Job Details
+        let sRealm = context.data.realm,
+            loadMode = context.data.loadMode,
+            sType = "QNA";
+
+        logger.info(`Extracting Supplier Question and Answers Data for ${sRealm} with Load Mode ${loadMode}`);
+
+        let oJob = {
+            jobId: uuidv4(),
+            Realm: sRealm,
+            status: "processing",
+            importStatus: "processing",
+            type: sType
+        };
+        await INSERT.into ("sap.ariba.Jobs") .entries (oJob) ;
+
+        let oRequestConfig = await _getSupplierQNAeRequestConfig(sRealm);
+
+        // Construct the supplier queue which is executed sequentially..
+        let aSuppliers = SELECT `SMVendorId` .from("sap.ariba.SLPSuppliers_SM")
+            .where ({ "Realm" : sRealm })
+            .orderBy ( {modifiedAt: 'desc'} ) ;
+
+        let sBaseUrlString = "/{smVendorId}/workspaces/questionnaires/qna";
+
+        for (const oSupplier of aSuppliers) {
+            if (oSupplier.SMVendorId) {
+                try {
+                    // call the API per supplier and process the records accordingly
+                    oRequestConfig.url = sBaseUrlString.replace("{smVendorId}", oSupplier.SMVendorId);
+
+                    logger.info(`Executing Question and Answers run for supplier ${oSupplier.SMVendorId} in Realm ${sRealm}`);
+                    let aResponse = await utils.executeRequest(oRequestConfig, 1);
+                    let aData = aResponse.data && aResponse.data._embedded && aResponse.data._embedded.questionAnswerList;
+
+                    await slpSupplierHandler.insertQNAData(aData, sRealm, oSupplier.SMVendorId);
+                } catch (e) {
+                    // For some reason the API often do reply with ERROR 400 for specific suppliers
+                    // Those suppliers will just be logged, but the overall processing do continue
+                    logger.error(`Fail in Executing QNA Extraction run for supplier ${oSupplier.SMVendorId} in Realm ${sRealm}, details ${e}`);
+                }
+            }
+        };
+
+        oJob.status = "completed";
+        oJob.importStatus = "processed";
+        oJob.totalNumOfRecords = aSuppliers.length;
+        oJob.completedDate = moment.utc().format();
+
+        await UPDATE ("sap.ariba.Jobs") .set (oJob) .where ({ jobId : oJob.jobId, Realm: oJob.Realm }) ;
+
+        logger.info(`Extraction run finished!`);
+
+        return "Done";
+    });
+}
+
+
+async function _getSupplierCertificateRequestConfig (sRealm) {
+    //Get API Details
+    let oDestination = await con.getDestination({ destinationName: sRealm + "-slp-supplier-data" });
+
+    //Destination validation
+    if(!oDestination || !oDestination.originalProperties.destinationConfiguration.apikey) {
+        logger.error(`Destination does not exist or is incorrectly configured`);
+        throw Error("Destination does not exist or is incorrectly configured");
+    }
+
+    //building request
+    let oRequestConfig = await httpClient.buildHttpRequest(oDestination);
     oRequestConfig.baseURL = oRequestConfig.baseURL + "/supplierdatapagination/v4/prod/vendors";
     oRequestConfig.params = { realm: sRealm };
     oRequestConfig.headers["Accept"] = oRequestConfig.headers["Content-Type"]="application/json";
@@ -311,14 +318,14 @@ async function extractSupplierCertificatesData (context, next) {
             importStatus: "processing",
             type: sType
         };
-        await srv.run ( INSERT.into ("sap.ariba.Jobs") .entries (oJob) );
+        await INSERT.into ("sap.ariba.Jobs") .entries (oJob) ;
 
         let oRequestConfig = await _getSupplierCertificateRequestConfig(sRealm);
 
         // Construct the supplier queue which is executed sequentially..
-        let aSuppliers = await srv.run ( SELECT `SMVendorId` .from("sap.ariba.SLPSuppliers")
-            .where ({ "realm" : sRealm })
-            .orderBy ( {modifiedAt: 'desc'} ) );
+        let aSuppliers = await SELECT `SMVendorId` .from("sap.ariba.SLPSuppliers_SM")
+            .where ({ "Realm" : sRealm })
+            .orderBy ( {modifiedAt: 'desc'} ) ;
 
         let sBaseUrlString = "/{smVendorId}/certificates";
 
@@ -329,7 +336,7 @@ async function extractSupplierCertificatesData (context, next) {
                     oRequestConfig.url = sBaseUrlString.replace("{smVendorId}", oSupplier.SMVendorId);
 
                     logger.info(`Executing Certificates Extraction run for supplier ${oSupplier.SMVendorId} in Realm ${sRealm}`);
-                    let aResponse = await utils.executeRequest(oRequestConfig, 1);
+                    let aResponse = await utils.executeRequest(oRequestConfig, 2);
                     let aData = aResponse.data && aResponse.data._embedded && aResponse.data._embedded.certificateList;
 
                     await slpSupplierHandler.insertCertificateData(aData, sRealm, oSupplier.SMVendorId);
@@ -339,14 +346,14 @@ async function extractSupplierCertificatesData (context, next) {
                     logger.error(`Fail in Executing Certificates Extraction run for supplier ${oSupplier.SMVendorId} in Realm ${sRealm}, details ${e}`);
                 }
             }
-        };
+        }
 
         oJob.status = "completed";
         oJob.importStatus = "processed";
         oJob.totalNumOfRecords = aSuppliers.length;
         oJob.completedDate = moment.utc().format();
 
-        await srv.run ( UPDATE ("sap.ariba.Jobs") .set (oJob) .where ({ jobId : oJob.jobId, Realm: oJob.Realm }) );
+        await UPDATE ("sap.ariba.Jobs") .set (oJob) .where ({ jobId : oJob.jobId, Realm: oJob.Realm }) ;
 
         logger.info(`Extraction run finished!`);
 
@@ -357,7 +364,7 @@ async function extractSupplierCertificatesData (context, next) {
 
 async function _getSupplierRiskRequestConfig (sRealm) {
     //Get API Details
-    let oDestination = await cloudSDK.getDestination(sRealm + "-risk-supplier-data");
+    let oDestination = await con.getDestination({ destinationName: sRealm + "-risk-supplier-data" });
 
     //Destination validation
     if(!oDestination || !oDestination.originalProperties.destinationConfiguration.apikey) {
@@ -366,7 +373,7 @@ async function _getSupplierRiskRequestConfig (sRealm) {
     }
 
     //building request
-    let oRequestConfig = await cloudSDK.buildHttpRequest(oDestination);
+    let oRequestConfig = await httpClient.buildHttpRequest(oDestination);
     oRequestConfig.params = { realm: sRealm };
     oRequestConfig.headers["Accept"] = oRequestConfig.headers["Content-Type"]="application/json";
     oRequestConfig.headers["apikey"] = oDestination.originalProperties.destinationConfiguration.apikey;
@@ -390,14 +397,14 @@ async function extractSupplierRiskData (context, next) {
             importStatus: "processing",
             type: sType
         };
-        await srv.run ( INSERT.into ("sap.ariba.Jobs") .entries (oJob) );
+        await INSERT.into ("sap.ariba.Jobs") .entries (oJob) ;
 
         let oRequestConfig = await _getSupplierRiskRequestConfig(sRealm);
 
         // Construct the supplier queue which is executed sequentially..
-        let aSuppliers = await srv.run ( SELECT `SMVendorId` .from("sap.ariba.SLPSuppliers")
-            .where ({ "realm" : sRealm })
-            .orderBy ( {modifiedAt: 'desc'} ) );
+        let aSuppliers = await SELECT `SMVendorId` .from("sap.ariba.SLPSuppliers_SM")
+            .where ({ "Realm" : sRealm })
+            .orderBy ( {modifiedAt: 'desc'} ) ;
 
         let sBaseUrlString = "/risk-exposure/v1/prod/suppliers/{smVendorId}/exposures";
 
@@ -425,7 +432,7 @@ async function extractSupplierRiskData (context, next) {
         oJob.totalNumOfRecords = aSuppliers.length;
         oJob.completedDate = moment.utc().format();
 
-        await srv.run ( UPDATE ("sap.ariba.Jobs") .set (oJob) .where ({ jobId : oJob.jobId, Realm: oJob.Realm }) );
+        await UPDATE ("sap.ariba.Jobs") .set (oJob) .where ({ jobId : oJob.jobId, Realm: oJob.Realm }) ;
 
         logger.info(`Extraction run finished!`);
 
@@ -435,7 +442,7 @@ async function extractSupplierRiskData (context, next) {
 
 async function _getMasterDataRequestConfig (sRealm,sEntityName) {
     //Get API Details
-    let oDestination = await cloudSDK.getDestination(sRealm + "-mds-search");
+    let oDestination = await con.getDestination({ destinationName: sRealm + "-mds-search" });
 
     //Destination validation
     if(!oDestination || !oDestination.originalProperties.destinationConfiguration.apikey || !oDestination.originalProperties.destinationConfiguration.realm) {
@@ -444,7 +451,7 @@ async function _getMasterDataRequestConfig (sRealm,sEntityName) {
     }
 
     //building request
-    let oRequestConfig = await cloudSDK.buildHttpRequest(oDestination);
+    let oRequestConfig = await httpClient.buildHttpRequest(oDestination);
     oRequestConfig.baseURL = oRequestConfig.baseURL + `/mds-search/v1/prod/entities/${sEntityName}`;
     oRequestConfig.method = "get";
     oRequestConfig.headers["Accept"] = oRequestConfig.headers["Content-Type"]="application/json";
@@ -469,7 +476,7 @@ async function extractMasterData (context, next) {
 
         logger.info(`Extracting ${sEntityName} Data for ${realm} with Load Mode ${loadMode}`);
 
-        let oDeltaRange = await _getJobFilterCriteria(realm, sType, srv);
+        let oDeltaRange = await utils.getJobFilterCriteria(realm, sType);
         // If ongoing operation -> do nothing
         if(oDeltaRange.doNothing) {
             return "Ongoing operation, stopped this one";
@@ -483,7 +490,7 @@ async function extractMasterData (context, next) {
             importStatus: "processing",
             type: sType
         };
-        await srv.run ( INSERT.into ("sap.ariba.Jobs") .entries (oJob) );
+        await INSERT.into ("sap.ariba.Jobs") .entries (oJob) ;
 
         let oRequestConfig = await _getMasterDataRequestConfig(realm,sEntityName);
 
@@ -506,8 +513,8 @@ async function extractMasterData (context, next) {
             }
 
             oJobPage = {
-                jobid_jobId: oJob.jobId,
-                jobid_Realm: oJob.Realm,
+                jobId_jobId: oJob.jobId,
+                jobId_Realm: oJob.Realm,
                 pageToken: oDeltaRange.pageToken,
                 processingPosition: oDeltaRange.pageToken ? oDeltaRange.pageToken : 0
             };
@@ -537,7 +544,11 @@ async function extractMasterData (context, next) {
                         iProcessedEntityCount += affectedRows;
                         iTotalNumOfPages++;
                         break;
-
+                    case "paymentterms":
+                        affectedRows = await paymentTermsHandler.insertData(aData, realm);
+                        iProcessedEntityCount += affectedRows;
+                        iTotalNumOfPages++;
+                        break;
                     default:
                         break;
                 }
@@ -549,14 +560,12 @@ async function extractMasterData (context, next) {
                 oJobPage.pageToken = oDeltaRange.pageToken;
                 oJobPage.completedDate = moment.utc().format();
 
-                await srv.run ( INSERT.into ("sap.ariba.Job_Pages") .entries (oJobPage) );
+                await INSERT.into ("sap.ariba.Job_Pages") .entries (oJobPage) ;
 
 
                 // Update Job with latest pageToken
                 oJob.pageToken = oDeltaRange.pageToken;
-                await srv.run ( UPDATE ("sap.ariba.Jobs") .set (oJob) .where ({ jobId : oJob.jobId, Realm: oJob.Realm }) );
-
-                await srv.commit();
+                await UPDATE ("sap.ariba.Jobs") .set (oJob) .where ({ jobId : oJob.jobId, Realm: oJob.Realm }) ;
 
             } catch(e) {
                 // Rate limits HIT; store latest pageToken in DB and start from there once newly triggered
@@ -568,8 +577,7 @@ async function extractMasterData (context, next) {
                 oJobPage.processingPosition = oDeltaRange.pageToken;
                 oJobPage.error = e.message;
 
-                await srv.run ( INSERT.into ("sap.ariba.Job_Pages") .entries (oJobPage) );
-                await srv.commit();
+                await INSERT.into ("sap.ariba.Job_Pages") .entries (oJobPage) ;
 
                 // Stop the Loop!
                 sRepeat = false;
@@ -594,9 +602,7 @@ async function extractMasterData (context, next) {
             oJob.completedDate = moment.utc().format();
         }
 
-        await srv.begin(oJob);
-        await srv.run ( UPDATE ("sap.ariba.Jobs") .set (oJob) .where ({ jobId : oJob.jobId, Realm: oJob.Realm }) );
-        await srv.commit();
+        await UPDATE ("sap.ariba.Jobs") .set (oJob) .where ({ jobId : oJob.jobId, Realm: oJob.Realm }) ;
 
         logger.info(`Master Data Extraction run finished!`);
 
@@ -608,13 +614,13 @@ async function extractMasterData (context, next) {
     });
 }
 
-async function _GetSyncJobDateRange(realm,viewTemplateName,apiType,srv){
+async function _GetSyncJobDateRange(realm,viewTemplateName,apiType){
     return new Promise(async (resolve,reject)=>{
         try{
             logger.info(`Checking previous  Jobs for Synchronous Extractions for ${viewTemplateName} in realm ${realm}`);
-            let oLastExecutionRun = await srv.run ( SELECT.one.from("sap.ariba.Jobs")
-                .where({realm : realm, viewTemplateName: viewTemplateName,importStatus:"processed"})
-                .orderBy ( {createdDate: 'desc'} ) );
+            let oLastExecutionRun = await SELECT.one.from("sap.ariba.Jobs")
+                .where({Realm : realm, viewTemplateName: viewTemplateName,importStatus:"processed"})
+                .orderBy ( {createdDate: 'desc'} ) ;
 
             //Case 1 : no previous job:  Do nothing - full load should be asynchronous
             //Case 2 : ongoing previous job: Do nothing
@@ -695,15 +701,15 @@ async function _getSyncDataRequestConfig (sRealm,sviewTemplateName,sapiType) {
      //Get API Details
      switch(sapiType){
         case 'analytical':
-            oDestination = await cloudSDK.getDestination(sRealm + "-reporting-analytics");
+            oDestination = await con.getDestination({ destinationName: sRealm + "-reporting-analytics" });
             jobEndpoint = "/analytics-reporting-details/v1/prod/views/";
             break;
         case 'procurementReporting':
-            oDestination = await cloudSDK.getDestination(sRealm + "-procurement-reporting");
+            oDestination = await con.getDestination({ destinationName: sRealm + "-procurement-reporting" });
             jobEndpoint = "/procurement-reporting-details/v2/prod/views/";
             break;
         case 'sourcingReporting':
-            oDestination = await cloudSDK.getDestination(sRealm + "-sourcing-reporting");
+            oDestination = await con.getDestination({ destinationName: sRealm + "-sourcing-reporting" });
             jobEndpoint = "/sourcing-reporting-details/v1/prod/views/";
             break;
     }
@@ -717,7 +723,7 @@ async function _getSyncDataRequestConfig (sRealm,sviewTemplateName,sapiType) {
     }
 
     //building request
-    let oRequestConfig = await cloudSDK.buildHttpRequest(oDestination);
+    let oRequestConfig = await httpClient.buildHttpRequest(oDestination);
     oRequestConfig.url = jobEndpoint + sviewTemplateName;
     oRequestConfig.method = "get";
     oRequestConfig.headers["Accept"] = oRequestConfig.headers["Content-Type"]="application/json";
@@ -744,7 +750,7 @@ async function extractSyncData (context, next) {
 
         logger.info(`Extracting synchronously ${sviewTemplateName} Data for ${realm} `);
 
-        let oDeltaRange = await _GetSyncJobDateRange(realm, sviewTemplateName,sapiType,srv);
+        let oDeltaRange = await _GetSyncJobDateRange(realm, sviewTemplateName,sapiType);
         // If full load, ongoing job or delta > 364 days - abort job
         if(oDeltaRange.doNothing) {
             return "Job Aborted - Check Logs for details";
@@ -759,7 +765,7 @@ async function extractSyncData (context, next) {
             type: "Sync-"+sviewTemplateName,
             createdDate: moment.utc().format()
         };
-        await srv.run ( INSERT.into ("sap.ariba.Jobs") .entries (oJob) );
+        await INSERT.into ("sap.ariba.Jobs") .entries (oJob) ;
 
         let oRequestConfig = await _getSyncDataRequestConfig(realm,sviewTemplateName,sapiType);
         //Set filters
@@ -814,13 +820,11 @@ async function extractSyncData (context, next) {
                 oJobPage.pageToken = oDeltaRange.pageToken;
                 oJobPage.completedDate = moment.utc().format();
 
-                await srv.run ( INSERT.into ("sap.ariba.Job_Pages") .entries (oJobPage) );
+                await INSERT.into ("sap.ariba.Job_Pages") .entries (oJobPage) ;
 
                 // Update Job with latest pageToken
                 oJob.pageToken = oDeltaRange.pageToken;
-                await srv.run ( UPDATE ("sap.ariba.Jobs") .set (oJob) .where ({ jobId : oJob.jobId, Realm: oJob.Realm }) );
-
-                await srv.commit();
+                await UPDATE ("sap.ariba.Jobs") .set (oJob) .where ({ jobId : oJob.jobId, Realm: oJob.Realm }) ;
 
             } catch(e) {
                 // Rate limits HIT; store latest pageToken in DB and start from there once newly triggered
@@ -832,8 +836,7 @@ async function extractSyncData (context, next) {
                 oJobPage.processingPosition = oDeltaRange.pageToken;
                 oJobPage.error = e.message;
 
-                await srv.run ( INSERT.into ("sap.ariba.Job_Pages") .entries (oJobPage) );
-                await srv.commit();
+                await INSERT.into ("sap.ariba.Job_Pages") .entries (oJobPage) ;
 
                 // Stop the Loop!
                 sRepeat = false;
@@ -855,9 +858,7 @@ async function extractSyncData (context, next) {
             oJob.pageToken = null;
             oJob.completedDate = moment.utc().format();
         }
-        await srv.begin(oJob);
-        await srv.run ( UPDATE ("sap.ariba.Jobs") .set (oJob) .where ({ jobId : oJob.jobId, Realm: oJob.Realm }) );
-        await srv.commit();
+        await UPDATE ("sap.ariba.Jobs") .set (oJob) .where ({ jobId : oJob.jobId, Realm: oJob.Realm }) ;
 
         logger.info(`Synchronous Data Extraction run finished for ${sviewTemplateName}`);
 

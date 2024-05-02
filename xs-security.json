@@ -9,9 +9,9 @@
       }
     ],
     "authorities":["$ACCEPT_GRANTED_AUTHORITIES"],
-    "role-templates": [ { 
-      "name"               : "JobScheduler", 
-      "description"        : "Job Scheduler", 
+    "role-templates": [ {
+      "name"               : "JobScheduler",
+      "description"        : "Job Scheduler",
       "scope-references"   : [ "$XSAPPNAME.JobScheduler"]
       }]
 }

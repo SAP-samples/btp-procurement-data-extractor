@@ -1,0 +1,34 @@
+{
+  "status": "published",
+  "documentType": "CostCenterDim",
+  "selectAttributes": [
+    "CostCenterId",  
+    "SourceSystem",  
+    "CompanyCode",   
+    "CostCenterName",
+    "ManagementL1",  
+    "ManagementL2",  
+    "ManagementL3",  
+    "ManagementL4",  
+    "ManagementL5",  
+    "ManagementL6",  
+    "ManagementL7",  
+    "ManagementL8",  
+    "TimeUpdated",  
+    "TimeCreated"   
+  ],
+  "filterExpressions": [
+    {
+      "name": "updatedDateTo",
+      "field": "TimeUpdated",
+      "op": "<=",
+      "defaultValue": null
+    },
+    {
+      "name": "updatedDateFrom",
+      "field": "TimeUpdated",
+      "op": ">",
+      "defaultValue": null
+    }
+  ]
+}

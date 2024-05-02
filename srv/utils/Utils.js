@@ -3,12 +3,75 @@
 
 const { default: axios } = require("axios");
 const cds = require("@sap/cds");
-
+const moment = require('moment');
 const logger = cds.log('logger');
-
 const flatten = require("flat");
-const unflatten = require('flat').unflatten
+const unflatten = require('flat').unflatten;
+const sCutoffIndicator = "\u2026";
 
+
+
+function getJobFilterCriteria(sRealm, sType) {
+    return new Promise(async (resolve,reject)=>{
+        try{
+            logger.info(`Checking previous  Jobs for Extractions for ${sType} in realm ${sRealm}`);
+            let oLastExecutionRun = await SELECT.one.from("sap.ariba.Jobs")
+                .where({
+                    "Realm": sRealm,
+                    and : { "type": sType }
+                })
+                .orderBy ( {createdDate: 'desc'} ) ;
+
+            // 1. If no operation at all -> start fresh extraction
+            // 2. If completed operation -> start from last extraction
+            // 3. If ongoing operation -> do nothing
+            // 4. If failed operation -> retry last extraction page
+
+            let oDeltaRange;
+            // found previous run, check for 2-4
+            if(oLastExecutionRun && oLastExecutionRun.length === undefined) {
+                // 2. -> start from last extraction
+                if (oLastExecutionRun.importStatus === "processed") {
+                    oDeltaRange = {
+                        type: "next",
+                        updatedDateTo: moment.utc().format(),
+                        updatedDateFrom : oLastExecutionRun.createdAt,
+                        initialLoad: false,
+                    }
+                }
+                // 4. -> re-try the failing page
+                else if (oLastExecutionRun.importStatus === "error")  {
+                    oDeltaRange = {
+                        type: "continue",
+                        pageToken: oLastExecutionRun.pageToken,
+                        filterCriteria: oLastExecutionRun.filterCriteria,
+                        initialLoad: false
+                    }
+                }
+                // 3. -> new requests shall do nothing, current extraction shall proceed
+                else {
+                    oDeltaRange = {
+                        type: "stop",
+                        doNothing: true
+                    }
+                }
+            }
+            // case 1
+            else {
+                oDeltaRange = {
+                    type: "new",
+                    initialLoad: true
+                };
+            }
+
+            resolve(oDeltaRange);
+
+        } catch(e) {
+            logger.error(`Error while checking previous execution runs for type ${sType} in realm ${sRealm} details: ${e}`);
+            reject(e);
+        }
+    });
+}
 
 
 async function executeRequest(oRequestConfig,retries){
@@ -21,7 +84,7 @@ async function executeRequest(oRequestConfig,retries){
         }
         catch(error){
             //Rate limit hit            
-            if (error.response.status == 429){
+            if (error && error.response && error.response.status == 429){
                 //check appropriate rate limit
                 let delay;
                 if(error.response.headers["x-ratelimit-remaining-minute"] !='0' && error.response.headers["x-ratelimit-remaining-hour"] !='0' && 
@@ -46,7 +109,7 @@ async function executeRequest(oRequestConfig,retries){
                         reject(e);
                     }                    
                 } else{
-                    logger.error(`API Rate limit error - no remaining retries, call permanently failed `);;
+                    logger.error(`API Rate limit error - no remaining retries, call permanently failed `);
                     
                     reject(error);
                 }
@@ -59,6 +122,13 @@ async function executeRequest(oRequestConfig,retries){
            
     });
 }
+
+function truncateData(aTruncatingProperties, oData, n) {
+    aTruncatingProperties && aTruncatingProperties.forEach(function (oTruncatingProperty) {
+        oData[oTruncatingProperty] = (oData[oTruncatingProperty].length > n) ? oData[oTruncatingProperty].slice(0, n - sCutoffIndicator.length) + sCutoffIndicator : oData[oTruncatingProperty];
+    });
+    return oData;
+};
 
 function cleanData (aCleaningProperties, oData, realm) {
     aCleaningProperties && aCleaningProperties.forEach(function (oCleaningProperty) {
@@ -118,6 +188,38 @@ function deleteCustomFields(oDataCleansed){
    
 }
 
+// overcoming issue https://github.tools.sap/cap/issues/issues/14004
+function flattenTypes (oDataCleansed, isArray) {
+    var toReturn = {};
+
+    for (var i in oDataCleansed) {
+        if (!oDataCleansed.hasOwnProperty(i)) continue;
+
+        if ((typeof oDataCleansed[i]) == 'object' && oDataCleansed[i] !== null && !Array.isArray(oDataCleansed[i]) ){
+            var flatObject = flattenTypes(oDataCleansed[i]);
+            for (var x in flatObject) {
+                if (!flatObject.hasOwnProperty(x)) continue;
+                if (isArray) {
+                	toReturn[i + '<' + x] = flatObject[x];
+                } else {
+                	toReturn[i + '_' + x] = flatObject[x];
+                }
+            }
+        } else {
+        	if (!!Array.isArray(oDataCleansed[i]) ){
+
+            var flatObject = flattenTypes(oDataCleansed[i], true);
+            for (var x in flatObject) {
+                toReturn[i + '<' + x] = flatObject[x];
+            }
+          } else {
+            toReturn[i] = oDataCleansed[i];
+            }
+        }
+    }
+    return unflatten(toReturn,{delimiter:'<'});
+}
+
 function removeNullValues(oDataCleansed){
 
     //Flatten structure
@@ -137,10 +239,15 @@ function removeNullValues(oDataCleansed){
 
     return unflat;
 }
+
+
 module.exports = {
     executeRequest,
     processCustomFields,
     cleanData,
+    truncateData,
     removeNullValues,
-    deleteCustomFields
+    deleteCustomFields,
+    getJobFilterCriteria,
+    flattenTypes
 }

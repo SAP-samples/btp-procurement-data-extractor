@@ -3,12 +3,6 @@ gen/
 .vscode
 .idea
 default*.json
-srv/handlers/tests/*
-zips/
 package-lock.json
 
-resources/LocalDebug/queries.sql
-resources/LocalDebug/viewGenerator.js
 
-### resources not relevant for mission
-resources/LocalDebug/*

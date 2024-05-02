@@ -1,0 +1,49 @@
+{
+  "status": "published",
+  "documentType": "InvLineExceptionFact",
+  "selectAttributes": [
+    "LoadCreateTime",
+    "LoadUpdateTime",
+    "InvoiceNumber",
+    "InvoiceId",
+    "InvoiceLineNumber",
+    "InvoiceLineNumberAsString",
+    "InvoiceExceptionType",
+    "ProcurementUnit",
+    "ExceptionCount",
+    "AutoReconciledExceptionCount",
+    "LineItemWithExceptionCount",
+    "Amount",
+    "OrigCurrencyCode",
+    "OrigAmount",
+    "InvoiceDate",
+    "AccountingDate",
+    "Supplier",
+    "Commodity",
+    "ERPCommodity",
+    "LineType",
+    "Contract",
+    "Requester",
+    "POId",
+    "OrderID",
+    "POLineNumber",
+    "ReconciledBy",
+    "IRStatus",
+    "ExceptionStatus",
+    "SourceSystem"
+  ],
+  "filterExpressions": [
+    {
+      "name": "updatedDateTo",
+      "field": "TimeUpdated",
+      "op": "<=",
+      "defaultValue": null
+    },
+    {
+      "name": "updatedDateFrom",
+      "field": "TimeUpdated",
+      "op": ">",
+      "defaultValue": null
+    }
+  ]
+}

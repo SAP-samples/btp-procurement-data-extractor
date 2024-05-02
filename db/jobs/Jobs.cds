@@ -29,7 +29,7 @@ entity Jobs : managed {
     files:                      Composition of many Job_File on files.jobId = $self;
 
     // SLP & Risk specific fields
-    type:                       String enum { SLP; Risk; QNA; };
+    type:                       String enum { SLP; Risk; QNA; CI_PaymentRequests; CI_Invoices; CI_PurchaseOrders; CI_Vendors; };
     filterCriteria:             String(1000);
     pages:                      Composition of many Job_Pages on pages.jobId = $self;
 

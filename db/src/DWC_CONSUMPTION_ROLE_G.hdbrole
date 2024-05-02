@@ -1,0 +1,1676 @@
+{
+  "role": {
+    "name": "DWC_CONSUMPTION_ROLE#",
+    "object_privileges": [
+
+      {
+        "name": "SAP_ARIBA_COMMODITYCODE_MD",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_PAYMENTTERMS_MD",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SLPSUPPLIERS_CERTIFICATES_SM",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SLPSUPPLIERS_QUALIFICATIONS_SM",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SLPSUPPLIERS_QUESTIONANSWER_SM",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SLPSUPPLIERS_QUESTIONNAIRES_SM",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SLPSUPPLIERS_RISKCATEGORYEXPOSURES_SM",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SLPSUPPLIERS_SM",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_ALTERNATIVE_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_AUDITENTRY_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_CONTRACTS_FORCASTEDSPENDITEM_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_CONTRACTS_LINEITEM_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_CONTRACTS_LINEITEM_SPLITACCOUNTINGS_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_CONTRACTS_LINEITEM_TIEREDPRICINGSTEPS_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_CONTRACTS_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_CONTRACTS_SUBAGREEMENTS_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_CONTRACTWORKSPACES_ADHOCSPENDUSERS_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_CONTRACTWORKSPACES_AFFECTEDPARTIES_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_CONTRACTWORKSPACES_ALLOWNERS_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_CONTRACTWORKSPACES_CLIENT_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_CONTRACTWORKSPACES_COMMODITY_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_CONTRACTWORKSPACES_COMPLEXSPENDRELEASEAPPROVERS_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_CONTRACTWORKSPACES_COMPLEXSPENDRELEASECREATORS_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_CONTRACTWORKSPACES_EXPIRINGEMAILRECIPIENTS_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_CONTRACTWORKSPACES_NOTICEEMAILRECIPIENTS_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_CONTRACTWORKSPACES_NOTIFICATIONPROFILES_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_CONTRACTWORKSPACES_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_CONTRACTWORKSPACES_REGION_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_DOCUMENTTASK_ACTIVEAPPROVERS_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_DOCUMENTTASK_APPROVALREQUESTS_APPROVER_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_DOCUMENTTASK_APPROVALREQUESTS_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_DOCUMENTTASK_APPROVER_APPROVER_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_DOCUMENTTASK_APPROVER_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_DOCUMENTTASK_OBSERVER_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_DOCUMENTTASK_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_INVOICE_APPROVALRECORDS_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_INVOICE_APPROVALREQUESTS_APPROVER_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_INVOICE_APPROVALREQUESTS_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_INVOICE_LINEITEM_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_INVOICE_LINEITEM_SPLITACCOUNTINGS_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_INVOICE_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_INVOICERECONCILIATION_APPROVALRECORDS_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_INVOICERECONCILIATION_APPROVALREQUESTS_APPROVER_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_INVOICERECONCILIATION_APPROVALREQUESTS_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_INVOICERECONCILIATION_LINEITEM_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_INVOICERECONCILIATION_LINEITEM_SPLITACCOUNTINGS_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_INVOICERECONCILIATION_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_ITEMSUPPLIERDATA_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_ORGANIZATION_BUSINESSCONTACTS_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_ORGANIZATION_CONTACTS_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_ORGANIZATION_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_ORGANIZATION_ORGANIZATIONIDS_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_ORGANIZATION_VENDORKEYS_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_PURCHASEORDER_LINEITEM_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_PURCHASEORDER_LINEITEM_SPLITACCOUNTINGS_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_PURCHASEORDER_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_RECEIPT_APPROVALREQUESTS_APPROVER_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_RECEIPT_APPROVALREQUESTS_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_RECEIPT_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_RECEIPT_RECEIPTITEMS_ASSETDATA_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_RECEIPT_RECEIPTITEMS_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_REQUISITION_APPROVALRECORDS_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_REQUISITION_APPROVALREQUESTS_APPROVER_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_REQUISITION_APPROVALREQUESTS_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_REQUISITION_LINEITEM_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_REQUISITION_LINEITEM_SPLITACCOUNTINGS_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_REQUISITION_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_RFXBID_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_RFXCONTENTDOCUMENT_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_RFXDOCUMENT_CLIENT_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_RFXDOCUMENT_COMMODITY_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_RFXDOCUMENT_INVITEES_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_RFXDOCUMENT_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_RFXDOCUMENT_REGION_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_RFXDOCUMENT_RFXSUPPLIERSTATUS_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_RFXITEMVALUE_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_RFXITEM_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SCENARIO_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SOURCINGPROJECT_CLIENT_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SOURCINGPROJECT_COMMODITY_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SOURCINGPROJECT_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SOURCINGPROJECT_REGION_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SOURCINGPROJECT_SUBCONTENT_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SOURCINGPROJECT_SUPPLIERS_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SOURCINGREQUEST_CLIENT_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SOURCINGREQUEST_COMMODITY_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SOURCINGREQUEST_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SOURCINGREQUEST_REGION_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SOURCINGREQUEST_SUBCONTENT_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SOURCINGREQUEST_SUPPLIERS_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_TASK_OP",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_ADVANCEPAYMENTS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_APPROVALHISTORY_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_APPROVAL_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_APPROVAL_DELEGATEES_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_COMMODITY_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_COMPANYCODE_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_CONTRACTCLAUSES_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_CONTRACTITEM_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_CONTRACTLINEITEMS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_CONTRACTREQUESTS_AFFECTEDPARTIES_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_CONTRACTREQUESTS_ALLOWNERS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_CONTRACTREQUESTS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_CONTRACTREQUESTS_COMMODITY_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_CONTRACTREQUESTS_ORGANIZATION_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_CONTRACTREQUESTS_REGION_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_CONTRACTSDIM_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_CONTRACTS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_CONTRACTWORKSPACES_AFFECTEDPARTIES_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_CONTRACTWORKSPACES_ALLOWNERS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_CONTRACTWORKSPACES_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_CONTRACTWORKSPACES_COMMODITY_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_CONTRACTWORKSPACES_ORGANIZATION_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_CONTRACTWORKSPACES_REGION_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_COSTCENTER_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_EVENTITEMSUMMARY_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_EVENTITEMSUMMARY_DEPARTMENT_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_EVENTITEMSUMMARY_INVITEDSUPPLIERS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_EVENTITEMSUMMARY_ITEMCOMMODITY_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_EVENTITEMSUMMARY_REGION_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_EVENTPARTICIPATIONS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_EVENTPARTICIPATIONS_COMMODITY_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_EVENTPARTICIPATIONS_DEPARTMENT_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_EVENTPARTICIPATIONS_REGION_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_EVENTSUMMARY_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_EVENTSUMMARY_BIDDEDSUPPLIERS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_EVENTSUMMARY_COMMODITY_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_EVENTSUMMARY_DEPARTMENT_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_EVENTSUMMARY_REGION_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_EVENTTYPE_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_EVENT_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_INVOICEEXCEPTIONS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_INVOICEEXCEPTIONTYPE_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_INVOICELINEITEMEXCEPTIONS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_INVOICELINEITEMSSA_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_INVOICELINEITEMS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_INVOICEPAYMENTS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_ONETIMEVENDORS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_ORDERCONFIRMATION_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_ORGANIZATION_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_PAYMENT_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_PENDINGAPPROVAL_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_PODELIVERY_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_PRERECONCILEDINVOICES_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_PROJECTGROUP_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_PROJECTINFO_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_PROJECTS_ALLOWNERS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_PROJECTS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_PROJECTS_COMMODITY_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_PROJECTS_ORGANIZATION_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_PROJECTS_REGION_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_PROJECTTASKS_ACTIVEAPPROVERS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_PROJECTTASKS_ALLOWNERS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_PROJECTTASKS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_PROJECTTASKS_OBSERVERS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_PURCHASEORDERLINEITEMS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_RECEIPT_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_REGION_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_REJECTEDINVOICES_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_REQUISITIONLINEITEM_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SAVINGSALLOCATIONDETAILS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SAVINGSFORM_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SCORECARD_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SCORECARD_COMMODITY_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SCORECARD_DEPARTMENT_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SCORECARD_REGION_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SERVICESPROCUREMENTWORKSPACES_ALLOWNERS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SERVICESPROCUREMENTWORKSPACES_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SERVICESPROCUREMENTWORKSPACES_COMMODITY_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SERVICESPROCUREMENTWORKSPACES_ORGANIZATION_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SERVICESPROCUREMENTWORKSPACES_REGION_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SERVICESPROCUREMENTWORKSPACES_SUPPLIERS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SMPROJECTQUESTIONNAIRERESPONSES_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SMPROJECTQUESTIONNAIRERESPONSES_RESPONSECOMMODITYVALUE_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SMPROJECTQUESTIONNAIRERESPONSES_RESPONSEDEPARTMENTVALUE_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SMPROJECTQUESTIONNAIRERESPONSES_RESPONSEREGIONVALUE_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SMPROJECTQUESTIONNAIRERESPONSES_RESPONSESUPPLIERVALUE_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SMPROJECTQUESTIONNAIRERESPONSES_V_RESPONSETEXTMULTIVALUE_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SMPROJECTS_ALLOWNERS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SMPROJECTS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SMPROJECTS_COMMODITY_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SMPROJECTS_ORGANIZATION_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SMPROJECTS_REGION_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SMSURVEYTEMPLATEQUESTION_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SOURCINGPROJECTS_ALLOWNERS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SOURCINGPROJECTS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SOURCINGPROJECTS_COMMODITY_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SOURCINGPROJECTS_ORGANIZATION_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SOURCINGPROJECTS_REGION_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SOURCINGPROJECTS_SUPPLIERS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SOURCINGREQUESTS_ALLOWNERS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SOURCINGREQUESTS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SOURCINGREQUESTS_COMMODITY_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SOURCINGREQUESTS_ORGANIZATION_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SOURCINGREQUESTS_REGION_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SOURCINGREQUESTS_SUPPLIERS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SPMPROJECTS_ALLOWNERS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SPMPROJECTS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SPMPROJECTS_COMMODITY_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SPMPROJECTS_ORGANIZATION_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SPMPROJECTS_REGION_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SRPROJECTTASKAPPROVALFLOWS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SRPROJECTTASKS_ACTIVEAPPROVERS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SRPROJECTTASKS_ALLOWNERS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SRPROJECTTASKS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SRPROJECTTASKS_OBSERVERS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SUPPLIERPARTICIPATIONS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SUPPLIERPARTICIPATIONS_DEPARTMENT_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SUPPLIERPARTICIPATIONS_ITEMCOMMODITY_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SUPPLIERPARTICIPATIONS_REGION_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SUPPLIERREGISTRATIONPROJECTS_ALLOWNERS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SUPPLIERREGISTRATIONPROJECTS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SUPPLIERREGISTRATIONPROJECTS_COMMODITY_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SUPPLIERREGISTRATIONPROJECTS_ORGANIZATION_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SUPPLIERREGISTRATIONPROJECTS_REGION_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SUPPLIERREQUESTPROJECTS_ALLOWNERS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SUPPLIERREQUESTPROJECTS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SUPPLIERREQUESTPROJECTS_COMMODITY_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SUPPLIERREQUESTPROJECTS_ORGANIZATION_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SUPPLIERREQUESTPROJECTS_REGION_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SUPPLIERS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SURVEYRESPONSE_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SURVEYRESPONSE_COMMODITY_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SURVEYRESPONSE_DEPARTMENT_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SURVEYRESPONSE_REGION_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SURVEYRESPONSE_RESPONSECOMMODITYVALUE_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SURVEYRESPONSE_RESPONSEDEPARTMENTVALUE_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SURVEYRESPONSE_RESPONSEREGIONVALUE_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SURVEYRESPONSE_RESPONSESUPPLIERVALUE_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SURVEYRESPONSE_RESPONSEUSERVALUE_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SURVEYRESPONSE_V_RESPONSETEXTMULTIVALUE_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SURVEY_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_TASKAPPROVALS_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_USERACTIVITY_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_USERDATA_AN",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_JOBS",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_JOB_FILE",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_JOB_PAGES",
+        "type": "TABLE",
+        "privileges_with_grant_option": [
+          "SELECT"
+        ]
+      }
+
+
+    ]
+ }
+}

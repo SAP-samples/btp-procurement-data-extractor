@@ -8,327 +8,329 @@ service workzone @(path:'/workzone')    {
 
     /**master data */
     @readonly
-    entity CommodityCode as projection on entities.CommodityCode;
+    entity CommodityCode as projection on entities.CommodityCode_MD;
 
     /** Contracts */
     @readonly
-    entity ContractWorkspaces as projection on entities.ContractWorkspaces;
+    entity ContractWorkspaces as projection on entities.ContractWorkspaces_AN;
     @readonly
-    entity ContractWorkspaces_Commodity as select from entities.ContractWorkspaces_Commodity mixin{
-        CommodityName : Association to entities.CommodityCode on CommodityName.UniqueName = Commodity.CommodityId and CommodityName.Domain = Commodity.SourceCommodityDomain;
+    entity ContractWorkspaces_Commodity as select from entities.ContractWorkspaces_Commodity_AN mixin{
+        CommodityName : Association to entities.CommodityCode_MD on CommodityName.UniqueName = Commodity.CommodityId and CommodityName.Domain = Commodity.SourceCommodityDomain;
     } into {
         *,CommodityName.Name_en as CommodityCode_Name
     };
     @readonly
-    entity ContractWorkspaces_Organization as projection on entities.ContractWorkspaces_Organization;
+    entity ContractWorkspaces_Organization as projection on entities.ContractWorkspaces_Organization_AN;
     @readonly
-    entity ContractWorkspaces_Region as projection on entities.ContractWorkspaces_Region;
+    entity ContractWorkspaces_Region as projection on entities.ContractWorkspaces_Region_AN;
     @readonly
-    entity ContractWorkspaces_AffectedParties as projection on entities.ContractWorkspaces_AffectedParties;
+    entity ContractWorkspaces_AffectedParties as projection on entities.ContractWorkspaces_AffectedParties_AN;
     @readonly
-    entity ContractWorkspaces_AllOwners as projection on entities.ContractWorkspaces_AllOwners;
+    entity ContractWorkspaces_AllOwners as projection on entities.ContractWorkspaces_AllOwners_AN;
     @readonly
-    entity Contracts as projection on entities.Contracts;
+    entity Contracts as projection on entities.Contracts_AN;
     @readonly
-    entity ContractLineItems as select from entities.ContractLineItems mixin{
-        CommodityName : Association to entities.CommodityCode on CommodityName.UniqueName = Commodity.CommodityId and CommodityName.Domain = Commodity.SourceCommodityDomain;
+    entity ContractLineItems as select from entities.ContractLineItems_AN mixin{
+        CommodityName : Association to entities.CommodityCode_MD on CommodityName.UniqueName = Commodity.CommodityId and CommodityName.Domain = Commodity.SourceCommodityDomain;
     } into {
         *,CommodityName.Name_en as CommodityCode_Name
     };
     @readonly
-    entity ContractClauses as projection on entities.ContractClauses;
+    entity ContractClauses as projection on entities.ContractClauses_AN;
     @readonly
-    entity ContractRequests as projection on entities.ContractRequests;
+    entity ContractRequests as projection on entities.ContractRequests_AN;
     @readonly
-    entity ContractRequests_Commodity as projection on entities.ContractRequests_Commodity;
+    entity ContractRequests_Commodity as projection on entities.ContractRequests_Commodity_AN;
     @readonly
-    entity ContractRequests_Organization as projection on entities.ContractRequests_Organization;
+    entity ContractRequests_Organization as projection on entities.ContractRequests_Organization_AN;
     @readonly
-    entity ContractRequests_Region as projection on entities.ContractRequests_Region;
+    entity ContractRequests_Region as projection on entities.ContractRequests_Region_AN;
     @readonly
-    entity ContractRequests_AffectedParties as projection on entities.ContractRequests_AffectedParties;
+    entity ContractRequests_AffectedParties as projection on entities.ContractRequests_AffectedParties_AN;
     @readonly
-    entity ContractRequests_AllOwners as projection on entities.ContractRequests_AllOwners;
+    entity ContractRequests_AllOwners as projection on entities.ContractRequests_AllOwners_AN;
 
 
     /** Sourcing */
     // Sourcing requests
     @readonly
-    entity SourcingRequests as projection on entities.SourcingRequests;
+    entity SourcingRequests as projection on entities.SourcingRequests_AN;
     @readonly
-    entity SourcingRequests_Organization as projection on entities.SourcingRequests_Organization;
+    entity SourcingRequests_Organization as projection on entities.SourcingRequests_Organization_AN;
     @readonly
-    entity SourcingRequests_Commodity as select from entities.SourcingRequests_Commodity mixin{
-        CommodityName : Association to entities.CommodityCode on CommodityName.UniqueName = Commodity.CommodityId and CommodityName.Domain = Commodity.SourceCommodityDomain;
+    entity SourcingRequests_Commodity as select from entities.SourcingRequests_Commodity_AN mixin{
+        CommodityName : Association to entities.CommodityCode_MD on CommodityName.UniqueName = Commodity.CommodityId and CommodityName.Domain = Commodity.SourceCommodityDomain;
     } into {
         *,CommodityName.Name_en as CommodityCode_Name
     };
     @readonly
-    entity SourcingRequests_Region as projection on entities.SourcingRequests_Region;
+    entity SourcingRequests_Region as projection on entities.SourcingRequests_Region_AN;
     @readonly
-    entity SourcingRequests_Suppliers as projection on entities.SourcingRequests_Suppliers;
+    entity SourcingRequests_Suppliers as projection on entities.SourcingRequests_Suppliers_AN;
     @readonly
-    entity SourcingRequests_AllOwners as projection on entities.SourcingRequests_AllOwners;
+    entity SourcingRequests_AllOwners as projection on entities.SourcingRequests_AllOwners_AN;
 
     // Sourcing projects
     @readonly
-    entity SourcingProjects as projection on entities.SourcingProjects;
+    entity SourcingProjects as projection on entities.SourcingProjects_AN;
     @readonly
-    entity SourcingProjects_Region as projection on entities.SourcingProjects_Region;
+    entity SourcingProjects_Region as projection on entities.SourcingProjects_Region_AN;
     @readonly
-    entity SourcingProjects_Commodity as select from entities.SourcingProjects_Commodity mixin{
-        CommodityName : Association to entities.CommodityCode on CommodityName.UniqueName = Commodity.CommodityId and CommodityName.Domain = Commodity.SourceCommodityDomain;
+    entity SourcingProjects_Commodity as select from entities.SourcingProjects_Commodity_AN mixin{
+        CommodityName : Association to entities.CommodityCode_MD on CommodityName.UniqueName = Commodity.CommodityId and CommodityName.Domain = Commodity.SourceCommodityDomain;
     } into {
         *,CommodityName.Name_en as CommodityCode_Name
     };
     @readonly
-    entity SourcingProjects_Suppliers as projection on entities.SourcingProjects_Suppliers;
+    entity SourcingProjects_Suppliers as projection on entities.SourcingProjects_Suppliers_AN;
     @readonly
-    entity SourcingProjects_AllOwners as projection on entities.SourcingProjects_AllOwners;
+    entity SourcingProjects_AllOwners as projection on entities.SourcingProjects_AllOwners_AN;
     @readonly
-    entity SourcingProjects_Organization as projection on entities.SourcingProjects_Organization;
+    entity SourcingProjects_Organization as projection on entities.SourcingProjects_Organization_AN;
 
    // Sourcing request projects tasks
     @readonly
-    entity SRProjectTasks as projection on entities.SRProjectTasks;
+    entity SRProjectTasks as projection on entities.SRProjectTasks_AN;
     @readonly
-    entity SRProjectTasks_ActiveApprovers as projection on entities.SRProjectTasks_ActiveApprovers;
+    entity SRProjectTasks_ActiveApprovers as projection on entities.SRProjectTasks_ActiveApprovers_AN;
     @readonly
-    entity SRProjectTasks_AllOwners as projection on entities.SRProjectTasks_AllOwners;
+    entity SRProjectTasks_AllOwners as projection on entities.SRProjectTasks_AllOwners_AN;
     @readonly
-    entity SRProjectTasks_Observers as projection on entities.SRProjectTasks_Observers;
+    entity SRProjectTasks_Observers as projection on entities.SRProjectTasks_Observers_AN;
 
     // Sourcing request projects tasks
     @readonly
-    entity SRProjectTaskApprovalFlows as projection on entities.SRProjectTaskApprovalFlows;
+    entity SRProjectTaskApprovalFlows as projection on entities.SRProjectTaskApprovalFlows_AN;
 
     // Audit Entry
     @readonly
-    entity AuditEntry as projection on entities.AuditEntry;
+    entity AuditEntry as projection on entities.AuditEntry_OP;
 
     //  projects tasks
     @readonly
-    entity ProjectTasks as projection on entities.ProjectTasks;
+    entity ProjectTasks as projection on entities.ProjectTasks_AN;
     @readonly
-    entity ProjectTasks_ActiveApprovers as projection on entities.ProjectTasks_ActiveApprovers;
+    entity ProjectTasks_ActiveApprovers as projection on entities.ProjectTasks_ActiveApprovers_AN;
     @readonly
-    entity ProjectTasks_AllOwners as projection on entities.ProjectTasks_AllOwners;
+    entity ProjectTasks_AllOwners as projection on entities.ProjectTasks_AllOwners_AN;
     @readonly
-    entity ProjectTasks_Observers as projection on entities.ProjectTasks_Observers;
+    entity ProjectTasks_Observers as projection on entities.ProjectTasks_Observers_AN;
 
     // Event Summary
     @readonly
-    entity EventSummary as projection on entities.EventSummary;
+    entity EventSummary as projection on entities.EventSummary_AN;
     @readonly
-    entity EventSummary_BiddedSuppliers as projection on entities.EventSummary_BiddedSuppliers;
+    entity EventSummary_BiddedSuppliers as projection on entities.EventSummary_BiddedSuppliers_AN;
     @readonly
-    entity EventSummary_Commodity as select from entities.EventSummary_Commodity mixin{
-        CommodityName : Association to entities.CommodityCode on CommodityName.UniqueName = Commodity.CommodityId and CommodityName.Domain = Commodity.SourceCommodityDomain;
+    entity EventSummary_Commodity as select from entities.EventSummary_Commodity_AN mixin{
+        CommodityName : Association to entities.CommodityCode_MD on CommodityName.UniqueName = Commodity.CommodityId and CommodityName.Domain = Commodity.SourceCommodityDomain;
     } into {
         *,CommodityName.Name_en as CommodityCode_Name
     };
     @readonly
-    entity EventSummary_Region as projection on entities.EventSummary_Region;
+    entity EventSummary_Region as projection on entities.EventSummary_Region_AN;
     @readonly
-    entity EventSummary_Department as projection on entities.EventSummary_Department;
+    entity EventSummary_Department as projection on entities.EventSummary_Department_AN;
 
     // Event Item Summary
     @readonly
-    entity EventItemSummary as projection on entities.EventItemSummary;
+    entity EventItemSummary as projection on entities.EventItemSummary_AN;
     @readonly
-    entity EventItemSummary_ItemCommodity as select from entities.EventItemSummary_ItemCommodity mixin{
-        CommodityName : Association to entities.CommodityCode on CommodityName.UniqueName = ItemCommodity.CommodityId and CommodityName.Domain = ItemCommodity.SourceCommodityDomain;
+    entity EventItemSummary_ItemCommodity as select from entities.EventItemSummary_ItemCommodity_AN mixin{
+        CommodityName : Association to entities.CommodityCode_MD on CommodityName.UniqueName = ItemCommodity.CommodityId and CommodityName.Domain = ItemCommodity.SourceCommodityDomain;
     } into {
         *,CommodityName.Name_en as CommodityCode_Name
     };
     @readonly
-    entity EventItemSummary_Region as projection on entities.EventItemSummary_Region;
+    entity EventItemSummary_Region as projection on entities.EventItemSummary_Region_AN;
     @readonly
-    entity EventItemSummary_InvitedSuppliers as projection on entities.EventItemSummary_InvitedSuppliers;
+    entity EventItemSummary_InvitedSuppliers as projection on entities.EventItemSummary_InvitedSuppliers_AN;
     @readonly
-    entity EventItemSummary_Department as projection on entities.EventItemSummary_Department;
+    entity EventItemSummary_Department as projection on entities.EventItemSummary_Department_AN;
 
     // Event Participation
     @readonly
-    entity EventParticipations as projection on entities.EventParticipations;
+    entity EventParticipations as projection on entities.EventParticipations_AN;
     @readonly
-    entity EventParticipations_Commodity as select from entities.EventParticipations_Commodity mixin{
-        CommodityName : Association to entities.CommodityCode on CommodityName.UniqueName = Commodity.CommodityId and CommodityName.Domain = Commodity.SourceCommodityDomain;
+    entity EventParticipations_Commodity as select from entities.EventParticipations_Commodity_AN mixin{
+        CommodityName : Association to entities.CommodityCode_MD on CommodityName.UniqueName = Commodity.CommodityId and CommodityName.Domain = Commodity.SourceCommodityDomain;
     } into {
         *,CommodityName.Name_en as CommodityCode_Name
     };
     @readonly
-    entity EventParticipations_Region as projection on entities.EventParticipations_Region;
+    entity EventParticipations_Region as projection on entities.EventParticipations_Region_AN;
     @readonly
-    entity EventParticipations_Department as projection on entities.EventParticipations_Department;
+    entity EventParticipations_Department as projection on entities.EventParticipations_Department_AN;
 
     // Supplier Participations
     @readonly
-    entity SupplierParticipations as projection on entities.SupplierParticipations;
+    entity SupplierParticipations as projection on entities.SupplierParticipations_AN;
     @readonly
-    entity SupplierParticipations_ItemCommodity as select from entities.SupplierParticipations_ItemCommodity mixin{
-        CommodityName : Association to entities.CommodityCode on CommodityName.UniqueName = ItemCommodity.CommodityId and CommodityName.Domain = ItemCommodity.SourceCommodityDomain;
+    entity SupplierParticipations_ItemCommodity as select from entities.SupplierParticipations_ItemCommodity_AN mixin{
+        CommodityName : Association to entities.CommodityCode_MD on CommodityName.UniqueName = ItemCommodity.CommodityId and CommodityName.Domain = ItemCommodity.SourceCommodityDomain;
     } into {
         *,CommodityName.Name_en as CommodityCode_Name
     };
     @readonly
-    entity SupplierParticipations_Region as projection on entities.SupplierParticipations_Region;
+    entity SupplierParticipations_Region as projection on entities.SupplierParticipations_Region_AN;
     @readonly
-    entity SupplierParticipations_Department as projection on entities.SupplierParticipations_Department;
+    entity SupplierParticipations_Department as projection on entities.SupplierParticipations_Department_AN;
 
 
     // Invoices
     @readonly
-    entity InvoiceLineItems as select from entities.InvoiceLineItems  mixin{
-        CommodityName : Association to entities.CommodityCode on CommodityName.UniqueName = Commodity.CommodityId and CommodityName.Domain = Commodity.SourceCommodityDomain;
+    entity InvoiceLineItems as select from entities.InvoiceLineItems_AN  mixin{
+        CommodityName : Association to entities.CommodityCode_MD on CommodityName.UniqueName = Commodity.CommodityId and CommodityName.Domain = Commodity.SourceCommodityDomain;
     } into {
         *,CommodityName.Name_en as CommodityCode_Name
     };
     @readonly
-    entity InvoiceLineItemsSA as projection on entities.InvoiceLineItemsSA;
+    entity InvoiceLineItemsSA as projection on entities.InvoiceLineItemsSA_AN;
     @readonly
-    entity InvoiceExceptions as projection on entities.InvoiceExceptions;
+    entity InvoiceExceptions as projection on entities.InvoiceExceptions_AN;
     @readonly
-    entity RejectedInvoices as projection on entities.RejectedInvoices;
+    entity RejectedInvoices as projection on entities.RejectedInvoices_AN;
     @readonly
-    entity InvoicePayments as projection on entities.InvoicePayments;
+    entity InvoicePayments as projection on entities.InvoicePayments_AN;
     @readonly
-    entity PrereconciledInvoices as projection on entities.PrereconciledInvoices;
+    entity PrereconciledInvoices as projection on entities.PrereconciledInvoices_AN;
     @readonly
-    entity OneTimeVendors as projection on entities.OneTimeVendors;
+    entity OneTimeVendors as projection on entities.OneTimeVendors_AN;
 
 
     /** Order Processing User Story  */
     @readonly
-    entity Requisition as projection on entities.Requisition;
+    entity Requisition as projection on entities.Requisition_OP;
     @readonly
-    entity Requisition_ApprovalRecords as projection on entities.Requisition_ApprovalRecords;
+    entity Requisition_ApprovalRecords as projection on entities.Requisition_ApprovalRecords_OP;
     @readonly
-    entity Requisition_ApprovalRequests as projection on entities.Requisition_ApprovalRequests;
+    entity Requisition_ApprovalRequests as projection on entities.Requisition_ApprovalRequests_OP;
     @readonly
-    entity Requisition_ApprovalRequests_Approver as projection on entities.Requisition_ApprovalRequests_Approver;
+    entity Requisition_ApprovalRequests_Approver as projection on entities.Requisition_ApprovalRequests_Approver_OP;
     @readonly
-    entity Requisition_LineItem as projection on entities.Requisition_LineItem;
+    entity Requisition_LineItem as projection on entities.Requisition_LineItem_OP;
     @readonly
-    entity Requisition_LineItem_SplitAccountings as projection on entities.Requisition_LineItem_SplitAccountings;
+    entity Requisition_LineItem_SplitAccountings as projection on entities.Requisition_LineItem_SplitAccountings_OP;
     @readonly
-    entity RequisitionLineItems as select from entities.RequisitionLineItem mixin{
-        CommodityName : Association to entities.CommodityCode on CommodityName.UniqueName = Commodity.CommodityId and CommodityName.Domain = Commodity.SourceCommodityDomain;
+    entity RequisitionLineItems as select from entities.RequisitionLineItem_AN mixin{
+        CommodityName : Association to entities.CommodityCode_MD on CommodityName.UniqueName = Commodity.CommodityId and CommodityName.Domain = Commodity.SourceCommodityDomain;
     } into {
         *,CommodityName.Name_en as CommodityCode_Name
     };
     @readonly
-    entity PurchaseOrder as projection on entities.PurchaseOrder;
+    entity PurchaseOrder as projection on entities.PurchaseOrder_OP;
     @readonly
-    entity PurchaseOrder_LineItem as projection on entities.PurchaseOrder_LineItem;
+    entity PurchaseOrder_LineItem as projection on entities.PurchaseOrder_LineItem_OP;
     @readonly
-    entity PurchaseOrder_LineItem_SplitAccountings as projection on entities.PurchaseOrder_LineItem_SplitAccountings;
+    entity PurchaseOrder_LineItem_SplitAccountings as projection on entities.PurchaseOrder_LineItem_SplitAccountings_OP;
     @readonly
-    entity PurchaseOrderLineItems as select from entities.PurchaseOrderLineItems mixin{
-        CommodityName : Association to entities.CommodityCode on CommodityName.UniqueName = Commodity.CommodityId and CommodityName.Domain = Commodity.SourceCommodityDomain;
+    entity PurchaseOrderLineItems as select from entities.PurchaseOrderLineItems_AN mixin{
+        CommodityName : Association to entities.CommodityCode_MD on CommodityName.UniqueName = Commodity.CommodityId and CommodityName.Domain = Commodity.SourceCommodityDomain;
     } into {
         *,CommodityName.Name_en as CommodityCode_Name
     };
     @readonly
-    entity Receipts as projection on entities.Receipt;
+    entity Receipts as projection on entities.Receipt_AN;
     @readonly
-    entity PODelivery as projection on entities.PODelivery;
+    entity PODelivery as projection on entities.PODelivery_AN;
     @readonly
-    entity OrderConfirmation as projection on entities.OrderConfirmation;
+    entity OrderConfirmation as projection on entities.OrderConfirmation_AN;
     @readonly
-    entity Payments as projection on entities.Payment;
+    entity Payments as projection on entities.Payment_AN;
     @readonly
-    entity AdvancePayments as projection on entities.AdvancePayments;
+    entity AdvancePayments as projection on entities.AdvancePayments_AN;
 
 
     /** Supplier Management Stories */
     @readonly
-    entity SupplierRegistrationProjects as projection on entities.SupplierRegistrationProjects;
+    entity SupplierRegistrationProjects as projection on entities.SupplierRegistrationProjects_AN;
     @readonly
-    entity SupplierRegistrationProjects_Commodity as select from entities.SupplierRegistrationProjects_Commodity mixin{
-        CommodityName : Association to entities.CommodityCode on CommodityName.UniqueName = Commodity.CommodityId and CommodityName.Domain = Commodity.SourceCommodityDomain;
+    entity SupplierRegistrationProjects_Commodity as select from entities.SupplierRegistrationProjects_Commodity_AN mixin{
+        CommodityName : Association to entities.CommodityCode_MD on CommodityName.UniqueName = Commodity.CommodityId and CommodityName.Domain = Commodity.SourceCommodityDomain;
     } into {
         *,CommodityName.Name_en as CommodityCode_Name
     };
     @readonly
-    entity SupplierRegistrationProjects_Region as projection on entities.SupplierRegistrationProjects_Region;
+    entity SupplierRegistrationProjects_Region as projection on entities.SupplierRegistrationProjects_Region_AN;
     @readonly
-    entity SupplierRegistrationProjects_Organization as projection on entities.SupplierRegistrationProjects_Organization;
+    entity SupplierRegistrationProjects_Organization as projection on entities.SupplierRegistrationProjects_Organization_AN;
     @readonly
-    entity SupplierRegistrationProjects_AllOwners as projection on entities.SupplierRegistrationProjects_AllOwners;
+    entity SupplierRegistrationProjects_AllOwners as projection on entities.SupplierRegistrationProjects_AllOwners_AN;
 
     @readonly
-    entity Suppliers as projection on entities.Suppliers;
+    entity Suppliers as projection on entities.Suppliers_AN;
     @readonly
-    entity SLPSuppliers as projection on entities.SLPSuppliers;
+    entity SLPSuppliers as projection on entities.SLPSuppliers_SM;
     @readonly
-    entity SLPSuppliers_RiskCategoryExposures as projection on entities.SLPSuppliers_RiskCategoryExposures;
+    entity SLPSuppliers_RiskCategoryExposures as projection on entities.SLPSuppliers_RiskCategoryExposures_SM;
     @readonly
-    entity SLPSuppliers_Questionnaires as projection on entities.SLPSuppliers_Questionnaires;
+    entity SLPSuppliers_Questionnaires as projection on entities.SLPSuppliers_Questionnaires_SM;
     @readonly
-    entity SLPSuppliers_Qualifications as projection on entities.SLPSuppliers_Qualifications;
+    entity SLPSuppliers_Qualifications as projection on entities.SLPSuppliers_Qualifications_SM;
     @readonly
-    entity SLPSuppliers_Certificates as projection on entities.SLPSuppliers_Certificates;
+    entity SLPSuppliers_Certificates as projection on entities.SLPSuppliers_Certificates_SM;
     @readonly
-    entity SPMProjects as projection on entities.SPMProjects;
+    entity SLPSuppliers_QuestionAnswer as projection on entities.SLPSuppliers_QuestionAnswer_SM;
     @readonly
-    entity SPMProjects_Commodity as select from entities.SPMProjects_Commodity mixin{
-        CommodityName : Association to entities.CommodityCode on CommodityName.UniqueName = Commodity.CommodityId and CommodityName.Domain = Commodity.SourceCommodityDomain;
+    entity SPMProjects as projection on entities.SPMProjects_AN;
+    @readonly
+    entity SPMProjects_Commodity as select from entities.SPMProjects_Commodity_AN mixin{
+        CommodityName : Association to entities.CommodityCode_MD on CommodityName.UniqueName = Commodity.CommodityId and CommodityName.Domain = Commodity.SourceCommodityDomain;
     } into {
         *,CommodityName.Name_en as CommodityCode_Name
     };
     @readonly
-    entity SPMProjects_Region as projection on entities.SPMProjects_Region;
+    entity SPMProjects_Region as projection on entities.SPMProjects_Region_AN;
     @readonly
-    entity SPMProjects_AllOwners as projection on entities.SPMProjects_AllOwners;
+    entity SPMProjects_AllOwners as projection on entities.SPMProjects_AllOwners_AN;
     @readonly
-    entity SPMProjects_Organization as projection on entities.SPMProjects_Organization;
+    entity SPMProjects_Organization as projection on entities.SPMProjects_Organization_AN;
 
 
     @readonly
-    entity Approval as projection on entities.Approval;
+    entity Approval as projection on entities.Approval_AN;
     @readonly
-    entity Approval_Delegatees as projection on entities.Approval_Delegatees;
+    entity Approval_Delegatees as projection on entities.Approval_Delegatees_AN;
     @readonly
-    entity ApprovalHistory as projection on entities.ApprovalHistory;
+    entity ApprovalHistory as projection on entities.ApprovalHistory_AN;
     @readonly
-    entity PendingApproval as projection on entities.PendingApproval;
+    entity PendingApproval as projection on entities.PendingApproval_AN;
     @readonly
-    entity TaskApprovals as projection on entities.TaskApprovals;
+    entity TaskApprovals as projection on entities.TaskApprovals_AN;
     @readonly
-    entity UserActivity as projection on entities.UserActivity;
+    entity UserActivity as projection on entities.UserActivity_AN;
 
         //Scorecards
     @readonly
-    entity Scorecard as projection on entities.Scorecard;
+    entity Scorecard as projection on entities.Scorecard_AN;
     @readonly
-    entity Scorecard_Commodity as projection on entities.Scorecard_Commodity;
+    entity Scorecard_Commodity as projection on entities.Scorecard_Commodity_AN;
     @readonly
-    entity Scorecard_Department as projection on entities.Scorecard_Department;
+    entity Scorecard_Department as projection on entities.Scorecard_Department_AN;
     @readonly
-    entity Scorecard_Region as projection on entities.Scorecard_Region;
+    entity Scorecard_Region as projection on entities.Scorecard_Region_AN;
 
     //Survey Response
     @readonly
-    entity SurveyResponse as projection on entities.SurveyResponse;
+    entity SurveyResponse as projection on entities.SurveyResponse_AN;
     @readonly
-    entity SurveyResponse_Commodity as projection on entities.SurveyResponse_Commodity;
+    entity SurveyResponse_Commodity as projection on entities.SurveyResponse_Commodity_AN;
     @readonly
-    entity SurveyResponse_Department as projection on entities.SurveyResponse_Department;
+    entity SurveyResponse_Department as projection on entities.SurveyResponse_Department_AN;
     @readonly
-    entity SurveyResponse_Region as projection on entities.SurveyResponse_Region;
+    entity SurveyResponse_Region as projection on entities.SurveyResponse_Region_AN;
     @readonly
-    entity SurveyResponse_ResponseCommodityValue as projection on entities.SurveyResponse_ResponseCommodityValue;
+    entity SurveyResponse_ResponseCommodityValue as projection on entities.SurveyResponse_ResponseCommodityValue_AN;
     @readonly
-    entity SurveyResponse_ResponseDepartmentValue as projection on entities.SurveyResponse_ResponseDepartmentValue;
+    entity SurveyResponse_ResponseDepartmentValue as projection on entities.SurveyResponse_ResponseDepartmentValue_AN;
     @readonly
-    entity SurveyResponse_ResponseRegionValue as projection on entities.SurveyResponse_ResponseRegionValue;
+    entity SurveyResponse_ResponseRegionValue as projection on entities.SurveyResponse_ResponseRegionValue_AN;
     @readonly
-    entity SurveyResponse_ResponseSupplierValue as projection on entities.SurveyResponse_ResponseSupplierValue;
+    entity SurveyResponse_ResponseSupplierValue as projection on entities.SurveyResponse_ResponseSupplierValue_AN;
     @readonly
-    entity SurveyResponse_ResponseUserValue as projection on entities.SurveyResponse_ResponseUserValue;
+    entity SurveyResponse_ResponseUserValue as projection on entities.SurveyResponse_ResponseUserValue_AN;
     @readonly
-    entity SurveyResponse_V_responsetextmultivalue as projection on entities.SurveyResponse_V_responsetextmultivalue;
+    entity SurveyResponse_V_responsetextmultivalue as projection on entities.SurveyResponse_V_responsetextmultivalue_AN;
 
 
 }

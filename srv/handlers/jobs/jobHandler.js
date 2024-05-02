@@ -2,23 +2,18 @@
 
 //libraries
 const cds = require("@sap/cds");
-const cloudSDK = require("@sap-cloud-sdk/core");
+const con = require("@sap-cloud-sdk/connectivity");
+const httpClient = require("@sap-cloud-sdk/http-client");
 const moment = require('moment');
 const { default: axios } = require("axios");
 const Fs = require('fs') ;
 const logger = cds.log('logger');
 const Path = require('path');
 const unzipper = require('unzipper');
-
 //internal modules
 const utils = require('../../utils/Utils');
 
 const jobDataProcessingHelper = require('./jobDataProcessingHelper');
-
-// //Don't seem to be used anymore
-// const { resolve } = require("@sap/cds");
-// const { log } = require("console");
-// const { ComplexTypeTimePropertyField } = require("@sap-cloud-sdk/core");
 
 
 
@@ -39,20 +34,20 @@ async function createJob (context, next) {
         //Get API Details
         switch(apiType){
             case 'analytical':
-                oDestination = await cloudSDK.getDestination(realm + "-reporting-analytics");
+                oDestination = await con.getDestination({ destinationName: realm + "-reporting-analytics" });
                 jobEndpoint = "/analytics-reporting-job/v1/prod/jobs";
                 break;
             case 'procurementReporting':
-                oDestination = await cloudSDK.getDestination(realm + "-procurement-reporting");
+                oDestination = await con.getDestination({ destinationName: realm + "-procurement-reporting" });
                 jobEndpoint = "/procurement-reporting-job/v2/prod/jobs";
                 break;
             case 'sourcingReporting':
-                oDestination = await cloudSDK.getDestination(realm + "-sourcing-reporting");
+                oDestination = await con.getDestination({ destinationName: realm + "-sourcing-reporting" });
                 jobEndpoint = "/sourcing-reporting-job/v1/prod/jobs";
                 break;
         }
 
-        //Destination validation
+        //Destination validation 
         if(!oDestination || !oDestination.originalProperties.destinationConfiguration.apikey) {
             logger.error(`Destination does not exist or is incorrectly configured`);
             throw Error("Destination does not exist or is incorrectly configured");
@@ -61,17 +56,24 @@ async function createJob (context, next) {
         //Get Date range
         let oDeltaRange = await _GetJobDateRange(realm,viewTemplateName,oFilterCriteria);
 
-        //building request
-        let oRequestConfig = await cloudSDK.buildHttpRequest(oDestination);
+        //building request  
+        let oRequestConfig = await httpClient.buildHttpRequest(oDestination);
         oRequestConfig.baseURL = oRequestConfig.baseURL + jobEndpoint;
         oRequestConfig.method = "post";
-
-
+        
+        
         oRequestConfig.params = {realm:realm};
         oRequestConfig.data={"viewTemplateName":viewTemplateName};
 
-        if(!oDeltaRange.initialLoad && !pageToken && (!loadMode || loadMode !='F')){// Default behaviour delta load - assumption pageToken are for initial loads so no filter setting on those
-
+        /* 
+        1- Full load (from parameter or absence of previous load)
+        2- Delta Load (from calculated range)
+        3- Delta Load (from provided range)
+        4- Next page (from page token and provided range if any)
+        */
+        
+        if(!oDeltaRange.initialLoad && !pageToken && (!loadMode || loadMode !='F')){// Default behaviour delta load
+            
             logger.info(`Delta load for Job is form ${oDeltaRange.updatedDateFrom} to ${oDeltaRange.updatedDateTo}`);
             oRequestConfig.data["filters"] ={
                 updatedDateFrom:oDeltaRange.updatedDateFrom,
@@ -79,10 +81,11 @@ async function createJob (context, next) {
             };
         }
 
-        if (oDeltaRange.initialLoad || loadMode === 'F' || !!pageToken) {
+        //In case Calculate Delta Range was provided from either new job forced delta range or previous job with range next page
+        if (oFilterCriteria) {
             oRequestConfig.data["filters"] ={
-                updatedDateFrom:oDeltaRange.updatedDateFrom,
-                updatedDateTo:oDeltaRange.updatedDateTo
+                updatedDateTo: oFilterCriteria && oFilterCriteria.updatedDateTo,
+                updatedDateFrom: oFilterCriteria && oFilterCriteria.updatedDateFrom
             };
         }
 
@@ -90,7 +93,7 @@ async function createJob (context, next) {
             //creating a new page for a previous job
             oRequestConfig.params["pageToken"]=pageToken;
         }
-
+        
         oRequestConfig.headers["Accept"]=oRequestConfig.headers["Content-Type"]="application/json";
         oRequestConfig.headers["apikey"]=oDestination.originalProperties.destinationConfiguration.apikey;
 
@@ -109,15 +112,15 @@ async function createJob (context, next) {
                 documentType:data.data.documentType,
                 pageToken:data.data.pageToken,
                 filterCriteria:data.data.filters && JSON.stringify(data.data.filters),
-                realm:realm,
+                Realm:realm,
                 apiType:apiType
             };
             //Write job record in DB
             try {
-
+                
                 logger.info(`Job ${createdJob.jobId} type: ${createdJob.viewTemplateName} realm: ${createdJob.realm} apiType:${apiType}  $succesfully started, saving in DB`);
                 await  INSERT.into ("sap.ariba.Jobs") .entries (createdJob);
-
+        
                 logger.info(`Job : ${createdJob.jobId} successfully saved`);
                 return 'Job Started';
             }catch(e){
@@ -130,51 +133,38 @@ async function createJob (context, next) {
             return 'Error while starting job';
         }
 
-
-
-
 };
 
 async function _GetJobDateRange(realm,viewTemplateName,oFilterCriteria){
     return new Promise(async (resolve,reject)=>{
         try{
-
+            
             logger.info(`Checking previous jobs for viewTemplate ${viewTemplateName} in realm ${realm}`);
             //Get Latest occurence of the Job execution for View
             //TODO : Check only 'successful jobs'
-            let lastJobdExec = await SELECT.one.from("sap.ariba.Jobs").where({realm : realm, viewTemplateName: viewTemplateName,importStatus:"processed"}).orderBy ({createdDate: 'desc'});
+            let lastJobdExec = await SELECT.one.from("sap.ariba.Jobs").where({Realm : realm, viewTemplateName: viewTemplateName,importStatus:"processed"}).orderBy ({createdDate: 'desc'});
 
             let range;
-            if(lastJobdExec && lastJobdExec.length === undefined)
+            if(lastJobdExec && lastJobdExec.length === undefined) // Previous load exist delta range calculation from last job
             {
                 logger.info(`Found previous occurence for ${viewTemplateName} in realm ${realm}, generating delta range`);
 
-                if (!!lastJobdExec.filterCriteria) {
-                    range={
-                        updatedDateTo: oFilterCriteria && oFilterCriteria.updatedDateTo,
-                        updatedDateFrom: oFilterCriteria && oFilterCriteria.updatedDateFrom,
-                        initialLoad:false
-                    }
-                } else {
-                    range={
-                        updatedDateTo: moment.utc().format(),
-                        updatedDateFrom : lastJobdExec.createdDate,
-                        initialLoad:false
-                    }
+                range={
+                    updatedDateTo: moment.utc().format(),
+                    updatedDateFrom : lastJobdExec.createdDate,
+                    initialLoad:false
                 }
 
-            }else{
+
+            }else{ // No previous job exist, full load range
                 logger.info(`No previous occurence, initial load for ${viewTemplateName} in realm ${realm}`);
                 // only consider provided Filter Criteria for initial load of full-load
-                range={
-                    initialLoad:true,
-                    updatedDateTo: oFilterCriteria && oFilterCriteria.updatedDateTo,
-                    updatedDateFrom: oFilterCriteria && oFilterCriteria.updatedDateFrom
-                }
+                range={initialLoad:true}
+
             }
             resolve(range);
         }catch(e){
-
+            
             logger.error(`Error while checking previous jobs for view ${viewTemplateName} in realm ${realm} details: ${e}`);
             reject(e);
         }
@@ -184,27 +174,27 @@ async function _GetJobDateRange(realm,viewTemplateName,oFilterCriteria){
 async function UpdateJobStatus(context, next){
     try{
         //Get Latest occurence of the Job execution for View
-        let ongoingJobs = await SELECT.from("sap.ariba.Jobs").where({realm : context.data.realm, status: ["pending","processing"]});
-
+        let ongoingJobs = await SELECT.from("sap.ariba.Jobs").where({Realm : context.data.realm, status: ["pending","processing"]});
+        
         logger.info(`Updating job status for ${ongoingJobs.length} jobs`);
         for(const job of ongoingJobs){
-
+            
             try{
                 var result = await _UpdateSingleJobStatus(job.Realm,job.jobId,job.apiType);
-
-
+          
+                
                 //update Job in DB
                  let jobDetails = result.data;
 
                  if (!jobDetails) return 0;
-
+                
                 //Convert Files entries
                 let jobFiles = [];
                 jobDetails["files"].length > 0 && jobDetails["files"].forEach(file => {
-                    jobFiles.push({ JOBID_JOBID:job.jobId, JOBID_REALM:job.Realm ,file: file, status: "stopped",error:"" });
+                    jobFiles.push({ jobId_jobId:job.jobId, jobId_Realm:job.Realm ,file: file, status: "stopped",error:"" });
                 });
-
-
+             
+        
                 delete jobDetails["filterExpressionsSnap"];
                 delete jobDetails["selectAttributesSnap"];
                 delete jobDetails["requestId"];
@@ -214,7 +204,8 @@ async function UpdateJobStatus(context, next){
                 delete jobDetails["includeInactive"];
                 delete jobDetails["filters"];
                 delete jobDetails["reportingApp"];
-
+                delete jobDetails["totalNumOfRecordsProcessed"];
+                
                 jobDetails["realm"]=job.Realm;
 
                 //Temporarilly removing files as cds-pg doesn't support deep-update
@@ -245,7 +236,7 @@ async function UpdateJobStatus(context, next){
 
                     logger.info(`Updating job ${job.jobId} with status ${jobDetails.status} and with  ${jobFiles.length} result files in database.`); 
                      //Updating Job
-                    await UPDATE ("sap.ariba.Jobs") .set (jobDetails) .where ({ jobId : jobDetails.jobId, realm: jobDetails.realm }) ;
+                    await UPDATE ("sap.ariba.Jobs") .set (jobDetails) .where ({ jobId : jobDetails.jobId, Realm: jobDetails.realm }) ;
                     //UPdating Files serparately as cds-pg doesn't support deep-update
                     await INSERT.into ("sap.ariba.Job_File") .entries (jobFiles)  ;
                
@@ -253,7 +244,7 @@ async function UpdateJobStatus(context, next){
                 else  {
                     //Updating Job status only
                     logger.info(`Updating job ${job.jobId} with status ${jobDetails.status} in database.`); 
-                    await UPDATE ("sap.ariba.Jobs") .set (jobDetails) .where ({ jobId : jobDetails.jobId, realm: jobDetails.realm }) ;
+                    await UPDATE ("sap.ariba.Jobs") .set (jobDetails) .where ({ jobId : jobDetails.jobId, Realm: jobDetails.realm }) ;
                   
                 }
             }catch(error){
@@ -266,7 +257,7 @@ async function UpdateJobStatus(context, next){
                     job.status = error.response.data.code;
                     job.importStatus = 'error';
 
-                    await UPDATE ("sap.ariba.Jobs") .set (job) .where ({ jobId : job.jobId, realm: job.Realm }) ;
+                    await UPDATE ("sap.ariba.Jobs") .set (job) .where ({ jobId : job.jobId, Realm: job.Realm }) ;
                 }                            
           }
         }
@@ -291,21 +282,21 @@ async function _UpdateSingleJobStatus(realm,jobId,apiType){
             //Get API Details
             switch(apiType){
                 case 'analytical':
-                    oDestination = await cloudSDK.getDestination(realm + "-reporting-analytics");
+                    oDestination = await con.getDestination({ destinationName: realm + "-reporting-analytics" });
                     jobEndpoint = "/analytics-reporting-jobresult/v1/prod/jobs/";
                     break;
                 case 'procurementReporting':
-                    oDestination = await cloudSDK.getDestination(realm + "-procurement-reporting");
+                    oDestination = await con.getDestination({ destinationName: realm + "-procurement-reporting" });
                     jobEndpoint = "/procurement-reporting-jobresult/v2/prod/jobs/";
                     break;
                 case 'sourcingReporting':
-                    oDestination = await cloudSDK.getDestination(realm + "-sourcing-reporting");
+                    oDestination = await con.getDestination({ destinationName: realm + "-sourcing-reporting" });
                     jobEndpoint = "/sourcing-reporting-jobresult/v1/prod/jobs/";
                     break;
             }
            
             //building request  
-            let oRequestConfig = await cloudSDK.buildHttpRequest(oDestination);
+            let oRequestConfig = await httpClient.buildHttpRequest(oDestination);
             oRequestConfig.baseURL = oRequestConfig.baseURL + jobEndpoint +jobId;
             oRequestConfig.method = "get";
             oRequestConfig.params = {realm:realm};
@@ -335,8 +326,7 @@ async function ProcessFinishedJobs(context, next){
         try{
 
             //Get Latest occurence of the Job execution for View
-
-            let finishedJobs = await SELECT.from("sap.ariba.Jobs").where({realm : context.data.realm, status: "completed", importStatus:"stopped"});
+            let finishedJobs = await SELECT.from("sap.ariba.Jobs").where({Realm : context.data.realm, status: "completed", importStatus:"stopped"});
             if(finishedJobs.length==0){
                 logger.info(`No finished jobs to process`);
                 return 0;
@@ -347,17 +337,14 @@ async function ProcessFinishedJobs(context, next){
                 //Process Single Job
 
                 //Update job status
-                await srv.begin(job);
-                await  srv.run(UPDATE("sap.ariba.Jobs").set({importstatus:"processing"}).where({realm : context.data.realm, jobId: job.jobId}));
+                await  UPDATE("sap.ariba.Jobs").set({importstatus:"processing"}).where({Realm : context.data.realm, jobId: job.jobId});
 
                 //Get Unprocessed Files status
-                let jobFiles = await srv.run(SELECT.from("sap.ariba.Job_File").where({JOBID_JOBID : job.jobId, JOBID_REALM : job.Realm, status:"stopped"}));
+                let jobFiles = await SELECT.from("sap.ariba.Job_File").where({jobId_jobId : job.jobId, jobId_Realm : job.Realm, status:"stopped"});
                 logger.info(`Processing ${jobFiles.length} Files for Job ${job.jobId} `);
-                await srv.commit();
                 for(const f of jobFiles){
                     logger.info(`Processing file ${f.file} for ${job.jobId}`);
-                    await srv.begin(jobFiles);
-                    await srv.run(UPDATE("sap.ariba.Job_File").set({status:"started"}).where({JOBID_JOBID : job.jobId,JOBID_REALM : job.Realm, file:f.file}));
+                    await UPDATE("sap.ariba.Job_File").set({status:"started"}).where({jobId_jobId : job.jobId,jobId_Realm : job.Realm, file:f.file});
 
                     try{
                         //Process Files form job
@@ -372,10 +359,8 @@ async function ProcessFinishedJobs(context, next){
 
                             logger.info(`File ${f.file} processed affected rows ${affectedRows}`);
                             //update the number of records updated
-                            //await srv.begin(f.file);
-                            await srv.run(UPDATE("sap.ariba.Job_File").set({status:"processed",totalNumOfRecords:affectedRows}).where({JOBID_JOBID : job.jobId,JOBID_REALM : job.Realm, file:f.file}));
+                            await UPDATE("sap.ariba.Job_File").set({status:"processed",totalNumOfRecords:affectedRows}).where({jobId_jobId : job.jobId,jobId_Realm : job.Realm, file:f.file});
 
-                            await srv.commit();
                             //deleting file
                             Fs.unlinkSync(Path.resolve('./zips', f.file))  ;
                         }
@@ -383,23 +368,18 @@ async function ProcessFinishedJobs(context, next){
                     }catch(e){
                         logger.error(`Error while processing file ${f.file} for job ${job.jobId} details: ${e} `);
                         //deleting file
-                        await srv.rollback();
                         Fs.unlinkSync(Path.resolve('./zips', f.file))  ;
                         //Todo update file && job status to 'error'
-                        await srv.begin(e);
-                        await UPDATE("sap.ariba.Job_File").set({status:"Processing error",error:e.toString()}).where({JOBID_JOBID : job.jobId,JOBID_REALM : job.Realm, file:f.file});
-                        await srv.commit();
+                        await UPDATE("sap.ariba.Job_File").set({status:"Processing error",error:e.toString()}).where({jobId_jobId : job.jobId,jobId_Realm : job.Realm, file:f.file});
                         break;
                     }
                 }
                  //updating job  status
-                 await srv.begin(job);
-                 let fileStatuses = await srv.run(SELECT.from("sap.ariba.Job_File").where({JOBID_JOBID : job.jobId, JOBID_REALM : job.Realm}));
+                 let fileStatuses = await SELECT.from("sap.ariba.Job_File").where({jobId_jobId : job.jobId, jobId_Realm : job.Realm});
                  let jobStatus = fileStatuses.some(a=>a.status=="Processing error")?"error":"processed";
 
 
-                 await srv.run(UPDATE("sap.ariba.Jobs").set({importStatus:jobStatus}).where({jobId : job.jobId, realm:context.data.realm}));
-                 await srv.commit();
+                 await UPDATE("sap.ariba.Jobs").set({importStatus:jobStatus}).where({jobId : job.jobId, Realm:context.data.realm});
 
             }
 
@@ -426,20 +406,20 @@ async function _downloadFile(realm, jobId, fileName, apiType)  {
         //Get API Details
         switch(apiType){
             case 'analytical':
-                oDestination = await cloudSDK.getDestination(realm + "-reporting-analytics");
+                oDestination = await con.getDestination({ destinationName: realm + "-reporting-analytics" });
                 jobEndpoint = "/analytics-reporting-jobresult/v1/prod/jobs/";
                 break;
             case 'procurementReporting':
-                oDestination = await cloudSDK.getDestination(realm + "-procurement-reporting");
+                oDestination = await con.getDestination({ destinationName: realm + "-procurement-reporting" });
                 jobEndpoint = "/procurement-reporting-jobresult/v2/prod/jobs/";
                 break;
             case 'sourcingReporting':
-                oDestination = await cloudSDK.getDestination(realm + "-sourcing-reporting");
+                oDestination = await con.getDestination({ destinationName: realm + "-sourcing-reporting" });
                 jobEndpoint = "/sourcing-reporting-jobresult/v1/prod/jobs/";
                 break;
         }
         
-        let oRequestConfig = await cloudSDK.buildHttpRequest(oDestination);
+        let oRequestConfig = await httpClient.buildHttpRequest(oDestination);
         oRequestConfig.baseURL = oRequestConfig.baseURL + jobEndpoint +`${jobId}/files/${fileName}`;
         oRequestConfig.method = "get";
         

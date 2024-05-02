@@ -1,0 +1,26 @@
+{
+  "status": "published",
+  "documentType": "InvoiceExceptionTypeDim",
+  "selectAttributes": [
+    "ExceptionTypeId", 
+    "ExceptionGeneral",
+    "ExceptionType",   
+    "ExceptionLevel",   
+    "TimeUpdated",     
+    "TimeCreated"      
+  ],
+  "filterExpressions": [
+    {
+      "name": "updatedDateTo",
+      "field": "TimeUpdated",
+      "op": "<=",
+      "defaultValue": null
+    },
+    {
+      "name": "updatedDateFrom",
+      "field": "TimeUpdated",
+      "op": ">",
+      "defaultValue": null
+    }
+  ]
+}

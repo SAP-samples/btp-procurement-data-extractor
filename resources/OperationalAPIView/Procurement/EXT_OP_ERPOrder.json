@@ -121,7 +121,6 @@
     "LineItems.TaxDetail.FormulaString",
     "Name",
     "ApprovedState",
-    "Type",
     "HoldTillDate",
     "ApprovalRequestsVersion",
     "Preparer",

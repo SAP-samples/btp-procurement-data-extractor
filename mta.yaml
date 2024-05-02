@@ -5,16 +5,15 @@
 _schema-version: '3.1'
 ID: btp-procurement-data-extractor
 version: 1.0.0
-description: "SAP Procurement Extraction Data Lake"
+description: "SAP Ariba Extraction Data Lake"
 parameters:
   enable-parallel-deployments: true
-  
+
 build-parameters:
   before-all:
-   - builder: custom
-     commands:
-      - npm install --production
-      - npx cds build --production
+    - builder: custom
+      commands:
+        - npx cds build --production
 
 modules:
 
@@ -23,20 +22,16 @@ modules:
  # ------------------------------------------------------------
    type: nodejs
    path: gen/srv
-   properties:
-     EXIT: 1  # required by deploy.js task to terminate 
-     SAP_JWT_TRUST_ACL:
-     - clientid: "*"
-     identityzone: "*"
-   parameters:
-     app-name: btp-procurement-data-extractor-srv
-     disk-quota: 4G
-     memory: 4G
    build-parameters:
      ignore: ["node_modules/"]
+   parameters:
+     buildpack: nodejs_buildpack
+     app-name: btp-procurement-data-extractor-srv
+     disk-quota: 1GB
+     memory: 1GB
    requires:
     # Resources extracted from CAP configuration
-    - name: btp-procurement-data-extractor-pgdatabase
+    - name: btp-procurement-data-extractor-hana
     - name: btp-procurement-data-extractor-uaa
     - name: btp-procurement-data-extractor-dest
     - name: btp-procurement-data-extractor-conn
@@ -48,48 +43,56 @@ modules:
       properties:
         url: ${default-url}
 
- - name: btp-procurement-data-extractor-pgdb-deployer
-   type: custom
+ - name: btp-procurement-data-extractor-db-deployer
+   type: hdb
    path: gen/db
-   parameters:
-     buildpacks: [https://github.com/cloudfoundry/apt-buildpack#v0.3.0, nodejs_buildpack]
-     no-route: true
-     no-start: true
-     disk-quota: 2GB
-     memory: 512MB
-     tasks:
-     - name: deploy_to_postgresql
-       command: chmod 755 deploy.sh && ./deploy.sh
-       disk-quota: 2GB
-       memory: 512MB
    build-parameters:
-     ignore: ["node_modules/"]
+    ignore: ["node_modules/"]
+   parameters:
+    buildpack: nodejs_buildpack
    requires:
-     - name: btp-procurement-data-extractor-pgdatabase
+    - name: btp-procurement-data-extractor-hana
+      parameters:
+       disk-quota: 256M
+       memory: 256M
+      properties:
+       TARGET_CONTAINER: ~{hdi-service-name}
+    - name: cross-container-service-1
+      group: SERVICE_REPLACEMENTS
+      properties:
+       key: ServiceName_1
+       service: ~{userprovided-service-name}
 
 resources:
 # ------------------------------------------------------------
- - name: btp-procurement-data-extractor-pgdatabase
+ - name: btp-procurement-data-extractor-hana
 # ------------------------------------------------------------
+   type: com.sap.xs.hdi-container
    parameters:
-     path: ./pg-options.json
-     service: postgresql-db
-     service-plan: standard
-     skip-service-updates:
-      parameters: true
-     service-tags:
-       - plain
-   type: org.cloudfoundry.managed-service
+    config:
+     
+     schema: SAP_ARIBA_FOUNDATION
+    service: hana
+    service-plan: hdi-shared
+   properties:
+    hdi-service-name: ${service-name}
 
-# ------------------------------------------------------------
+ - name: cross-container-service-1
+   type: org.cloudfoundry.existing-service
+   parameters:
+     service-name: DS_INTEGRATION
+   properties:
+     userprovided-service-name: ${service-name}
+
+ # ------------------------------------------------------------
  - name: btp-procurement-data-extractor-jobscheduler
-# ------------------------------------------------------------
+ # ------------------------------------------------------------
    type: org.cloudfoundry.managed-service
    parameters:
      service-plan: standard
      service: jobscheduler
      config:
-      enable-xsuaa-support: true 
+       enable-xsuaa-support: true
 
 # ------------------------------------------------------------
  - name: btp-procurement-data-extractor-uaa
@@ -97,7 +100,7 @@ resources:
    type: org.cloudfoundry.managed-service
    parameters:
      service: xsuaa
-     service-plan: application  
+     service-plan: application
      path: ./xs-security.json
 
 # ------------------------------------------------------------
@@ -115,6 +118,7 @@ resources:
    parameters:
      service-plan: lite
      service: connectivity
+
 # ------------------------------------------------------------
  - name: btp-procurement-data-extractor-log
 # ------------------------------------------------------------

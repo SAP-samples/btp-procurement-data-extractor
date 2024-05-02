@@ -5,102 +5,114 @@ using from './jobs/Jobs';
 //Data Entities
 
 //contracts
-using from './contracts/Contracts';
-using from './contracts/ContractLineItems';
-using from './contracts/ContractClauses';
-using from './contracts/ContractWorkspaces';
-using from './contracts/ContractRequests';
-using from './contracts/ContractsDim';
-using from './contracts/ContractItems';
+using from './Analytical/contracts/Contracts';
+using from './Analytical/contracts/ContractLineItems';
+using from './Analytical/contracts/ContractClauses';
+using from './Analytical/contracts/ContractWorkspaces';
+using from './Analytical/contracts/ContractRequests';
+using from './Analytical/contracts/ContractsDim';
+using from './Analytical/contracts/ContractItems';
 
-
-using from './contracts/ContractWorkspaceOS';
-
-using from './contracts/ContractsOS';
-
-//orders
-using from './orders/OrderConfirmation';
-using from './orders/PODelivery';
-using from './orders/PurchaseOrderLineItems';
-using from './orders/AdvancePayment';
-using from './orders/PurchaseOrders';
-
-//requisitions
-using from './requisitions/RequisitionLineItems';
-using from './requisitions/Requisitions';
-
-//receipts
-using from './receipts/Receipts';
-
-//payments
-using from './payments/Payments';
-
-//sourcing
-using from './sourcing/SourcingProjects';
-using from './sourcing/SupplierParticipations';
-using from './sourcing/EventSummary';
-using from './sourcing/EventItemSummary';
-using from './sourcing/EventParticipations';
-using from './sourcing/SourcingRequests';
-using from './sourcing/SRProjectTasks';
-using from './sourcing/SRProjectTaskApprovalFlows';
-using from './sourcing/ProjectTasks';
-using from './sourcing/AuditEntry';
-using from './sourcing/Projects';
-using from './sourcing/ProjectInfo';
-using from './sourcing/RFXDocument';
-using from './sourcing/RFXItem';
-using from './sourcing/RFXItemValue';
-using from './sourcing/RFXContentDocument';
-using from './sourcing/RFXBid';
-using from './sourcing/Alternative';
-using from './sourcing/Task';
-using from './sourcing/ItemSupplierData';
-using from './sourcing/Scenario';
-using from './sourcing/SourcingRequestOS';
-using from './sourcing/SourcingProjectOS';
-using from './sourcing/DocumentTask';
-using from './sourcing/Organization';
-using from './sourcing/Event';
-
-//invoices
-using from './invoices/InvoiceLineItemsSA';
-using from './invoices/InvoiceExceptions';
-using from './invoices/RejectedInvoices';
-using from './invoices/InvoiceLineItems';
-using from './invoices/InvoicePayments';
-using from './invoices/PrereconciledInvoices';
-using from './invoices/OneTimeVendors';
-using from './invoices/Invoices';
-
-//suppliers
-using from './suppliers/Suppliers';
-using from './suppliers/SLPSuppliers';
-using from './suppliers/SupplierRegistrationProjects';
-using from './suppliers/SupplierRequestProjects';
-using from './suppliers/SPMProjects';
-using from './suppliers/SMProjects';
-using from './suppliers/SMProjectQuestionnaireResponses';
-using from './suppliers/SurveyResponses';
-using from './suppliers/Scorecards';
-using from './suppliers/SMSurveyTemplateQuestion';
-using from './suppliers/Survey';
-
-//masterdata
-using from './masterdata/CommodityCode';
+using from './Operational/contracts/ContractWorkspaces';
+using from './Operational/contracts/Contracts';
 
 //general
-using from './general/Approvals';
-using from './general/ApprovalHistory';
-using from './general/PendingApproval';
-using from './general/UserActivity';
-using from './general/TaskApprovals';
-using from './general/ProjectGroup';
-using from './general/Region';
-using from './general/Commodity';
-using from './general/Organization';
-using from './general/SavingsAllocationDetails';
+using from './Analytical/general/Approvals';
+using from './Analytical/general/ApprovalHistory';
+using from './Analytical/general/PendingApproval';
+using from './Analytical/general/UserActivity';
+using from './Analytical/general/TaskApprovals';
+using from './Analytical/general/ProjectGroup';
+using from './Analytical/general/Region';
+using from './Analytical/general/Commodity';
+using from './Analytical/general/Organization';
+using from './Analytical/general/CostCenter';
+using from './Analytical/general/CompanyCode';
+using from './Analytical/general/UserData';
+
+//invoices
+using from './Analytical/invoices/InvoiceLineItemsSA';
+using from './Analytical/invoices/InvoiceExceptions';
+using from './Analytical/invoices/InvoiceLineItemExceptions';
+using from './Analytical/invoices/RejectedInvoices';
+using from './Analytical/invoices/InvoiceLineItems';
+using from './Analytical/invoices/InvoicePayments';
+using from './Analytical/invoices/PrereconciledInvoices';
+using from './Analytical/invoices/InvoiceExceptionTypeDim';
+
+using from './Operational/invoices/Invoices';
+using from './Operational/invoices/InvoiceReconciliations';
+
+//orders
+using from './Analytical/orders/OrderConfirmation';
+using from './Analytical/orders/PODelivery';
+using from './Analytical/orders/PurchaseOrderLineItems';
+
+using from './Operational/orders/PurchaseOrders';
+
+//payments
+using from './Analytical/payments/Payments';
+using from './Analytical/payments/AdvancePayment';
 
 // procurement
-using from './procurement/ServicesProcurementWorkspaces';
+using from './Analytical/procurement/ServicesProcurementWorkspaces';
 
+//receipts
+using from './Analytical/receipts/Receipts';
+using from './Operational/receipts/Receipt';
+
+//requisitions
+using from './Analytical/requisitions/RequisitionLineItems';
+using from './Operational/requisitions/Requisitions';
+
+//sourcing
+using from './Analytical/sourcing/SavingsAllocationDetails';
+using from './Analytical/sourcing/SavingsForm';
+using from './Analytical/sourcing/SourcingProjects';
+using from './Analytical/sourcing/SupplierParticipations';
+using from './Analytical/sourcing/EventSummary';
+using from './Analytical/sourcing/EventItemSummary';
+using from './Analytical/sourcing/EventParticipations';
+using from './Analytical/sourcing/SourcingRequests';
+using from './Analytical/sourcing/SRProjectTasks';
+using from './Analytical/sourcing/SRProjectTaskApprovalFlows';
+using from './Analytical/sourcing/ProjectTasks';
+using from './Analytical/sourcing/Projects';
+using from './Analytical/sourcing/ProjectInfo';
+using from './Analytical/sourcing/Event';
+using from './Analytical/sourcing/EventType';
+
+using from './Operational/sourcing/RFXDocument';
+using from './Operational/sourcing/RFXItem';
+using from './Operational/sourcing/RFXItemValue';
+using from './Operational/sourcing/RFXContentDocument';
+using from './Operational/sourcing/RFXBid';
+using from './Operational/sourcing/Alternative';
+using from './Operational/sourcing/Task';
+using from './Operational/sourcing/ItemSupplierData';
+using from './Operational/sourcing/Scenario';
+using from './Operational/sourcing/SourcingRequest';
+using from './Operational/sourcing/SourcingProject';
+using from './Operational/sourcing/DocumentTask';
+using from './Operational/sourcing/Organization';
+using from './Operational/sourcing/AuditEntry';
+
+
+//suppliers
+using from './Analytical/suppliers/OneTimeVendors';
+using from './Analytical/suppliers/Suppliers';
+using from './Analytical/suppliers/SupplierRegistrationProjects';
+using from './Analytical/suppliers/SupplierRequestProjects';
+using from './Analytical/suppliers/SPMProjects';
+using from './Analytical/suppliers/SMProjects';
+using from './Analytical/suppliers/SMProjectQuestionnaireResponses';
+using from './Analytical/suppliers/SurveyResponses';
+using from './Analytical/suppliers/Scorecards';
+using from './Analytical/suppliers/SMSurveyTemplateQuestion';
+using from './Analytical/suppliers/Survey';
+
+using from './SupplierManagement/SLPSuppliers';
+
+//masterdata
+using from './MasterData/CommodityCode';
+using from './MasterData/PaymentTerms';

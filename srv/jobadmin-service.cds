@@ -1,7 +1,7 @@
 
 using sap.ariba as entities from '../db';
 
-//@(requires: ['authenticated-user', 'identified-user', 'system-user'])
+@(requires: ['authenticated-user', 'identified-user', 'system-user'])
 service JobAdminService @(path:'/jobadmin')    {
     entity Jobs as projection on entities.Jobs;
     entity Job_File as projection on entities.Job_File;
@@ -21,6 +21,13 @@ service JobAdminService @(path:'/jobadmin')    {
 
     
     action extractSyncData (realm: entities.Jobs:Realm, viewTemplateName: String, apiType: String)  returns String;
+
+
+    // concur invoice
+    action extractPaymentRequests (realm: entities.Jobs:Realm, loadMode: String)  returns String;
+    action extractInvoices (realm: entities.Jobs:Realm, loadMode: String)  returns String;
+    action extractPurchaseOrders (realm: entities.Jobs:Realm, loadMode: String)  returns String;
+    action extractVendors (realm: entities.Jobs:Realm, loadMode: String)  returns String;
 
 }
 

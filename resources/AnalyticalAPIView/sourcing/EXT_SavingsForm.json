@@ -1,0 +1,46 @@
+{
+  "status": "published",
+  "documentType": "SavingsForm",
+  "selectAttributes": [
+    "ActualSavingPct",
+    "Description",
+    "TargetSaving",
+    "AverageInitialBidTotal",
+    "NegotiatedSaving",
+    "EstimatedSavingPct",
+    "EstimatedSpend",
+    "ImplementedSaving",
+    "TimeCreated",
+    "ContractMonths",
+    "LeadBidTotal",
+    "EstimatedSaving",
+    "ActualSpend",
+    "UniqueId",
+    "InternalId",
+    "NegotiatedSpend",
+    "Title",
+    "BaselineSpend",
+    "TimeUpdated",
+    "ImplementedSavingPct",
+    "ImplementedSpend",
+    "NegotiatedSavingPct",
+    "ActualSaving",
+    "LowestInitialBidTotal",
+    "ProcessId",
+    "TargetSavingPct"
+  ],
+  "filterExpressions": [
+    {
+      "name": "updatedDateTo",
+      "field": "TimeUpdated",
+      "op": "<=",
+      "defaultValue": null
+    },
+    {
+      "name": "updatedDateFrom",
+      "field": "TimeUpdated",
+      "op": ">",
+      "defaultValue": null
+    }
+  ]
+}

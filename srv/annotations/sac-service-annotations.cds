@@ -42,7 +42,6 @@ annotate sac.InvoiceLineItems with {
     PaidDate  @odata.Type:'Edm.DateTime' @odata.MaxLength:10 @odata.IsUnbounded:false;
     NetDueDate  @odata.Type:'Edm.DateTime' @odata.MaxLength:10 @odata.IsUnbounded:false;
     ApprovedDate  @odata.Type:'Edm.DateTime' @odata.MaxLength:10 @odata.IsUnbounded:false;
-    PaidReferenceDateDate  @odata.Type:'Edm.DateTime' @odata.MaxLength:10 @odata.IsUnbounded:false;
 }
 
 annotate sac.InvoiceLineItemsSA with {

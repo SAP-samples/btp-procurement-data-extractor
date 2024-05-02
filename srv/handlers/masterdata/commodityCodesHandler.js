@@ -2,7 +2,7 @@
 
 const cds = require("@sap/cds");
 const logger = cds.log('logger');
-
+const utils = require("../../utils/Utils");
 
 //Amount fields in object
 function _getAmountPropertiesForDataCleaning () {
@@ -30,7 +30,7 @@ function _mapEntityStructure (oData) {
 function insertData(aData, realm)  {
     return new Promise(async function(resolve, reject)    {
 
-        const srv = cds.transaction(aData);
+
         if (!aData || aData.length === 0) {
             resolve(0);
             return;
@@ -40,36 +40,35 @@ function insertData(aData, realm)  {
         for(const oData of aData) {
 
             var oDataCleansed = _cleanData(aCleaningProperties, oData, realm);
+            oDataCleansed = utils.flattenTypes(oDataCleansed);
 
             try {
                 //Select record by Unique key
-                let res =  await srv.run ( SELECT.from ("sap.ariba.CommodityCode").where(
+                let res =  await SELECT.from ("sap.ariba.CommodityCode_MD").where(
                     {
                         Realm : oDataCleansed.Realm ,
                         Domain : oDataCleansed.Domain,
                         UniqueName : oDataCleansed.UniqueName
-                     }  )
-                 );
+                     }  );
 
                  if(res.length==0){
                      //New record, insert
-                    await srv.run( INSERT .into ("sap.ariba.CommodityCode") .entries (oDataCleansed) );
+                    await INSERT .into ("sap.ariba.CommodityCode_MD") .entries (oDataCleansed) ;
 
                  }else{
                      //Update existing record
-                    await srv.run ( UPDATE ("sap.ariba.CommodityCode") .set (oDataCleansed) .where(
+                    await UPDATE ("sap.ariba.CommodityCode_MD") .set (oDataCleansed) .where(
                         {
                             
                             Realm : oDataCleansed.Realm ,
                             Domain : oDataCleansed.Domain,
-                            UniqueName : oDataCleansed.UniqueName} )
-                     );
+                            UniqueName : oDataCleansed.UniqueName
+                        } );
 
                  }
 
             } catch (e) {
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);
-                await srv.rollback();
                 //abort full file
                 reject(e);
                 break;
@@ -81,7 +80,6 @@ function insertData(aData, realm)  {
             }
 
         }
-        await srv.commit();
         resolve(aData.length);
     });
 

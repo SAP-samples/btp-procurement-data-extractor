@@ -86,6 +86,10 @@ type abstractDocument{
     InternalId: String(100);
 }
 
+type invoice{
+    UniqueName: String(50);
+}
+
 type actiontype{
     UniqueName: String(255);
     TopValueTypeName:String(255);
@@ -139,7 +143,8 @@ type effectiveUser {
     LastName                    : String(255);
     Fax                         : String(70);
     MiddleName                  : String(255);
-    EmailAddress                : String(255);
+    EmailAddress                : String(255);    
+    BusinessContact             : documentTaskApproverBC;
 }
 
 
@@ -173,7 +178,7 @@ type contractor{
 
 type scorecard{
     ScorecardId             : String(255);
-    VersionNumber           : Double;
+    VersionNumber           : Int16;
     SourceSystem            : String(100);
 }
 type scorecardKPI{
@@ -214,7 +219,7 @@ type businesssystem{
 }
 
 type day {
-    day                     : DateTime;
+    Day                     : DateTime;
 }
 
 type sourceSystem {
@@ -373,7 +378,7 @@ type region {
 }
 
 type operationalUser {
-    UniqueName                          : String(50);
+    UniqueName                          : String(255);
     PasswordAdapter                     : String(50);
 }
 type rfxOwner {
@@ -386,9 +391,33 @@ type rfxOwner {
     EmailAddress                       : String(100);
 }
 
+type paidAmounts {
+    AdjustmentAmount         : adjustmentAmount;
+    GrossAmount              : money;
+    DiscountAmount           : money;
+    NetAmount                : money;
+}
+
+type adjustmentAmount {
+    Reason: String(255);
+    Amount: money;
+}
+
+type supplementInfo{
+    ReferenceDocument: genericRoot;
+    LineNumber: Integer;
+}
 
 type masterAgreement {
     UniqueName                          : String(50);
+}
+
+type statementLineItem {
+    InvoiceLineNumber                          : Integer;
+}
+
+type statement {
+    UniqueName                          : String(255);
 }
 
 type operationalLineType {
@@ -581,6 +610,11 @@ type exceptionType {
     ExceptionTypeId : String(255);
 }
 
+type exceptionTypeOp{    
+    UniqueName : String(255);
+    DriverName : String(255);
+}
+
 type task {
     TaskId          : String(50);
     SourceSystem    : String(100);
@@ -661,7 +695,7 @@ type parentOrganization {
 
 type address {
     State           : String(100);
-    Phone           : String(50);
+    Phone           : String(70);
     Country         : country;
     PostalCode      : String(50);
     City            : String(100);
@@ -1059,10 +1093,14 @@ type operationalOrderLineItem {
 type expectedTax {
     TaxCode         : operationalTaxCode;
     IsAccrual       : Boolean;
-    Component       : String(50);
+    Component       : component;
     TaxableAmount   : money;
     TaxRate         : Double;
     TaxType         : taxType;
+}
+
+type component {
+    UniqueName       : String(255);
 }
 
 type supplierOrderInfo {
@@ -1100,7 +1138,7 @@ type parentAgreement {
 }
 
 type conditions {
-    UniqueName              : String(50);
+    UniqueName              : String(255);
     TAndCVersion            : Integer;
 }
 
@@ -1108,6 +1146,47 @@ type savingsFormInfo {
     SourceSystem            : String(50);
     SavingsFormId           : String(50);
     VersionNumber           : Integer;
+}
+
+
+// concur types
+
+type vendorAddress: {
+    Name            : String(255);
+    DiscountTerms   : String(255); //unsure
+    AddressCode     : String(50);
+    VendorCode      : String(50);
+    Address1        : String(255);
+    Address2        : String(255);
+    Address3        : String(255);
+    City            : String(255);
+    State           : String(50);
+    PostalCode      : String(50);
+    CountryCode     : String(50);
+}
+
+type companyAddress: {
+    Name            : String(255);
+    Address1        : String(255);
+    Address2        : String(255);
+    Address3        : String(255);
+    City            : String(255);
+    State           : String(50);
+    PostalCode      : String(50);
+    CountryCode     : String(50);
+}
+
+type poAddress: {
+    Name            : String(255);
+    Address1        : String(255);
+    Address2        : String(255);
+    Address3        : String(255);
+    City            : String(255);
+    State           : String(50);
+    PostalCode      : String(50);
+    CountryCode     : String(50);
+    StateProvince   : String(50);
+    ExternalID      : String(50);
 }
 
 type buyerItemMaster: {

@@ -4,93 +4,102 @@
 const logger = cds.log('logger');
 
 //Analytical Data Handlers
-const contractsFactHandler = require('../contracts/contractsFactHandler');
-const contractsDimHandler = require('../contracts/contractsDimHandler');
-const contractLineItemsFactHandler = require('../contracts/contractLineItemsFactHandler');
-const contractClausesFactHandler = require('../contracts/contractClausesFactHandler');
-const contractWorkspacesFactHandler = require('../contracts/contractWorkspacesFactHandler');
-const contractRequestsFactHandler = require('../contracts/contractRequestsFactHandler');
-const contractItemFactHandler = require('../contracts/contractItemFactHandler');
+const contractsFactHandler = require('../Analytical/contracts/contractsFactHandler');
+const contractsDimHandler = require('../Analytical/contracts/contractsDimHandler');
+const contractLineItemsFactHandler = require('../Analytical/contracts/contractLineItemsFactHandler');
+const contractClausesFactHandler = require('../Analytical/contracts/contractClausesFactHandler');
+const contractWorkspacesFactHandler = require('../Analytical/contracts/contractWorkspacesFactHandler');
+const contractRequestsFactHandler = require('../Analytical/contracts/contractRequestsFactHandler');
+const contractItemFactHandler = require('../Analytical/contracts/contractItemFactHandler');
 
-const orderConfirmationFactHandler = require('../orders/orderConfirmationFactHandler');
-const purchaseOrderLineItemsFactHandler = require('../orders/purchaseOrderLineItemsFactHandler');
-const purchaseOrderDeliveryFactHandler = require('../orders/purchaseOrderDeliveryFactHandler');
-const advancePaymentFactHanlder = require('../orders/advancePaymentFactHanlder');
-const requisitionLineItemsFactHandler = require('../requisitions/requisitionLineItemsFactHandler');
-const sourcingProjectsFactHandler = require('../sourcing/sourcingProjectsFactHandler');
-const supplierParticipationFactHandler = require('../sourcing/supplierParticipationFactHandler');
-const eventSummaryFactHandler = require('../sourcing/eventSummaryFactHandler');
-const eventItemSummaryFactHandler = require('../sourcing/eventItemSummaryFactHandler');
-const eventParticipationsFactHandler = require('../sourcing/eventParticipationsFactHandler');
-const sourcingRequestsFactHandler = require('../sourcing/sourcingRequestsFactHandler');
-const eventDimHandler = require('../sourcing/eventDimHandler');
+const orderConfirmationFactHandler = require('../Analytical/orders/orderConfirmationFactHandler');
+const purchaseOrderLineItemsFactHandler = require('../Analytical/orders/purchaseOrderLineItemsFactHandler');
+const purchaseOrderDeliveryFactHandler = require('../Analytical/orders/purchaseOrderDeliveryFactHandler');
+const advancePaymentFactHanlder = require('../Analytical/payments/advancePaymentFactHanlder');
+const requisitionLineItemsFactHandler = require('../Analytical/requisitions/requisitionLineItemsFactHandler');
+const sourcingProjectsFactHandler = require('../Analytical/sourcing/sourcingProjectsFactHandler');
+const supplierParticipationFactHandler = require('../Analytical/sourcing/supplierParticipationFactHandler');
+const eventSummaryFactHandler = require('../Analytical/sourcing/eventSummaryFactHandler');
+const eventItemSummaryFactHandler = require('../Analytical/sourcing/eventItemSummaryFactHandler');
+const eventParticipationsFactHandler = require('../Analytical/sourcing/eventParticipationsFactHandler');
+const sourcingRequestsFactHandler = require('../Analytical/sourcing/sourcingRequestsFactHandler');
+const eventDimHandler = require('../Analytical/sourcing/eventDimHandler');
+const eventTypeDimHandler = require('../Analytical/sourcing/eventTypeDimHandler');
 
+const srProjectTaskFactHandler = require('../Analytical/sourcing/srProjectTaskFactHandler');
+const srProjectTaskApprovalFlowFactHandler = require('../Analytical/sourcing/srProjectTaskApprovalFlowFactHandler');
+const projectTaskFactHandler = require('../Analytical/sourcing/projectTaskFactHandler');
 
-const srProjectTaskFactHandler = require('../sourcing/srProjectTaskFactHandler');
-const srProjectTaskApprovalFlowFactHandler = require('../sourcing/srProjectTaskApprovalFlowFactHandler');
-const projectTaskFactHandler = require('../sourcing/projectTaskFactHandler');
+const receiptsFactHandler = require('../Analytical/receipt/receiptsFactHandler');
+const receiptsOSHandler = require('../Operational/receipts/receiptsOSHandler');
+const paymentsFactHandler = require('../Analytical/payments/paymentsFactHandler');
 
-const receiptsFactHandler = require('../receipts/receiptsFactHandler');
-const paymentsFactHandler = require('../payments/paymentsFactHandler');
+const oneTimeVendorsFactHandler = require('../Analytical/suppliers/oneTimeVendorsFactHandler');
+const prereconciledInvoicesFactHandler = require('../Analytical/invoices/prereconciledInvoicesFactHandler');
+const invoicePaymentsFactHandler = require('../Analytical/invoices/invoicePaymentsFactHandler');
+const rejectedInvoicesFactHandler = require('../Analytical/invoices/rejectedInvoicesFactHandler');
+const invoiceLineItemsSAHandler = require('../Analytical/invoices/invoiceLineItemsSAHandler');
+const invoiceLineItemsFactHandler = require('../Analytical/invoices/invoiceLineItemsFactHandler');
+const invoiceExceptionsFactHandler = require('../Analytical/invoices/invoiceExceptionsFactHandler');
+const invoiceLineItemExceptionsFactHandler = require('../Analytical/invoices/invoiceLineItemExceptionsFactHandler');
+const invoiceExceptionTypeDimHandler = require('../Analytical/invoices/invoiceExceptionTypeDimHandler');
 
-const oneTimeVendorsFactHandler = require('../invoices/oneTimeVendorsFactHandler');
-const prereconciledInvoicesFactHandler = require('../invoices/prereconciledInvoicesFactHandler');
-const invoicePaymentsFactHandler = require('../invoices/invoicePaymentsFactHandler');
-const rejectedInvoicesFactHandler = require('../invoices/rejectedInvoicesFactHandler');
-const invoiceLineItemsSAHandler = require('../invoices/invoiceLineItemsSAHandler');
-const invoiceLineItemsFactHandler = require('../invoices/invoiceLineItemsFactHandler');
-const invoiceExceptionsFactHandler = require('../invoices/invoiceExceptionsFactHandler');
+const supplierDimHandler = require('../Analytical/suppliers/supplierDimHandler');
+const supplierRegistrationProjectsFactHandler = require('../Analytical/suppliers/supplierRegistrationProjectsFactHandler');
+const supplierRequestProjectsFactHandler = require('../Analytical/suppliers/supplierRequestProjectsFactHandler');
+const spmProjectsFactHandler = require('../Analytical/suppliers/spmProjectsFactHandler');
+const smProjectsFactHandler = require('../Analytical/suppliers/smProjectsFactHandler');
+const smProjectQuestionnaireResponsesFactHandler = require('../Analytical/suppliers/smProjectQuestionnaireResponsesFactHandler');
+const surveyResponseFactHandler = require('../Analytical/suppliers/surveyResponseFactHandler');
+const scorecardFactHandler = require('../Analytical/suppliers/scorecardFactHandler');
+const surveyDimHandler = require('../Analytical/suppliers/surveyDimHandler');
+const smSurveyTemplateQuestionDimHandler = require('../Analytical/suppliers/smSurveyTemplateQuestionDimHandler');
 
-const supplierDimHandler = require('../suppliers/supplierDimHandler');
-const supplierRegistrationProjectsFactHandler = require('../suppliers/supplierRegistrationProjectsFactHandler');
-const supplierRequestProjectsFactHandler = require('../suppliers/supplierRequestProjectsFactHandler');
-const spmProjectsFactHandler = require('../suppliers/spmProjectsFactHandler');
-const smProjectsFactHandler = require('../suppliers/smProjectsFactHandler');
-const smProjectQuestionnaireResponsesFactHandler = require('../suppliers/smProjectQuestionnaireResponsesFactHandler');
-const surveyResponseFactHandler = require('../suppliers/surveyResponseFactHandler');
-const scorecardFactHandler = require('../suppliers/scorecardFactHandler');
-const surveyDimHandler = require('../suppliers/surveyDimHandler');
-const smSurveyTemplateQuestionDimHandler = require('../suppliers/smSurveyTemplateQuestionDimHandler');
+const approvalsFactHandler = require('../Analytical/general/approvalsFactHandler');
+const approvalHistoryFactHandler = require('../Analytical/general/approvalHistoryFactHandler');
+const pendingApprovalFactHandler = require('../Analytical/general/pendingApprovalFactHandler');
+const userActivityFactHandler = require('../Analytical/general/userActivityFactHandler');
+const taskApprovalsFactHandler = require('../Analytical/general/taskApprovalsFactHandler');
+const projectGroupFactHandler = require('../Analytical/general/projectGroupFactHandler');
+const regionFactHandler = require('../Analytical/general/regionFactHandler');
+const commodityFactHandler = require('../Analytical/general/commodityFactHandler');
+const organizationFactHandler = require('../Analytical/general/organizationFactHandler');
+const savingsAllocationDetailsFactHandler = require('../Analytical/sourcing/savingsAllocationDetailsFactHandler');
+const savingsFormFactHandler = require('../Analytical/sourcing/savingsFormFactHandler');
 
-const approvalsFactHandler = require('../general/approvalsFactHandler');
-const approvalHistoryFactHandler = require('../general/approvalHistoryFactHandler');
-const pendingApprovalFactHandler = require('../general/pendingApprovalFactHandler');
-const userActivityFactHandler = require('../general/userActivityFactHandler');
-const taskApprovalsFactHandler = require('../general/taskApprovalsFactHandler');
-const projectGroupFactHandler = require('../general/projectGroupFactHandler');
-const regionFactHandler = require('../general/regionFactHandler');
-const commodityFactHandler = require('../general/commodityFactHandler');
-const organizationFactHandler = require('../general/organizationFactHandler');
-const savingsAllocationDetailsFactHandler = require('../general/savingsAllocationDetailsFactHandler');
+const userDataDimHandler = require('../Analytical/general/userDataDimHandler');
+const costCenterDimHandler = require('../Analytical/general/costCenterDimHandler');
+const companyCodeDimHandler = require('../Analytical/general/companyCodeDimHandler');
 
-const projectsFactHandler = require('../sourcing/projectsFactHandler');
-const projectInfoFactHandler = require('../sourcing/projectInfoFactHandler');
-const servicesProcurementWorkspacesFactHandler = require('../procurement/servicesProcurementWorkspacesFactHandler');
+const projectsFactHandler = require('../Analytical/sourcing/projectsFactHandler');
+const projectInfoFactHandler = require('../Analytical/sourcing/projectInfoFactHandler');
+const servicesProcurementWorkspacesFactHandler = require('../Analytical/procurement/servicesProcurementWorkspacesFactHandler');
 
 //Operational Data Handlers
-const requisitionHandler = require('../requisitions/requisitionHandler');
-const invoicesOSHandler = require('../invoices/invoicesOSHandler');
-const contractsOSHandler = require('../contracts/contractsOSHandler');
-const ordersHandler = require('../orders/purchaseOrderHandler');
+const requisitionHandler = require('../Operational/requisitions/requisitionHandler');
+const invoicesOSHandler = require('../Operational/invoices/invoicesOSHandler');
+const invoiceReconciliationsOSHandler = require('../Operational/invoices/invoiceReconciliationsOSHandler');
+const contractsOSHandler = require('../Operational/contracts/contractsOSHandler');
+const ordersHandler = require('../Operational/orders/purchaseOrderHandler');
 
-const rfxDocumentHandler = require('../sourcing/rfxDocumentHandler');
-const rfxItemHandler = require('../sourcing/rfxItemHandler');
-const rfxItemValueHandler = require('../sourcing/rfxItemValueHandler');
-const rfxContentDocumentHandler = require('../sourcing/rfxContentDocumentHandler');
-const rfxBidHandler = require('../sourcing/rfxBidHandler');
-const rfxAlternativeHandler = require('../sourcing/rfxAlternativeHandler');
-const taskHandler = require('../sourcing/taskHandler');
-const itemSupplierDataHandler = require('../sourcing/itemSupplierDataHandler');
-const scenarioHandler = require('../sourcing/scenarioHandler');
-const sourcingRequestOSHandler = require('../sourcing/sourcingRequestOSHandler');
-const sourcingProjectOSHandler = require('../sourcing/sourcingProjectOSHandler');
-const documentTaskHandler = require('../sourcing/documentTaskHandler');
-const organizationHandler = require('../sourcing/organizationHandler');
+const rfxDocumentHandler = require('../Operational/sourcing/rfxDocumentHandler');
+const rfxItemHandler = require('../Operational/sourcing/rfxItemHandler');
+const rfxItemValueHandler = require('../Operational/sourcing/rfxItemValueHandler');
+const rfxContentDocumentHandler = require('../Operational/sourcing/rfxContentDocumentHandler');
+const rfxBidHandler = require('../Operational/sourcing/rfxBidHandler');
+const rfxAlternativeHandler = require('../Operational/sourcing/rfxAlternativeHandler');
+const taskHandler = require('../Operational/sourcing/taskHandler');
+const itemSupplierDataHandler = require('../Operational/sourcing/itemSupplierDataHandler');
+const scenarioHandler = require('../Operational/sourcing/scenarioHandler');
+const sourcingRequestOSHandler = require('../Operational/sourcing/sourcingRequestOSHandler');
+const sourcingProjectOSHandler = require('../Operational/sourcing/sourcingProjectOSHandler');
+const documentTaskHandler = require('../Operational/sourcing/documentTaskHandler');
+const organizationHandler = require('../Operational/sourcing/organizationHandler');
 
-const contractWorkspaceOSHandler = require('../contracts/contractWorkspaceOSHandler');
+const contractWorkspaceOSHandler = require('../Operational/contracts/contractWorkspaceOSHandler');
 
 
-const auditEntryHandler = require('../sourcing/auditEntryHandler');
+const auditEntryHandler = require('../Operational/sourcing/auditEntryHandler');
 
 
 async function ProcessData(viewTemplateName,Records,realm){
@@ -109,7 +118,10 @@ async function ProcessData(viewTemplateName,Records,realm){
                     break;
                 case "EXT_InvoiceException":
                     affectedRows = await invoiceExceptionsFactHandler.insertData(Records, realm)
-                    break; 
+                    break;
+                case "EXT_InvoiceLineItemException":
+                    affectedRows = await invoiceLineItemExceptionsFactHandler.insertData(Records, realm)
+                    break;
                 case "EXT_RejectedInvoice":
                     affectedRows = await rejectedInvoicesFactHandler.insertData(Records, realm)
                     break;
@@ -263,12 +275,31 @@ async function ProcessData(viewTemplateName,Records,realm){
                 case "EXT_SavingsAllocationDetails":
                     affectedRows = await savingsAllocationDetailsFactHandler.insertData(Records, realm)
                     break;
+                case "EXT_SavingsForm":
+                    affectedRows = await savingsFormFactHandler.insertData(Records, realm)
+                    break;
+                case "EXT_InvoiceExceptionType":
+                        affectedRows = await invoiceExceptionTypeDimHandler.insertData(Records, realm)
+                        break;
+                case "EXT_EventType":
+                        affectedRows = await eventTypeDimHandler.insertData(Records, realm)
+                        break;
+                case "EXT_CostCenter":
+                        affectedRows = await costCenterDimHandler.insertData(Records, realm)
+                        break;
+                case "EXT_CompanyCode":
+                        affectedRows = await companyCodeDimHandler.insertData(Records, realm)
+                        break;                
+                case "EXT_UserData":
+                    affectedRows = await userDataDimHandler.insertData(Records, realm)
+                    break;
                 //Operational Reporting Procurement API
                 case "EXT_OP_Requisition":
                     affectedRows = await requisitionHandler.insertData(Records, realm);
                     break;
                 case "EXT_OP_Order":
                 case "EXT_OP_ERPOrder":
+                case "EXT_OP_CopyOrder":
                     affectedRows = await ordersHandler.insertData(Records, realm);
                     break;
                 case "EXT_OS_AuditEntry":
@@ -319,8 +350,14 @@ async function ProcessData(viewTemplateName,Records,realm){
                 case "EXT_OP_Invoice":
                     affectedRows = await invoicesOSHandler.insertData(Records, realm);
                     break;
+                case "EXT_OP_InvoiceReconciliation":
+                    affectedRows = await invoiceReconciliationsOSHandler.insertData(Records, realm);
+                    break;
                 case "EXT_OP_Contract":
                     affectedRows = await contractsOSHandler.insertData(Records, realm);
+                    break;
+                case "EXT_OP_Receipt":
+                    affectedRows = await receiptsOSHandler.insertData(Records, realm);
                     break;
 
                 default:

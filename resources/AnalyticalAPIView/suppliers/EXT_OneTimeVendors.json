@@ -1,0 +1,31 @@
+{
+  "status": "published",
+  "documentType": "OneTimeVendorsFact",
+  "selectAttributes": [
+    "LoadCreateTime",
+    "LoadUpdateTime",
+    "SupplierShell",
+    "ReferenceClusterRootId",
+    "VendorName",
+    "ShipFromLocation",
+    "RemitToLocation",
+    "ReferenceClusterRootDate",
+    "SourceSystem",
+    "InvoiceAmount",
+    "InvoiceCount"
+  ],
+  "filterExpressions": [
+    {
+      "name": "updatedDateTo",
+      "field": "TimeUpdated",
+      "op": "<=",
+      "defaultValue": null
+    },
+    {
+      "name": "updatedDateFrom",
+      "field": "TimeUpdated",
+      "op": ">",
+      "defaultValue": null
+    }
+  ]
+}
