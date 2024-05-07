@@ -124,5 +124,5 @@ resources:
 # ------------------------------------------------------------
    type: org.cloudfoundry.managed-service
    parameters:
-     service-plan: lite
-     service: application-logs
+     service-plan: standard
+     service: auditlog
