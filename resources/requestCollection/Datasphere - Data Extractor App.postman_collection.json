@@ -1,0 +1,366 @@
+{
+	"info": {
+		"_postman_id": "33147aed-a90c-44fd-bdc9-2dfcec5fbe15",
+		"name": "Datasphere - Data Extractor App",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Jobadmin",
+			"item": [
+				{
+					"name": "Reporting",
+					"item": [
+						{
+							"name": "Create Job - Analytical Reporting",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"realm\": \"{{realm}}\",\r\n    \"viewTemplateName\": \"{{viewTemplate}}\",\r\n    \"apiType\": \"analytical\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{appurl}}/jobadmin/createJob",
+									"host": [
+										"{{appurl}}"
+									],
+									"path": [
+										"jobadmin",
+										"createJob"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Job - Operational Reporting for Procurement",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"realm\": \"{{realm}}\",\r\n    \"viewTemplateName\": \"{{viewTemplate}}\",\r\n    \"apiType\": \"procurementReporting\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{appurl}}/jobadmin/createJob",
+									"host": [
+										"{{appurl}}"
+									],
+									"path": [
+										"jobadmin",
+										"createJob"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Create Job - Operational Reporting for Sourcing",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"realm\": \"{{realm}}\",\r\n    \"viewTemplateName\": \"{{viewTemplate}}\",\r\n    \"apiType\": \"sourcingReporting\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{appurl}}/jobadmin/createJob",
+									"host": [
+										"{{appurl}}"
+									],
+									"path": [
+										"jobadmin",
+										"createJob"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Update Job Status",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"realm\": \"{{realm}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{appurl}}/jobadmin/UpdateJobStatus",
+									"host": [
+										"{{appurl}}"
+									],
+									"path": [
+										"jobadmin",
+										"UpdateJobStatus"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Process Finished Jobs",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"realm\": \"{{realm}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{appurl}}/jobadmin/ProcessFinishedJobs",
+									"host": [
+										"{{appurl}}"
+									],
+									"path": [
+										"jobadmin",
+										"ProcessFinishedJobs"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "SLP & RISK",
+					"item": [
+						{
+							"name": "Extract Supplier Risk Data",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"realm\": \"{{realm}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{appurl}}/jobadmin/extractSupplierRiskData",
+									"host": [
+										"{{appurl}}"
+									],
+									"path": [
+										"jobadmin",
+										"extractSupplierRiskData"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Extract Supplier Certificates",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"realm\": \"{{realm}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{appurl}}/jobadmin/extractSupplierCertificatesData",
+									"host": [
+										"{{appurl}}"
+									],
+									"path": [
+										"jobadmin",
+										"extractSupplierCertificatesData"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Extract Supplier Data",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"realm\": \"{{realm}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{appurl}}/jobadmin/extractSupplierData",
+									"host": [
+										"{{appurl}}"
+									],
+									"path": [
+										"jobadmin",
+										"extractSupplierData"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Consumer",
+			"item": [
+				{
+					"name": "SAC Consumer Service - Read Objects",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "{{appurl}}/sac/{{object}}?$top=5",
+							"host": [
+								"{{appurl}}"
+							],
+							"path": [
+								"sac",
+								"{{object}}"
+							],
+							"query": [
+								{
+									"key": "$top",
+									"value": "5"
+								}
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "oauth2",
+		"oauth2": [
+			{
+				"key": "clientSecret",
+				"value": "",
+				"type": "string"
+			},
+			{
+				"key": "clientId",
+				"value": "",
+				"type": "string"
+			},
+			{
+				"key": "accessTokenUrl",
+				"value": "",
+				"type": "string"
+			},
+			{
+				"key": "tokenName",
+				"value": "Data Extractor App Token",
+				"type": "string"
+			},
+			{
+				"key": "challengeAlgorithm",
+				"value": "S256",
+				"type": "string"
+			},
+			{
+				"key": "username",
+				"value": "",
+				"type": "string"
+			},
+			{
+				"key": "password",
+				"value": "",
+				"type": "string"
+			},
+			{
+				"key": "grant_type",
+				"value": "client_credentials",
+				"type": "string"
+			},
+			{
+				"key": "addTokenTo",
+				"value": "header",
+				"type": "string"
+			},
+			{
+				"key": "client_authentication",
+				"value": "header",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "appurl",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "realm",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "object",
+			"value": "",
+			"type": "default"
+		},
+		{
+			"key": "viewTemplate",
+			"value": "",
+			"type": "default"
+		}
+	]
+}
