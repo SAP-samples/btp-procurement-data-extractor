@@ -2,12 +2,12 @@
 
 //libraries
 const cds = require("@sap/cds");
-const cloudSDK = require("@sap-cloud-sdk/core");
+const con = require("@sap-cloud-sdk/connectivity");
+const httpClient = require("@sap-cloud-sdk/http-client");
 const moment = require('moment');
 const { default: axios } = require("axios");
 const { v4: uuidv4 } = require('uuid');
 const logger = cds.log('logger');
-
 //internal modules
 const utils = require('../../utils/Utils');
 
@@ -82,7 +82,7 @@ function _getJobFilterCriteria(sRealm, sType, srv) {
 
 async function _getSupplierDataRequestConfig (sRealm) {
     //Get API Details
-    let oDestination = await cloudSDK.getDestination(sRealm + "-slp-supplier-data");
+    let oDestination = await con.getDestination({ destinationName: sRealm + "-slp-supplier-data" });
 
     //Destination validation
     if(!oDestination || !oDestination.originalProperties.destinationConfiguration.apikey) {
@@ -91,7 +91,7 @@ async function _getSupplierDataRequestConfig (sRealm) {
     }
 
     //building request
-    let oRequestConfig = await cloudSDK.buildHttpRequest(oDestination);
+    let oRequestConfig = await httpClient.buildHttpRequest(oDestination);
     oRequestConfig.baseURL = oRequestConfig.baseURL + "/supplierdatapagination/v4/prod/vendorDataRequests";
     oRequestConfig.method = "post";
     oRequestConfig.params = { realm: sRealm };
@@ -278,7 +278,7 @@ async function extractSupplierQNAData (oRequestConfig, pageToken) { }
 
 async function _getSupplierCertificateRequestConfig (sRealm) {
     //Get API Details
-    let oDestination = await cloudSDK.getDestination(sRealm + "-slp-supplier-data");
+    let oDestination = await con.getDestination({ destinationName: sRealm + "-slp-supplier-data" });
 
     //Destination validation
     if(!oDestination || !oDestination.originalProperties.destinationConfiguration.apikey) {
@@ -287,7 +287,7 @@ async function _getSupplierCertificateRequestConfig (sRealm) {
     }
 
     //building request
-    let oRequestConfig = await cloudSDK.buildHttpRequest(oDestination);
+    let oRequestConfig = await httpClient.buildHttpRequest(oDestination);
     oRequestConfig.baseURL = oRequestConfig.baseURL + "/supplierdatapagination/v4/prod/vendors";
     oRequestConfig.params = { realm: sRealm };
     oRequestConfig.headers["Accept"] = oRequestConfig.headers["Content-Type"]="application/json";
@@ -357,7 +357,7 @@ async function extractSupplierCertificatesData (context, next) {
 
 async function _getSupplierRiskRequestConfig (sRealm) {
     //Get API Details
-    let oDestination = await cloudSDK.getDestination(sRealm + "-risk-supplier-data");
+    let oDestination = await con.getDestination({ destinationName: sRealm + "-risk-supplier-data" });
 
     //Destination validation
     if(!oDestination || !oDestination.originalProperties.destinationConfiguration.apikey) {
@@ -366,7 +366,7 @@ async function _getSupplierRiskRequestConfig (sRealm) {
     }
 
     //building request
-    let oRequestConfig = await cloudSDK.buildHttpRequest(oDestination);
+    let oRequestConfig = await httpClient.buildHttpRequest(oDestination);
     oRequestConfig.params = { realm: sRealm };
     oRequestConfig.headers["Accept"] = oRequestConfig.headers["Content-Type"]="application/json";
     oRequestConfig.headers["apikey"] = oDestination.originalProperties.destinationConfiguration.apikey;
@@ -435,7 +435,7 @@ async function extractSupplierRiskData (context, next) {
 
 async function _getMasterDataRequestConfig (sRealm,sEntityName) {
     //Get API Details
-    let oDestination = await cloudSDK.getDestination(sRealm + "-mds-search");
+    let oDestination = await con.getDestination({ destinationName: sRealm + "-mds-search" });
 
     //Destination validation
     if(!oDestination || !oDestination.originalProperties.destinationConfiguration.apikey || !oDestination.originalProperties.destinationConfiguration.realm) {
@@ -444,7 +444,7 @@ async function _getMasterDataRequestConfig (sRealm,sEntityName) {
     }
 
     //building request
-    let oRequestConfig = await cloudSDK.buildHttpRequest(oDestination);
+    let oRequestConfig = await httpClient.buildHttpRequest(oDestination);
     oRequestConfig.baseURL = oRequestConfig.baseURL + `/mds-search/v1/prod/entities/${sEntityName}`;
     oRequestConfig.method = "get";
     oRequestConfig.headers["Accept"] = oRequestConfig.headers["Content-Type"]="application/json";
@@ -695,15 +695,15 @@ async function _getSyncDataRequestConfig (sRealm,sviewTemplateName,sapiType) {
      //Get API Details
      switch(sapiType){
         case 'analytical':
-            oDestination = await cloudSDK.getDestination(sRealm + "-reporting-analytics");
+            oDestination = await con.getDestination({ destinationName: sRealm + "-reporting-analytics" });
             jobEndpoint = "/analytics-reporting-details/v1/prod/views/";
             break;
         case 'procurementReporting':
-            oDestination = await cloudSDK.getDestination(sRealm + "-procurement-reporting");
+            oDestination = await con.getDestination({ destinationName: sRealm + "-procurement-reporting" });
             jobEndpoint = "/procurement-reporting-details/v2/prod/views/";
             break;
         case 'sourcingReporting':
-            oDestination = await cloudSDK.getDestination(sRealm + "-sourcing-reporting");
+            oDestination = await con.getDestination({ destinationName: sRealm + "-sourcing-reporting" });
             jobEndpoint = "/sourcing-reporting-details/v1/prod/views/";
             break;
     }
@@ -717,7 +717,7 @@ async function _getSyncDataRequestConfig (sRealm,sviewTemplateName,sapiType) {
     }
 
     //building request
-    let oRequestConfig = await cloudSDK.buildHttpRequest(oDestination);
+    let oRequestConfig = await httpClient.buildHttpRequest(oDestination);
     oRequestConfig.url = jobEndpoint + sviewTemplateName;
     oRequestConfig.method = "get";
     oRequestConfig.headers["Accept"] = oRequestConfig.headers["Content-Type"]="application/json";

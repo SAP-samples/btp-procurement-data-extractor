@@ -2,23 +2,18 @@
 
 //libraries
 const cds = require("@sap/cds");
-const cloudSDK = require("@sap-cloud-sdk/core");
+const con = require("@sap-cloud-sdk/connectivity");
+const httpClient = require("@sap-cloud-sdk/http-client");
 const moment = require('moment');
 const { default: axios } = require("axios");
 const Fs = require('fs') ;
 const logger = cds.log('logger');
 const Path = require('path');
 const unzipper = require('unzipper');
-
 //internal modules
 const utils = require('../../utils/Utils');
 
 const jobDataProcessingHelper = require('./jobDataProcessingHelper');
-
-// //Don't seem to be used anymore
-// const { resolve } = require("@sap/cds");
-// const { log } = require("console");
-// const { ComplexTypeTimePropertyField } = require("@sap-cloud-sdk/core");
 
 
 
@@ -39,15 +34,15 @@ async function createJob (context, next) {
         //Get API Details
         switch(apiType){
             case 'analytical':
-                oDestination = await cloudSDK.getDestination(realm + "-reporting-analytics");
+                oDestination = await con.getDestination({ destinationName: realm + "-reporting-analytics" });
                 jobEndpoint = "/analytics-reporting-job/v1/prod/jobs";
                 break;
             case 'procurementReporting':
-                oDestination = await cloudSDK.getDestination(realm + "-procurement-reporting");
+                oDestination = await con.getDestination({ destinationName: realm + "-procurement-reporting" });
                 jobEndpoint = "/procurement-reporting-job/v2/prod/jobs";
                 break;
             case 'sourcingReporting':
-                oDestination = await cloudSDK.getDestination(realm + "-sourcing-reporting");
+                oDestination = await con.getDestination({ destinationName: realm + "-sourcing-reporting" });
                 jobEndpoint = "/sourcing-reporting-job/v1/prod/jobs";
                 break;
         }
@@ -62,7 +57,7 @@ async function createJob (context, next) {
         let oDeltaRange = await _GetJobDateRange(realm,viewTemplateName,oFilterCriteria);
 
         //building request
-        let oRequestConfig = await cloudSDK.buildHttpRequest(oDestination);
+        let oRequestConfig = await httpClient.buildHttpRequest(oDestination);
         oRequestConfig.baseURL = oRequestConfig.baseURL + jobEndpoint;
         oRequestConfig.method = "post";
 
@@ -129,9 +124,6 @@ async function createJob (context, next) {
             logger.error(`Error while creating new job : ${e}`);
             return 'Error while starting job';
         }
-
-
-
 
 };
 
@@ -214,6 +206,7 @@ async function UpdateJobStatus(context, next){
                 delete jobDetails["includeInactive"];
                 delete jobDetails["filters"];
                 delete jobDetails["reportingApp"];
+                delete jobDetails["totalNumOfRecordsProcessed"];
 
                 jobDetails["realm"]=job.Realm;
 
@@ -291,21 +284,21 @@ async function _UpdateSingleJobStatus(realm,jobId,apiType){
             //Get API Details
             switch(apiType){
                 case 'analytical':
-                    oDestination = await cloudSDK.getDestination(realm + "-reporting-analytics");
+                    oDestination = await con.getDestination({ destinationName: realm + "-reporting-analytics" });
                     jobEndpoint = "/analytics-reporting-jobresult/v1/prod/jobs/";
                     break;
                 case 'procurementReporting':
-                    oDestination = await cloudSDK.getDestination(realm + "-procurement-reporting");
+                    oDestination = await con.getDestination({ destinationName: realm + "-procurement-reporting" });
                     jobEndpoint = "/procurement-reporting-jobresult/v2/prod/jobs/";
                     break;
                 case 'sourcingReporting':
-                    oDestination = await cloudSDK.getDestination(realm + "-sourcing-reporting");
+                    oDestination = await con.getDestination({ destinationName: realm + "-sourcing-reporting" });
                     jobEndpoint = "/sourcing-reporting-jobresult/v1/prod/jobs/";
                     break;
             }
            
             //building request  
-            let oRequestConfig = await cloudSDK.buildHttpRequest(oDestination);
+            let oRequestConfig = await httpClient.buildHttpRequest(oDestination);
             oRequestConfig.baseURL = oRequestConfig.baseURL + jobEndpoint +jobId;
             oRequestConfig.method = "get";
             oRequestConfig.params = {realm:realm};
@@ -426,20 +419,20 @@ async function _downloadFile(realm, jobId, fileName, apiType)  {
         //Get API Details
         switch(apiType){
             case 'analytical':
-                oDestination = await cloudSDK.getDestination(realm + "-reporting-analytics");
+                oDestination = await con.getDestination({ destinationName: realm + "-reporting-analytics" });
                 jobEndpoint = "/analytics-reporting-jobresult/v1/prod/jobs/";
                 break;
             case 'procurementReporting':
-                oDestination = await cloudSDK.getDestination(realm + "-procurement-reporting");
+                oDestination = await con.getDestination({ destinationName: realm + "-procurement-reporting" });
                 jobEndpoint = "/procurement-reporting-jobresult/v2/prod/jobs/";
                 break;
             case 'sourcingReporting':
-                oDestination = await cloudSDK.getDestination(realm + "-sourcing-reporting");
+                oDestination = await con.getDestination({ destinationName: realm + "-sourcing-reporting" });
                 jobEndpoint = "/sourcing-reporting-jobresult/v1/prod/jobs/";
                 break;
         }
         
-        let oRequestConfig = await cloudSDK.buildHttpRequest(oDestination);
+        let oRequestConfig = await httpClient.buildHttpRequest(oDestination);
         oRequestConfig.baseURL = oRequestConfig.baseURL + jobEndpoint +`${jobId}/files/${fileName}`;
         oRequestConfig.method = "get";
         

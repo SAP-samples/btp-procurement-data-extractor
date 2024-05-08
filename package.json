@@ -4,12 +4,12 @@
   "description": "BTP application for extracting procurement data",
   "private": true,
   "dependencies": {
-    "@sap-cloud-sdk/core": "^1.54.0",
-    "@sap-cloud-sdk/util": "^2.1.0",
+    "@sap-cloud-sdk/connectivity": "^3",
+    "@sap-cloud-sdk/http-client": "^3",
     "@sap/cds": "~6.6.1",
     "@sap/cds-dk": "~6.6.1",
     "@sap/xsenv": "^3.3.2",
-    "@sap/xssec": "^3.2.13",
+    "@sap/xssec": "^3.3.2",
     "axios": "^0.27.2",
     "cds-dbm": "~0.1.4",
     "cds-pg": "~0.1.35",
@@ -24,10 +24,6 @@
   },
   "devDependencies": {
     "sqlite3": "^5.0.2"
-  },
-  "engines": {
-    "node": "^14",
-    "npm": "^8"
   },
   "cds": {
     "features": {
