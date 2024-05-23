@@ -6,12 +6,12 @@ Welcome to the sample use case of extracting SAP Procurement data into a BTP app
 This application retrieves SAP Ariba Cloud Services data through the standard APIs and captures the relevant data into a BTP database. 
 The scenario is meant to provide an easy to access approach for procurement data.
 
-This repository contains the sample code for the [Extract SAP Ariba Cloud Services data through standard APIs](https://discovery-center.cloud.sap/missiondetail/4133/4366/) Mission in SAP Discovery Center.
+This repository contains the sample code for the [Leverage SAP Ariba Foundation model in SAP Datasphere](https://discovery-center.cloud.sap/missiondetail/4443/4729/) Mission in SAP Discovery Center.
 
-_This code is only one part of the mission, so please follow the tutorial before attempting to use this code._
+_This code is only one part of the mission, so please follow the tutorial before attempting to use this code.
 
 ## Requirements
-Please see the pre-requisites and the required BTP services in the [Extract SAP Ariba Cloud Services data through standard APIs](https://discovery-center.cloud.sap/missiondetail/4133/4366/) Mission in SAP Discovery Center.
+Please see the pre-requisites and the required BTP services in the [Leverage SAP Ariba Foundation model in SAP Datasphere](https://discovery-center.cloud.sap/missiondetail/4443/4729/) Mission in SAP Discovery Center.
 
 ## Deploy the App
 Simply run the following command to deploy the deployable file to your BTP Cloud Foundry environment.
