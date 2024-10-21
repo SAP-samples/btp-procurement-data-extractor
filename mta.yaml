@@ -125,4 +125,4 @@ resources:
    type: org.cloudfoundry.managed-service
    parameters:
      service-plan: standard
-     service: auditlog
+     service: cloud-logging
