@@ -3,7 +3,7 @@
         "DDL",
         "ROLE"
     ],
-    "engine_version": "11",
+    "engine_version": "15",
     "locale": "en_US",
     "memory": 4,
     "multi_az": false,
