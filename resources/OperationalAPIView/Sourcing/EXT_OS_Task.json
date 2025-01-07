@@ -1,6 +1,4 @@
 {
-    "viewTemplateName": "EXT_OS_Task",
-    "type": "custom",
     "status": "published",
     "documentType": "Task",
     "selectAttributes": [
