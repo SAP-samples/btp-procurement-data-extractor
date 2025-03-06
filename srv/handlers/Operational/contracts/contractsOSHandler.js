@@ -5,14 +5,14 @@ const logger = cds.log('logger');
 const utils = require("../../../utils/Utils");
 
 
-function _getAmountPropertiesForDataCleaning () {
+function _getAmountPropertiesForDataCleaning() {
     return [
         "MaxAmountTolerancePercent",
         "ReleaseTolerancePercent"
     ];
 }
 
-function _mapContractData (oData) {
+function _mapContractData(oData) {
     //Structure flattening
     oData["ForecastedSpend_TotalAmount"] = oData["ForecastedSpend.TotalAmount"];
     oData["ForecastedSpend_SavingPercentage"] = oData["ForecastedSpend.SavingPercentage"];
@@ -29,7 +29,7 @@ function _mapContractData (oData) {
     return oData;
 }
 
-function _mapContractLineItemData (oData) {
+function _mapContractLineItemData(oData) {
     //Structure flattening
     oData["PricingTerms_IsCompounded"] = oData.PricingTerms && oData.PricingTerms.IsCompounded;
     oData["PricingTerms_Formula"] = oData.PricingTerms && oData.PricingTerms.Formula;
@@ -42,8 +42,8 @@ function _mapContractLineItemData (oData) {
 }
 
 
-async function insertData(aData, realm)  {
-    return new Promise(async function(resolve, reject) {
+async function insertData(aData, realm) {
+    return new Promise(async function (resolve, reject) {
 
 
         if (!aData || aData.length === 0) {
@@ -52,8 +52,8 @@ async function insertData(aData, realm)  {
         }
         logger.info(`Processing ${aData.length} records`);
         var aCleaningProperties = _getAmountPropertiesForDataCleaning();
-        let i=0;
-        for(const oData of aData) {
+        let i = 0;
+        for (const oData of aData) {
 
             var oDataCleansed = utils.cleanData(aCleaningProperties, oData, realm);
             oDataCleansed = utils.processCustomFields(oDataCleansed);
@@ -66,7 +66,7 @@ async function insertData(aData, realm)  {
             // Todo: Model the association
             delete oDataCleansed.Attachments;
 
-            oDataCleansed && oDataCleansed.LineItems && oDataCleansed.LineItems.forEach(function(oLineItems) {
+            oDataCleansed && oDataCleansed.LineItems && oDataCleansed.LineItems.forEach(function (oLineItems) {
                 oLineItems = _mapContractLineItemData(oLineItems);
             });
 
@@ -79,35 +79,35 @@ async function insertData(aData, realm)  {
                 //1 Delete potential record dependencies
                 try {
                     await DELETE("sap.ariba.Contracts_ForcastedSpendItem_OP").where({
-                        ContractOS_Realm : sRealm ,
-                        ContractOS_UniqueName : sUniqueName
+                        Contract_Realm: sRealm,
+                        Contract_UniqueName: sUniqueName
                     });
                     await DELETE("sap.ariba.Contracts_LineItem_TieredPricingSteps_OP").where({
-                        LineItem_ContractsOS_Realm : sRealm ,
-                        LineItem_ContractsOS_UniqueName : sUniqueName
+                        LineItem_Contracts_Realm: sRealm,
+                        LineItem_Contracts_UniqueName: sUniqueName
                     });
                     await DELETE("sap.ariba.Contracts_LineItem_OP").where({
-                        ContractsOS_Realm : sRealm ,
-                        ContractsOS_UniqueName : sUniqueName
+                        Contracts_Realm: sRealm,
+                        Contracts_UniqueName: sUniqueName
                     });
                     await DELETE("sap.ariba.Contracts_LineItem_SplitAccountings_OP").where({
-                        LineItem_ContractsOS_Realm : sRealm ,
-                        LineItem_ContractsOS_UniqueName : sUniqueName
+                        LineItem_Contracts_Realm: sRealm,
+                        LineItem_Contracts_UniqueName: sUniqueName
                     });
                     await DELETE("sap.ariba.Contracts_OP").where({
-                        Realm : sRealm ,
-                        UniqueName : sUniqueName
+                        Realm: sRealm,
+                        UniqueName: sUniqueName
                     });
 
                 }
-                catch(e){
+                catch (e) {
                     logger.error(`Error on deleting from database, aborting file processing, details ${e} `);
                     reject(e);
                 }
 
 
                 //New record, insert
-                await INSERT .into ("sap.ariba.Contracts_OP") .entries (oDataCleansed) ;
+                await INSERT.into("sap.ariba.Contracts_OP").entries(oDataCleansed);
 
 
 
@@ -119,7 +119,7 @@ async function insertData(aData, realm)  {
             }
             //Monitoring
             i++;
-            if(i%500 ==0){
+            if (i % 500 == 0) {
                 logger.info(`Upsert ${i} records`);
             }
 
