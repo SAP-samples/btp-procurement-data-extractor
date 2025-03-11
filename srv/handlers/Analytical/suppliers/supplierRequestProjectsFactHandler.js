@@ -6,15 +6,15 @@ const utils = require("../../../utils/Utils");
 
 
 //Amount fields in object
-function _getAmountPropertiesForDataCleaning () {
+function _getAmountPropertiesForDataCleaning() {
     return [
         "Duration",
         "ReinviteCount"
     ];
 }
 
-function insertData(aData, realm)  {
-    return new Promise(async function(resolve, reject)    {
+function insertData(aData, realm) {
+    return new Promise(async function (resolve, reject) {
 
 
         if (!aData || aData.length === 0) {
@@ -23,8 +23,8 @@ function insertData(aData, realm)  {
         }
         logger.info(`Processing ${aData.length} records`);
         var aCleaningProperties = _getAmountPropertiesForDataCleaning();
-        let i=0;
-        for(const oData of aData) {
+        let i = 0;
+        for (const oData of aData) {
 
             var oDataCleansed = utils.cleanData(aCleaningProperties, oData, realm);
             oDataCleansed = utils.processCustomFields(oDataCleansed);
@@ -32,45 +32,45 @@ function insertData(aData, realm)  {
 
             try {
                 //Select record by Unique key
-                let res =  await SELECT.from ("sap.ariba.SupplierRequestProjects_AN").where(
+                let res = await SELECT.from("sap.ariba.SupplierRequestProjects_AN").where(
                     {
-                        Realm : oDataCleansed.Realm ,
-                        ProjectId : oDataCleansed.ProjectId
+                        Realm: oDataCleansed.Realm,
+                        ProjectId: oDataCleansed.ProjectId
                     });
 
-                 if(res.length==0){
-                     //New record, insert
-                    await INSERT .into ("sap.ariba.SupplierRequestProjects_AN") .entries (oDataCleansed) ;
+                if (res.length == 0) {
+                    //New record, insert
+                    await INSERT.into("sap.ariba.SupplierRequestProjects_AN").entries(oDataCleansed);
 
-                 }else{
+                } else {
 
-                     let organizations = oDataCleansed["Organization"];
-                     delete oDataCleansed["Organization"];
+                    let organizations = oDataCleansed["Organization"];
+                    delete oDataCleansed["Organization"];
 
-                     let commodities = oDataCleansed["Commodity"];
-                     delete oDataCleansed["Commodity"];
+                    let commodities = oDataCleansed["Commodity"];
+                    delete oDataCleansed["Commodity"];
 
-                     let allOwners = oDataCleansed["AllOwners"];
-                     delete oDataCleansed["AllOwners"];
+                    let allOwners = oDataCleansed["AllOwners"];
+                    delete oDataCleansed["AllOwners"];
 
-                     let regions = oDataCleansed["Region"];
-                     delete oDataCleansed["Region"];
+                    let regions = oDataCleansed["Region"];
+                    delete oDataCleansed["Region"];
 
 
-                     //Update existing record
-                    await UPDATE ("sap.ariba.SupplierRequestProjects_AN") .set (oDataCleansed) .where(
+                    //Update existing record
+                    await UPDATE("sap.ariba.SupplierRequestProjects_AN").set(oDataCleansed).where(
                         {
-                            Realm : oDataCleansed.Realm ,
-                            ProjectId : oDataCleansed.ProjectId
-                        } );
+                            Realm: oDataCleansed.Realm,
+                            ProjectId: oDataCleansed.ProjectId
+                        });
 
-                    await _FullLoadOrganization(organizations,oDataCleansed.Realm,oDataCleansed.ProjectId);
-                    await _FullLoadCommodities(commodities,oDataCleansed.Realm,oDataCleansed.ProjectId);
-                    await _FullLoadAllOwners(allOwners,oDataCleansed.Realm,oDataCleansed.ProjectId);
-                    await _FullLoadRegions(regions,oDataCleansed.Realm,oDataCleansed.ProjectId);
+                    await _FullLoadOrganization(organizations, oDataCleansed.Realm, oDataCleansed.ProjectId);
+                    await _FullLoadCommodities(commodities, oDataCleansed.Realm, oDataCleansed.ProjectId);
+                    await _FullLoadAllOwners(allOwners, oDataCleansed.Realm, oDataCleansed.ProjectId);
+                    await _FullLoadRegions(regions, oDataCleansed.Realm, oDataCleansed.ProjectId);
 
 
-                 }
+                }
 
             } catch (e) {
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);
@@ -81,7 +81,7 @@ function insertData(aData, realm)  {
             }
             //Monitoring
             i++;
-            if(i%500 ==0){
+            if (i % 500 == 0) {
                 logger.info(`Upsert ${i} records`);
             }
 
@@ -93,27 +93,27 @@ function insertData(aData, realm)  {
 }
 
 
-async function _FullLoadRegions(regions,Realm,ProjectId){
-    return new Promise(async (resolve,reject) =>{
+async function _FullLoadRegions(regions, Realm, ProjectId) {
+    return new Promise(async (resolve, reject) => {
         //Delete old records
         try {
-            await ELETE("sap.ariba.SupplierRequestProjects_Region_AN").where({
-                SupplierRequestProject_Realm : Realm ,
-                SupplierRequestProject_ProjectId : ProjectId
+            await DELETE("sap.ariba.SupplierRequestProjects_Region_AN").where({
+                SupplierRequestProject_Realm: Realm,
+                SupplierRequestProject_ProjectId: ProjectId
             });
         }
-        catch(e){
+        catch (e) {
             logger.error(`Error on deleting from database, aborting file processing, details ${e} `);
             reject(e);
         }
 
         //Insert new records
-        for (const re of regions){
+        for (const re of regions) {
             try {
 
                 re["SupplierRequestProject_Realm"] = Realm;
                 re["SupplierRequestProject_ProjectId"] = ProjectId;
-                await INSERT .into ("sap.ariba.SupplierRequestProjects_Region_AN") .entries (re) ;
+                await INSERT.into("sap.ariba.SupplierRequestProjects_Region_AN").entries(re);
 
             } catch (e) {
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);
@@ -125,27 +125,27 @@ async function _FullLoadRegions(regions,Realm,ProjectId){
     });
 }
 
-async function _FullLoadAllOwners(allOwners,Realm,ProjectId){
-    return new Promise(async (resolve,reject) =>{
+async function _FullLoadAllOwners(allOwners, Realm, ProjectId) {
+    return new Promise(async (resolve, reject) => {
         //Delete old records
         try {
             await DELETE("sap.ariba.SupplierRequestProjects_AllOwners_AN").where({
-                SupplierRequestProject_Realm : Realm ,
-                SupplierRequestProject_ProjectId : ProjectId
+                SupplierRequestProject_Realm: Realm,
+                SupplierRequestProject_ProjectId: ProjectId
             });
         }
-        catch(e){
+        catch (e) {
             logger.error(`Error on deleting from database, aborting file processing, details ${e} `);
             reject(e);
         }
 
         //Insert new records
-        for (const owner of allOwners){
+        for (const owner of allOwners) {
             try {
 
                 owner["SupplierRequestProject_Realm"] = Realm;
                 owner["SupplierRequestProject_ProjectId"] = ProjectId;
-                await INSERT .into ("sap.ariba.SupplierRequestProjects_AllOwners_AN") .entries (owner) ;
+                await INSERT.into("sap.ariba.SupplierRequestProjects_AllOwners_AN").entries(owner);
 
             } catch (e) {
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);
@@ -157,27 +157,27 @@ async function _FullLoadAllOwners(allOwners,Realm,ProjectId){
     });
 }
 
-async function _FullLoadCommodities(commodities,Realm,ProjectId){
-    return new Promise(async (resolve,reject) =>{
+async function _FullLoadCommodities(commodities, Realm, ProjectId) {
+    return new Promise(async (resolve, reject) => {
         //Delete old records
         try {
             await DELETE("sap.ariba.SupplierRequestProjects_Commodity_AN").where({
-                SupplierRequestProject_Realm : Realm ,
-                SupplierRequestProject_ProjectId : ProjectId
+                SupplierRequestProject_Realm: Realm,
+                SupplierRequestProject_ProjectId: ProjectId
             });
         }
-        catch(e){
+        catch (e) {
             logger.error(`Error on deleting from database, aborting file processing, details ${e} `);
             reject(e);
         }
 
         //Insert new records
-        for (const comm of commodities){
+        for (const comm of commodities) {
             try {
 
                 comm["SupplierRequestProject_Realm"] = Realm;
                 comm["SupplierRequestProject_ProjectId"] = ProjectId;
-                await INSERT .into ("sap.ariba.SupplierRequestProjects_Commodity_AN") .entries (comm) ;
+                await INSERT.into("sap.ariba.SupplierRequestProjects_Commodity_AN").entries(comm);
 
             } catch (e) {
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);
@@ -189,27 +189,27 @@ async function _FullLoadCommodities(commodities,Realm,ProjectId){
     });
 }
 
-async function _FullLoadOrganization(organizations,Realm,ProjectId){
-    return new Promise(async (resolve,reject) =>{
+async function _FullLoadOrganization(organizations, Realm, ProjectId) {
+    return new Promise(async (resolve, reject) => {
         //Delete old records
         try {
             await DELETE("sap.ariba.SupplierRequestProjects_Organization_AN").where({
-                SupplierRequestProject_Realm : Realm ,
-                SupplierRequestProject_ProjectId : ProjectId
+                SupplierRequestProject_Realm: Realm,
+                SupplierRequestProject_ProjectId: ProjectId
             });
         }
-        catch(e){
+        catch (e) {
             logger.error(`Error on deleting from database, aborting file processing, details ${e} `);
             reject(e);
         }
 
         //Insert new records
-        for (const org of organizations){
+        for (const org of organizations) {
             try {
 
                 org["SupplierRequestProject_Realm"] = Realm;
                 org["SupplierRequestProject_ProjectId"] = ProjectId;
-                await INSERT .into ("sap.ariba.SupplierRequestProjects_Organization_AN") .entries (org) ;
+                await INSERT.into("sap.ariba.SupplierRequestProjects_Organization_AN").entries(org);
 
             } catch (e) {
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);
