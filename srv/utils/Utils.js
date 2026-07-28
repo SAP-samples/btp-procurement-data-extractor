@@ -8,6 +8,7 @@ const logger = cds.log('logger');
 const flatten = require("flat");
 const unflatten = require('flat').unflatten;
 const sCutoffIndicator = "\u2026";
+const LOG = cds.log('remote-api');
 
 
 
@@ -73,6 +74,67 @@ function getJobFilterCriteria(sRealm, sType) {
     });
 }
 
+function getJobFilterCriteriaForEng(sRealm, sType) {
+    return new Promise(async (resolve,reject)=>{
+        try{
+            logger.info(`Checking previous  Jobs for Extractions for ${sType} in realm ${sRealm}`);
+            let oLastExecutionRun = await SELECT.one.from("sap.ariba.Jobs")
+                .where({
+                    "Realm": sRealm,
+                    and : { "type": sType }
+                })
+                .orderBy ( {createdDate: 'desc'} ) ;
+
+            // 1. If no operation at all -> start fresh extraction
+            // 2. If completed operation -> start from last extraction
+            // 3. If ongoing operation -> do nothing
+            // 4. If failed operation -> retry last extraction page
+
+            let oDeltaRange;
+            // found previous run, check for 2-4
+            if(oLastExecutionRun && oLastExecutionRun.length === undefined) {
+                // 2. -> start from last extraction
+                if (oLastExecutionRun.importStatus === "processed") {
+                    oDeltaRange = {
+                        type: "next",
+                        updatedDateTo: moment.utc().format(),
+                        updatedDateFrom : oLastExecutionRun.createdDate,
+                        initialLoad: false,
+                    }
+                }
+                // 4. -> re-try the failing page
+                else if (oLastExecutionRun.importStatus === "error")  {
+                    oDeltaRange = {
+                        type: "continue",
+                        pageToken: oLastExecutionRun.pageToken,
+                        filterCriteria: oLastExecutionRun.filterCriteria,
+                        initialLoad: false
+                    }
+                }
+                // 3. -> new requests shall do nothing, current extraction shall proceed
+                else {
+                    oDeltaRange = {
+                        type: "stop",
+                        doNothing: true
+                    }
+                }
+            }
+            // case 1
+            else {
+                oDeltaRange = {
+                    type: "new",
+                    initialLoad: true
+                };
+            }
+
+            resolve(oDeltaRange);
+
+        } catch(e) {
+            logger.error(`Error while checking previous execution runs for type ${sType} in realm ${sRealm} details: ${e}`);
+            reject(e);
+        }
+    });
+}
 
 async function executeRequest(oRequestConfig,retries){
     //Execute Request with Retries
@@ -249,5 +311,6 @@ module.exports = {
     removeNullValues,
     deleteCustomFields,
     getJobFilterCriteria,
-    flattenTypes
+    flattenTypes,
+    getJobFilterCriteriaForEng
 }

@@ -58,6 +58,48 @@
           "SELECT"
         ]
       },
+       {
+        "name": "SAP_ARIBA_SUPPLIERRISKENGREQUESTDETAILS",
+        "type": "TABLE",
+        "privileges": [
+          "SELECT"
+        ]
+      },
+       {
+        "name": "SAP_ARIBA_SUPPLIERRISKENGREQUESTDETAILS_QA",
+        "type": "TABLE",
+        "privileges": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SUPPLIERRISK_ENGAGEMENTS",
+        "type": "TABLE",
+        "privileges": [
+          "SELECT"
+        ]
+      },
+        {
+        "name": "SAP_ARIBA_SUPPLIERRISK_ENG_QUESTIONNAIRES",
+        "type": "TABLE",
+        "privileges": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SUPPLIERRISK_ENG_QUES",
+        "type": "TABLE",
+        "privileges": [
+          "SELECT"
+        ]
+      },
+       {
+        "name": "SAP_ARIBA_SUPPLIERRISK_ENG_QUES_QA",
+        "type": "TABLE",
+        "privileges": [
+          "SELECT"
+        ]
+      },
       {
         "name": "SAP_ARIBA_ALTERNATIVE_OP",
         "type": "TABLE",

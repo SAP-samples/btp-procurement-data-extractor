@@ -1215,3 +1215,16 @@ type srComment {
     AclId                     : Integer;
     
 }
+
+type engSupplier{
+    Name: String(255);
+    SMVendorId: String(50);
+    ContactFirstName : String(100);
+    contactMiddleName : String(100);
+    ContactLastName : String(100);
+    ContactEmail : String(100);
+    legalName   : String(255);
+    telephone : String(50);
+    fax : String(50);
+    contactTelephone : String(50);
+}

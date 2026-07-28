@@ -122,6 +122,10 @@ using from './Analytical/suppliers/Survey';
 using from './Analytical/suppliers/SMProjectInfo';
 
 using from './SupplierManagement/SLPSuppliers';
+using from './SupplierManagement/SupplierRiskEngagement';
+using from './SupplierManagement/SupplierRiskQuestionnaires';
+using from './SupplierManagement/SupplierRiskQuestionnairesQA';
+using from './SupplierManagement/SupplierRiskENGRequestDetails';
 
 //masterdata
 using from './MasterData/CommodityCode';

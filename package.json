@@ -6,13 +6,13 @@
   "dependencies": {
     "@sap-cloud-sdk/connectivity": "^3",
     "@sap-cloud-sdk/http-client": "^3",
-    "@sap/cds": "^7",
+    "@sap/cds": "^8.9.10",
     "@sap/hana-client": "^2.18.24",
     "@sap/xssec": "^3.3.2",
     "axios": "^0.27.2",
     "express": "^4.18.1",
     "flat": "^5.0.2",
-    "fs": "*",
+    "fs": "0.0.1-security",
     "moment": "^2.29.3",
     "passport": "^0.6.0",
     "path": "^0.12.7",
@@ -21,8 +21,8 @@
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "@cap-js/sqlite": "^1",
-    "@sap/cds-dk": "^7"
+    "@cap-js/sqlite": "^1.11.1",
+    "@sap/cds-dk": "^8.9.19"
   },
   "cds": {
     "features": {
@@ -52,5 +52,8 @@
     "mta:package": "mbt build --mtar mta-btp-procurement-data-extractor --platform cf",
     "mta:deploy": "cf deploy mta_archives/mta-btp-procurement-data-extractor.mtar -f",
     "mta:package:deploy": "npm run mta:package && npm run mta:deploy"
+  },
+  "engines": {
+    "node": "^22.0.0"
   }
 }

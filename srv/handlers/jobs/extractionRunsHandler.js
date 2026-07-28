@@ -14,6 +14,9 @@ const utils = require('../../utils/Utils');
 const slpSupplierHandler = require('../SupplierManagement/slpSupplierHandler');
 const commodityCodesHandler = require('../MasterData/commodityCodesHandler');
 const paymentTermsHandler = require('../MasterData/paymentTermsHandler');
+const supplierRiskEngagementHandler = require('../SupplierManagement/supplierRiskEngagementHandler');
+const supplierRiskQuestionnairesHandler = require(`../SupplierManagement/supplierRiskQuestionnairesHandler`);
+const extractSupplierRiskEngQAHandler = require(`../SupplierManagement/extractSupplierRiskEngQAHandler`);
 
 //Processing dataHandlers
 const jobDataProcessingHelper = require('./jobDataProcessingHelper');
@@ -40,6 +43,91 @@ async function _getSupplierDataRequestConfig (sRealm) {
     let oPayload = { "outputFormat": "JSON", "withQuestionnaire": true };
     oRequestConfig.data = oPayload;
 
+    return oRequestConfig
+}
+
+async function _getsupplierRiskEngagementDataRequestConfig (sRealm, endPoint) {
+    //Get API Details
+    let oDestination = await con.getDestination({ destinationName: sRealm + "-supplierRiskEngagementDest" });
+
+    logger.info(`into Data Reequest config, buildig URL `, oDestination);
+
+    //Destination validation
+    if(!oDestination || !oDestination.originalProperties.destinationConfiguration.apikey) {
+        logger.error(`Destination does not exist or is incorrectly configured`);
+        throw Error("Destination does not exist or is incorrectly configured");
+    }
+
+    //building request
+
+    let oRequestConfig = await httpClient.buildHttpRequest(oDestination);
+    oRequestConfig.baseURL = oRequestConfig.baseURL + "/risk-engagement/v2/prod/" + endPoint;
+    logger.info(`URL build for ${sRealm} with  ${oRequestConfig.baseURL}`);
+    oRequestConfig.method = "get";
+    oRequestConfig.params = { realm: sRealm };
+    oRequestConfig.params["$top"] = "10000000"; // change the top result number later 
+    oRequestConfig.params["$filter"] = "updatedDateTo le " + moment.utc().format();
+    oRequestConfig.params["$count"] = "true";
+    oRequestConfig.headers["Accept"] = oRequestConfig.headers["Content-Type"]="application/json";
+    oRequestConfig.headers["apikey"] = oDestination.originalProperties.destinationConfiguration.apikey;
+     
+    logger.info("Supplier Risk Engagment URL build competed getsupplierRiskEngagementDataRequestConfig " , oRequestConfig);
+    return oRequestConfig
+}
+
+async function _getsupplierRiskQuestionnaireConfig (sRealm,endPoint) {
+    //Get API Details
+    let oDestination = await con.getDestination({ destinationName: sRealm + "-supplierRiskEngagementDest" });
+
+    logger.info(`into Data Reequest config, buildig URL `, oDestination);
+
+    //Destination validation
+    if(!oDestination || !oDestination.originalProperties.destinationConfiguration.apikey) {
+        logger.error(`Destination does not exist or is incorrectly configured`);
+        throw Error("Destination does not exist or is incorrectly configured");
+    }
+    //building request
+
+    let oRequestConfig = await httpClient.buildHttpRequest(oDestination);
+    oRequestConfig.baseURL = oRequestConfig.baseURL + "/risk-engagement/v2/prod/" + endPoint;
+    logger.info(`URL build for ${sRealm} with  ${oRequestConfig.baseURL}`);
+    oRequestConfig.method = "get";
+    oRequestConfig.params = { realm: sRealm };
+    oRequestConfig.params["$top"] = "10000000"; // change the top result number later 
+    oRequestConfig.params["$filter"] = "updatedDateTo le " + moment.utc().format();
+    oRequestConfig.params["$count"] = "true";
+    oRequestConfig.headers["Accept"] = oRequestConfig.headers["Content-Type"]="application/json";
+    oRequestConfig.headers["apikey"] = oDestination.originalProperties.destinationConfiguration.apikey;
+     
+    logger.info("Supplier Risk Engagment URL build competed getsupplierRiskEngagementDataRequestConfig " , oRequestConfig);
+    return oRequestConfig
+}
+
+async function _getSupplierRiskQuesQADataConfig (sRealm,endPoint) {
+    //Get API Details
+    let oDestination = await con.getDestination({ destinationName: sRealm + "-supplierRiskEngagementDest" });
+
+    logger.info(`into Data Reequest config, buildig URL `, oDestination);
+
+    //Destination validation
+    if(!oDestination || !oDestination.originalProperties.destinationConfiguration.apikey) {
+        logger.error(`Destination does not exist or is incorrectly configured`);
+        throw Error("Destination does not exist or is incorrectly configured");
+    }
+    //building request
+
+    let oRequestConfig = await httpClient.buildHttpRequest(oDestination);
+    oRequestConfig.baseURL = oRequestConfig.baseURL + "/risk-engagement/v2/prod/" + endPoint;
+    logger.info(`URL build for ${sRealm} with  ${oRequestConfig.baseURL}`);
+    oRequestConfig.method = "get";
+    oRequestConfig.params = { realm: sRealm };
+    oRequestConfig.params["$top"] = "10000000"; // change the top result number later 
+    oRequestConfig.params["$filter"] = "updatedDateTo le " + moment.utc().format();
+    oRequestConfig.params["$count"] = "true";
+    oRequestConfig.headers["Accept"] = oRequestConfig.headers["Content-Type"]="application/json";
+    oRequestConfig.headers["apikey"] = oDestination.originalProperties.destinationConfiguration.apikey;
+     
+    logger.info("Supplier Risk Engagment URL build competed getsupplierRiskEngagementDataRequestConfig " , oRequestConfig);
     return oRequestConfig
 }
 
@@ -202,7 +290,400 @@ async function extractSupplierData (context, next) {
 }
 
 
+//start extractSupplierRiskEngagementData
 
+async function extractSupplierRiskEngagementData (context, next) {
+    return cds.tx (async srv => {
+        //Get Job Details
+        let realm = context.data.realm,
+            loadMode = context.data.loadMode,
+            sType = context.data.sType,
+            oFilterCriteria = context.data.filterCriteria;
+
+        // using the same program for engagments , questionnaire, and answers and questions 
+        // if sType is ENG its engagement, QUE for Questionnarie only and QA for questions and answers  
+
+        logger.info(`Extracting Supplier Risk engagment Data for ${realm} with Load Mode ${loadMode} and oFilter Criteria ${JSON.stringify(oFilterCriteria)}`);
+
+        let oDeltaRange = await utils.getJobFilterCriteriaForEng(realm, sType);
+
+        // If ongoing operation -> do nothing
+        if(oDeltaRange.doNothing) {
+            return "Ongoing operation, stopped this one";
+        }
+
+        let oJob = {
+            jobId: uuidv4(),
+            Realm: realm,
+            status: "processing",
+            importStatus: "processing",
+            createdDate: moment.utc().format(),
+            type: sType
+        };
+
+        await INSERT.into ("sap.ariba.Jobs") .entries (oJob) ;
+        
+        let oRequestConfig;
+        switch(sType){
+                    case "ENG":
+                        logger.info(`processing engagements `);
+                        oRequestConfig = await _getsupplierRiskEngagementDataRequestConfig(realm,'engagements');
+                        break;
+                    case "QUE":
+                        logger.info(`processing questionnaire `);
+                        oRequestConfig = await _getsupplierRiskQuestionnaireConfig(realm,'questionnaires');
+                        break;
+                    default:
+                        break;
+                }    
+        
+        // Job_Pages processing
+        let oJobPage = {},
+            sRepeat = true,
+            iProcessedEntityCount = 0,
+            iTotalNumOfPages = 0;
+
+        while (sRepeat) {
+
+            // Construct the filter based on the given details
+            let oFilter = "";
+
+            // different cases:
+            // 1. completely new load -> initialLoad = true
+            // 2. follow-up load -> initialLoad = false, pageToken = null
+            // 3. continue from error load -> initialLoad = false, pageToken = x --> use filterCriteria as before
+
+
+            // define FILTER
+            // Full Load Mode is overruling everything
+            if (!loadMode || loadMode !='F') {
+                switch (oDeltaRange.type) {
+                    case "new":
+                        break;
+                    case "next":
+                        oFilter = `updatedDateFrom ge ${oDeltaRange.updatedDateFrom} and updatedDateTo le ${oDeltaRange.updatedDateTo}`;
+                        break;
+                    case "continue":
+                        oFilter = oDeltaRange.filterCriteria;
+                        break;
+                }
+            }
+            logger.info(`Filter defined: ${JSON.stringify(oFilter)}`);
+            if (oFilter) {
+                oRequestConfig.params["$filter"] = oFilter;
+                logger.info(`after applying date filters ${JSON.stringify(oRequestConfig)}`);
+            }
+
+            // define PAGE TOKEN
+            if(oDeltaRange.pageToken) {
+                //creating a new page for current job
+                logger.info(`Continue run with page token: ${oDeltaRange.pageToken}`);
+                oRequestConfig.params["$skip"] = oDeltaRange.pageToken;
+            }
+
+            oJobPage = {
+                jobId_jobId: oJob.jobId,
+                jobId_Realm: oJob.Realm,
+                pageToken: oDeltaRange.pageToken,
+                processingPosition: oDeltaRange.pageToken ? oDeltaRange.pageToken : 0
+            };
+            // 3. we now can sent the request in infinite loop -> ending the loop when either
+            // 3.1 No more page token in the response
+            // 3.2 API rate limits hit
+            try {
+                //Create Execution Run
+                logger.info(`Executing run for with URL  ${JSON.stringify(oRequestConfig)}`);
+                let aResponse = await utils.executeRequest(oRequestConfig, 3);
+                let aData = "";
+
+                 switch(sType){
+                    case "ENG":
+                        logger.info(`processing engagements `);
+                        aData = aResponse.data.engagements;
+                        break;
+                    case "QUE":
+                        logger.info(`processing questionnaire `);
+                        aData = aResponse.data.questionnaires;
+                        break;
+                    default:
+                        break;
+                }    
+
+                logger.info(`aData Length : ${JSON.stringify(aData.length)}`);
+                
+                if (aData && aData[aData.length - 1] && aData[aData.length - 1].nextToken) {
+                    oDeltaRange.pageToken = aData[aData.length - 1].nextToken;
+                    aData.pop();
+                } else {
+                    oDeltaRange.pageToken = null;
+                    // Stop the Loop!
+                    sRepeat = false;
+                }
+                //logger.info(`printing out data after: ${JSON.stringify(aData)}`);
+                
+                // Process the records
+                let affectedRows = 0; 
+                  switch(sType){
+                    case "ENG":
+                        logger.info(`inserting data Supplier Engagement data `);
+                        affectedRows = await supplierRiskEngagementHandler.insertData(aData, realm);
+                        break;
+                    case "QUE":
+                        logger.info(`processing questionnaire data `);
+                        affectedRows = await supplierRiskQuestionnairesHandler.insertDataQUE(aData, realm);
+                        break;
+                    default:
+                        break;
+                }    
+                iProcessedEntityCount += affectedRows;
+                iTotalNumOfPages++;
+
+                // Update Job_Page entry and save it
+                oJobPage.status = "processed";
+                oJobPage.totalNumOfRecords = affectedRows
+                oJobPage.pageToken = oDeltaRange.pageToken;
+                oJobPage.completedDate = moment.utc().format();
+                
+                //commenitng as it was cuasing error 
+                await INSERT.into ("sap.ariba.Job_Pages") .entries (oJobPage) ;
+
+                // Update Job with latest pageToken
+                oJob.pageToken = oDeltaRange.pageToken;
+                oJob.filterCriteria = oFilter;
+
+                // Update Job_Page entry and save it
+                oJobPage.status = "processed";
+                oJobPage.totalNumOfRecords = affectedRows
+                oJobPage.pageToken = oDeltaRange.pageToken;
+                oJobPage.completedDate = moment.utc().format();
+
+                await UPDATE ("sap.ariba.Jobs") .set (oJob) .where ({ jobId : oJob.jobId, Realm: oJob.Realm }) ;
+
+            } catch(e) {
+                // Rate limits HIT; store latest pageToken in DB and start from there once newly triggered
+                logger.error(`Error while extracting supplier engagement data : ${e}`);
+                logger.info(`Extraction run is captured and will be processed in the next run - Supplier Risk engagment `);
+
+                oJobPage.status = "Processing error";
+                oJobPage.pageToken = oDeltaRange.pageToken;
+                oJobPage.processingPosition = oDeltaRange.pageToken;
+                oJobPage.error = e.message;
+                
+                //commenitng as it was cuasing error 
+                await INSERT.into ("sap.ariba.Job_Pages") .entries (oJobPage) ;
+                // Stop the Loop!
+                sRepeat = false;
+            }
+            sRepeat = false;
+
+        }
+        // end of while loop
+
+        // Now once all the pages are processed, we can update the Job with it's status
+        // depending on successful processing or error processing
+        if (oJobPage.status === "Processing error") {
+            oJob.status = "error";
+            oJob.importStatus = "error";
+        } else {
+            oJob.status = "completed";
+            oJob.importStatus = "processed";
+            oJob.totalNumOfRecords = iProcessedEntityCount;
+            oJob.totalNumOfPages = iTotalNumOfPages;
+            oJob.pageToken = null;
+            oJob.completedDate = moment.utc().format();
+        }
+
+        await UPDATE ("sap.ariba.Jobs") .set (oJob) .where ({ jobId : oJob.jobId, Realm: oJob.Realm }) ;
+
+        logger.info(`Extraction run finished!`);
+
+        return "Done";
+    });
+}
+//end  extractSupplierRiskEngagementData
+
+
+// extract Supplier Risk Engagement Request QA Data - extractSupplierRiskEngQAData
+
+async function extractSupplierRiskEngQAData (context, next) {
+    return cds.tx (async srv => {
+        //Get Job Details
+        let realm = context.data.realm,
+            loadMode = context.data.loadMode,
+            sType = context.data.sType,
+            oFilterCriteria = context.data.filterCriteria,
+            iProcessedEntityCount = 0;
+
+        // if sType QUEQA for Questionnarie Questions and Answer  
+
+        let oJob = {
+            jobId: uuidv4(),
+            Realm: realm,
+            status: "processing",
+            importStatus: "processing", 
+            createdDate: moment.utc().format(),
+            type: sType
+        };
+    // Job_Pages processing
+        let oJobPage = {
+            jobId_jobId: oJob.jobId,
+            jobId_Realm: oJob.Realm,
+            };
+        
+             let affectedRows = 0;
+             let workspacecounter = 0;
+        await INSERT.into ("sap.ariba.Jobs") .entries (oJob) ;
+        
+         let aWorkspaceID = await SELECT `workspaceId` .from("sap.ariba.SupplierRisk_Engagements")
+            .where ({ "Realm" : realm, ProcessedStatus:'NP' })
+            .orderBy ( {modifiedAt: 'desc'} ) ;
+ 
+            logger.info(`workspace id from SupplierRisk_Engagements table ${JSON.stringify(aWorkspaceID)}`);
+            
+           for (const oWorkspaceID of aWorkspaceID) {
+            if (oWorkspaceID.workspaceId) {
+                try {    
+                        workspacecounter = workspacecounter + 1;
+
+                        await UPDATE ("sap.ariba.SupplierRisk_Engagements")
+                        .set ({ ProcessedStatus: "Processed"})
+                        .where({ Realm: realm, workspaceId: oWorkspaceID.workspaceId });
+
+                        let oRequestConfig = await _getSupplierRiskQuesQADataConfig (realm,`questionnaires/${oWorkspaceID.workspaceId}`);
+                        logger.info(`prinint oRequest Config after filters   ${JSON.stringify(oRequestConfig)}`);
+
+                        let aResponse = await utils.executeRequest(oRequestConfig, 3); 
+                    
+                        let aData = aResponse.data.questionnaires;
+                        logger.info(`aData questionnaires Length : ${JSON.stringify(aData.length)}`);            
+                        
+                        affectedRows = await extractSupplierRiskEngQAHandler.insertData(aData, realm);
+                        
+                        iProcessedEntityCount += affectedRows;
+                        logger.info(`Processed records for SupplierRiskEngRequestDetails  : ${JSON.stringify(iProcessedEntityCount)}`);
+                        logger.info(`Processed records for SupplierRisk_Engagements  : ${JSON.stringify(workspacecounter)}`);
+                } catch(e) {
+                    // Rate limits HIT; store latest pageToken in DB and start from there once newly triggered
+                    logger.error(`Error while extracting extractSupplierRiskEngQAData : ${e}`);
+                    logger.info(`Extraction run is captured and will be processed in the next run - extractSupplierRiskEngQAData  `);
+
+                    oJobPage.status = "Processing error";
+                    oJobPage.error = e.message;
+                }  // end of try catch 
+            } // end of if loop 
+        } // end of for  loop
+
+        // Now once all the pages are processed, we can update the Job with it's status
+        // depending on successful processing or error processing
+        if (oJobPage.status === "Processing error") {
+            oJob.status = "error";
+            oJob.importStatus = "error";
+        } else {
+            oJob.status = "completed";
+            oJob.importStatus = "processed";
+            oJob.totalNumOfRecords = iProcessedEntityCount;
+            oJob.pageToken = null;
+            oJob.completedDate = moment.utc().format();
+        }
+
+        await UPDATE ("sap.ariba.Jobs") .set (oJob) .where ({ jobId : oJob.jobId, Realm: oJob.Realm }) ;
+
+        logger.info(`Extraction run finished!`);
+
+        return "Done";
+    });
+}
+
+// end of extract Supplier Risk Engagment Request QA Data - extractSupplierRiskEngQAData
+
+//start extractSupplierRiskQuesQAData
+async function extractSupplierRiskQuesQAData (context, next) {
+    return cds.tx (async srv => {
+        //Get Job Details
+        let realm = context.data.realm,
+            loadMode = context.data.loadMode,
+            sType = context.data.sType,
+            oFilterCriteria = context.data.filterCriteria,
+            iProcessedEntityCount = 0;
+
+        // if sType QUE_QA for Questionnarie Questions and Answer  
+
+        let oJob = {
+            jobId: uuidv4(),
+            Realm: realm,
+            status: "processing",
+            importStatus: "processing", 
+            createdDate: moment.utc().format(),
+            type: sType
+        };
+    // Job_Pages processing
+        let oJobPage = {
+            jobId_jobId: oJob.jobId,
+            jobId_Realm: oJob.Realm,
+            };
+        
+             let affectedRows = 0;
+        await INSERT.into ("sap.ariba.Jobs") .entries (oJob) ;
+        
+         let aWorkspaceID = await SELECT `workspaceId` .from("sap.ariba.SupplierRisk_ENG_Questionnaires")
+            .where ({ "Realm" : realm, ProcessedStatus:'NP' })
+            .orderBy ( {modifiedAt: 'desc'} ) ;
+ 
+            logger.info(`workspace id from SupplierRisk_ENG_Questionnaires table ${JSON.stringify(aWorkspaceID)}`);
+
+           for (const oWorkspaceID of aWorkspaceID) {
+            if (oWorkspaceID.workspaceId) {
+                try {    
+
+                        let oRequestConfig = await _getSupplierRiskQuesQADataConfig (realm,`questionnaires/${oWorkspaceID.workspaceId}`);
+                        logger.info(`prinint oRequest Config after filters   ${JSON.stringify(oRequestConfig)}`);
+
+                        let aResponse = await utils.executeRequest(oRequestConfig, 3);
+                        let aData = aResponse.data.questionnaires;
+                        logger.info(`aData questionnaires Length : ${JSON.stringify(aData.length)}`);            
+                        
+                        affectedRows = affectedRows = await supplierRiskQuestionnairesHandler.insertDataQUEQA(aData, realm);
+
+                        if(affectedRows > 0)
+                        {
+                            await UPDATE ("sap.ariba.SupplierRisk_ENG_Questionnaires")
+                            .set ({ ProcessedStatus: "Processed"})
+                            .where({ Realm: realm, workspaceId: oWorkspaceID.workspaceId });
+                        }
+                        iProcessedEntityCount += affectedRows;
+
+                } catch(e) {
+                    // Rate limits HIT; store latest pageToken in DB and start from there once newly triggered
+                    logger.error(`Error while extracting supplier Questionnaire QA data : ${e}`);
+                    logger.info(`Extraction run is captured and will be processed in the next run - Supplier Risk  Questionnaire QA  `);
+
+                    oJobPage.status = "Processing error";
+                    oJobPage.error = e.message;
+                }  // end of try catch 
+            } // end of if loop 
+        } // end of for  loop
+
+        // Now once all the pages are processed, we can update the Job with it's status
+        // depending on successful processing or error processing
+        if (oJobPage.status === "Processing error") {
+            oJob.status = "error";
+            oJob.importStatus = "error";
+        } else {
+            oJob.status = "completed";
+            oJob.importStatus = "processed";
+            oJob.totalNumOfRecords = iProcessedEntityCount;
+            oJob.pageToken = null;
+            oJob.completedDate = moment.utc().format();
+        }
+
+        await UPDATE ("sap.ariba.Jobs") .set (oJob) .where ({ jobId : oJob.jobId, Realm: oJob.Realm }) ;
+
+        logger.info(`Extraction run finished!`);
+
+        return "Done";
+    });
+}
+//end  extractSupplierRiskQuesQAData 
 
 async function _getSupplierQNAeRequestConfig (sRealm) {
     //Get API Details
@@ -877,5 +1358,8 @@ module.exports = {
     extractSupplierRiskData,
     extractMasterData,
     extractSyncData,
-    extractSupplierCertificatesData
+    extractSupplierCertificatesData,
+    extractSupplierRiskEngagementData,
+    extractSupplierRiskQuesQAData,
+    extractSupplierRiskEngQAData
 };

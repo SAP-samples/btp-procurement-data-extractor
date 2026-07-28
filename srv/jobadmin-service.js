@@ -15,6 +15,9 @@ module.exports = cds.service.impl((srv) => {
    srv.on('extractSupplierQNAData', extractionRunsHandler.extractSupplierQNAData);
    srv.on('extractSupplierRiskData', extractionRunsHandler.extractSupplierRiskData);
    srv.on('extractSupplierCertificatesData', extractionRunsHandler.extractSupplierCertificatesData);
+   srv.on('extractSupplierRiskEngagementData', extractionRunsHandler.extractSupplierRiskEngagementData);
+   srv.on('extractSupplierRiskEngQAData', extractionRunsHandler.extractSupplierRiskEngQAData);
+   srv.on('extractSupplierRiskQuesQAData', extractionRunsHandler.extractSupplierRiskQuesQAData);
 
    srv.on('extractMasterData', extractionRunsHandler.extractMasterData);
    

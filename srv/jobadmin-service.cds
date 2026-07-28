@@ -16,7 +16,11 @@ service JobAdminService @(path:'/jobadmin')    {
     action extractSupplierQNAData (realm: entities.Jobs:Realm, loadMode: String)  returns String;
     action extractSupplierRiskData (realm: entities.Jobs:Realm, loadMode: String)  returns String;
     action extractSupplierCertificatesData (realm: entities.Jobs:Realm, loadMode: String)  returns String;
-    
+    action extractSupplierRiskEngagementData (realm: entities.Jobs:Realm, loadMode: String, filterCriteria: filter, sType: String)  returns String;
+    action extractSupplierRiskEngQAData (realm: entities.Jobs:Realm, loadMode: String, filterCriteria: filter, sType: String)  returns String;
+
+    action extractSupplierRiskQuesQAData (realm: entities.Jobs:Realm, loadMode: String, filterCriteria: filter, sType: String)  returns String;
+
     action extractMasterData (realm: entities.Jobs:Realm, entityName: String, loadMode: String)  returns String;
 
     

@@ -231,6 +231,87 @@
 								}
 							},
 							"response": []
+						},
+						{
+							"name": "Extract Supplier Risk Engagement Data",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"realm\": \"{{realm}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{appurl}}/jobadmin/extractSupplierRiskEngagementData",
+									"host": [
+										"{{appurl}}"
+									],
+									"path": [
+										"jobadmin",
+										"extractSupplierRiskEngagementData"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "Extract Supplier Risk Engagement Request QA Data",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"realm\": \"{{realm}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{appurl}}/jobadmin/extractSupplierRiskEngQAData",
+									"host": [
+										"{{appurl}}"
+									],
+									"path": [
+										"jobadmin",
+										"extractSupplierRiskEngQAData"
+									]
+								}
+							},
+							"response": []
+						},						
+						{
+							"name": "Extract Supplier Risk Engagement Qestioinnier QA Data",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"realm\": \"{{realm}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{appurl}}/jobadmin/extractSupplierRiskQuesQAData",
+									"host": [
+										"{{appurl}}"
+									],
+									"path": [
+										"jobadmin",
+										"extractSupplierRiskQuesQAData"
+									]
+								}
+							},
+							"response": []
 						}
 					]
 				}
