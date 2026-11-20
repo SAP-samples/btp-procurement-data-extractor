@@ -18,7 +18,7 @@ module.exports = cds.service.impl((srv) => {
    srv.on('extractSupplierRiskEngagementData', extractionRunsHandler.extractSupplierRiskEngagementData);
    srv.on('extractSupplierRiskEngQAData', extractionRunsHandler.extractSupplierRiskEngQAData);
    srv.on('extractSupplierRiskQuesQAData', extractionRunsHandler.extractSupplierRiskQuesQAData);
-
+   srv.on('extractSupplierRiskEngagementDetails', extractionRunsHandler.extractSupplierRiskEngagementDetails);
    srv.on('extractMasterData', extractionRunsHandler.extractMasterData);
    
    //Synchronous Operational API extract

@@ -246,7 +246,7 @@ async function _FullLoadRegions(regions,Realm,SurveyId,SurveySourceSystem,Survey
                 o["SurveyResponse_QuestionId"] = QuestionId;
                 o["SurveyResponse_QuestionSourceSystem"] = QuestionSourceSystem;
 
-                await sINSERT .into ("sap.ariba.SurveyResponse_Region_AN") .entries (o) ;
+                await INSERT .into ("sap.ariba.SurveyResponse_Region_AN") .entries (o) ;
 
             } catch (e) {
                 logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);

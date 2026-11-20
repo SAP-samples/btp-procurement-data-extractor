@@ -93,8 +93,50 @@
           "SELECT"
         ]
       },
-       {
+      {
         "name": "SAP_ARIBA_SUPPLIERRISK_ENG_QUES_QA",
+        "type": "TABLE",
+        "privileges": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SUPPLIERRISKENGAGEMENTDETAILS",
+        "type": "TABLE",
+        "privileges": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SUPPLIERRISKENGAGEMENTCONTROLS",
+        "type": "TABLE",
+        "privileges": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_CONTROLSASSESSMENTS",
+        "type": "TABLE",
+        "privileges": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SUPPLIERRISKENGAGEMENTTASKS",
+        "type": "TABLE",
+        "privileges": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_SUPPLIERRISKENGAGEMENTTASKCOMMENTS",
+        "type": "TABLE",
+        "privileges": [
+          "SELECT"
+        ]
+      },
+      {
+        "name": "SAP_ARIBA_ENGASSESSMENTS",
         "type": "TABLE",
         "privileges": [
           "SELECT"

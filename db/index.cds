@@ -126,6 +126,8 @@ using from './SupplierManagement/SupplierRiskEngagement';
 using from './SupplierManagement/SupplierRiskQuestionnaires';
 using from './SupplierManagement/SupplierRiskQuestionnairesQA';
 using from './SupplierManagement/SupplierRiskENGRequestDetails';
+using from './SupplierManagement/SupplierRiskEngagementDetails';
+
 
 //masterdata
 using from './MasterData/CommodityCode';
