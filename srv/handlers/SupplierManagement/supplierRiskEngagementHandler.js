@@ -11,7 +11,8 @@ function _mapEntityStructure (oData) {
         title                               : oData["title"] || "",
         status                              : oData["status"] || "",
         updatedDate                         : oData["updatedDate"] || "",
-        ProcessedStatus                     : "NP"
+        ProcessedStatus                     : "NP",
+        ENGDetailsProcessStatus             : "NP"
     };
 }
 
@@ -46,8 +47,9 @@ function insertData(aData, realm)  {
                 let res =  await SELECT.from ("sap.ariba.SupplierRisk_Engagements")
                     .where( { Realm : oDataCleansed.Realm, workspaceId : oDataCleansed.workspaceId }  ) ;
 
-                 if (res.length == 0) {
+                 if ( res.length == 0) {
                      //New record, insert
+                       logger.info(`inserting new record into sap.ariba.SupplierRisk_Engagements table `);
                     await INSERT .into ("sap.ariba.SupplierRisk_Engagements") .entries (oDataCleansed) ;
                  } else {
                      //Update existing record
@@ -55,7 +57,7 @@ function insertData(aData, realm)  {
                         .where( { Realm : oDataCleansed.Realm, workspaceId : oDataCleansed.workspaceId } ) ;
                  }                
             } catch (e) {
-                logger.error(`Error on inserting data in database, aborting file processing, details ${e} `);
+                logger.error(`Error on inserting data in database, aborting file processing, details ${e} for workspace id: ${JSON.stringify(oData['workspaceId'])}`);
                 //abort full file
                 reject(e);
                 break;

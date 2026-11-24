@@ -13,4 +13,6 @@ key Realm                               : String(50);
         status                          : String(50);
         updatedDate                     : DateTime;
         ProcessedStatus                 : String(50);
+        ENGDetailsProcessStatus         : String(50);
+        dataLoadErrorMessage            : String(5000);
 }

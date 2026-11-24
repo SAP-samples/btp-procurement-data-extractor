@@ -17,6 +17,7 @@ const paymentTermsHandler = require('../MasterData/paymentTermsHandler');
 const supplierRiskEngagementHandler = require('../SupplierManagement/supplierRiskEngagementHandler');
 const supplierRiskQuestionnairesHandler = require(`../SupplierManagement/supplierRiskQuestionnairesHandler`);
 const extractSupplierRiskEngQAHandler = require(`../SupplierManagement/extractSupplierRiskEngQAHandler`);
+const extractSupplierRiskEngagementDetailsHandler  = require(`../SupplierManagement/extractSupplierRiskEngagementDetailsHandler`); 
 
 //Processing dataHandlers
 const jobDataProcessingHelper = require('./jobDataProcessingHelper');
@@ -704,6 +705,102 @@ async function _getSupplierQNAeRequestConfig (sRealm) {
 
     return oRequestConfig
 }
+
+// extract Supplier Risk Engagement control task assessment details - extractSupplierRiskEngagementDetails
+
+async function extractSupplierRiskEngagementDetails (context, next) {
+    return cds.tx (async srv => {
+        //Get Job Details
+        let realm = context.data.realm,
+            loadMode = context.data.loadMode,
+            sType = context.data.sType,
+            oFilterCriteria = context.data.filterCriteria,
+            iProcessedEntityCount = 0;
+
+        let oJob = {
+            jobId: uuidv4(),
+            Realm: realm,
+            status: "processing",
+            importStatus: "processing", 
+            createdDate: moment.utc().format(),
+            type: sType
+        };
+    // Job_Pages processing
+        let oJobPage = {
+            jobId_jobId: oJob.jobId,
+            jobId_Realm: oJob.Realm,
+            };
+        
+             let affectedRows = 0;
+             let workspacecounter = 0;
+        await INSERT.into ("sap.ariba.Jobs") .entries (oJob) ;
+        
+         let aWorkspaceID = await SELECT `workspaceId` .from("sap.ariba.SupplierRisk_Engagements")
+            .where ({ "Realm" : realm, ENGDetailsProcessStatus:'NP' })
+            .orderBy ( {modifiedAt: 'desc'} ) ;
+ 
+            logger.info(`workspace id to be processed from extractSupplierRiskEngagementDetails table ${JSON.stringify(aWorkspaceID.length)}`);
+            
+           for (const oWorkspaceID of aWorkspaceID) {
+            if (oWorkspaceID.workspaceId) {
+                try {    
+                        workspacecounter = workspacecounter + 1;
+                        let oRequestConfig = await _getSupplierRiskQuesQADataConfig (realm,`engagements/${oWorkspaceID.workspaceId}`);
+                        logger.info(`prinint oRequest Config after filters   ${JSON.stringify(oRequestConfig)}`);
+
+                        let aResponse = await utils.executeRequest(oRequestConfig, 3); 
+                    
+                        let aData = aResponse.data;
+                        //logger.info(`aData of extractSupplierRiskEngagementDetails Length : ${JSON.stringify(aData.length)}`);            
+                        
+                        affectedRows = await extractSupplierRiskEngagementDetailsHandler.insertData(aData, realm);
+                        
+                        iProcessedEntityCount += affectedRows;
+                        logger.info(`Processed records for extractSupplierRiskEngagementDetails  : ${JSON.stringify(workspacecounter)}`);
+
+                         await UPDATE ("sap.ariba.SupplierRisk_Engagements")
+                        .set ({ ENGDetailsProcessStatus: "Processed"})
+                        .where({ Realm: realm, workspaceId: oWorkspaceID.workspaceId });
+
+                } catch(e) {
+                    // Rate limits HIT; store latest pageToken in DB and start from there once newly triggered
+                    logger.error(`Error while extracting extractSupplierRiskEngagementDetailsHandler : ${e} for workspace ID: ${JSON.stringify(aWorkspaceID.workspaceId)}`);
+                    
+                    oJobPage.status = "Processing error";
+                    oJobPage.error = e.message;
+
+                     await UPDATE ("sap.ariba.SupplierRisk_Engagements")
+                        .set ({ dataLoadErrorMessage: e.message})
+                        .where({ Realm: realm, workspaceId: oWorkspaceID.workspaceId });
+
+                }  // end of try catch 
+            } // end of if loop 
+        } // end of for  loop
+
+        // Now once all the pages are processed, we can update the Job with it's status
+        // depending on successful processing or error processing
+        if (oJobPage.status === "Processing error") {
+            oJob.status = "error";
+            oJob.importStatus = "error";
+        } else {
+            oJob.status = "completed";
+            oJob.importStatus = "processed";
+            oJob.totalNumOfRecords = workspacecounter;
+            oJob.pageToken = null;
+            oJob.completedDate = moment.utc().format();
+        }
+
+        logger.info(` extractSupplierRiskEngagementDetails oJob details : ${JSON.stringify(oJob)}`);            
+        await UPDATE ("sap.ariba.Jobs") .set (oJob) .where ({ jobId : oJob.jobId, Realm: oJob.Realm }) ;
+        
+        logger.info(`Extraction run finished!`);
+
+        return "Done";
+    });
+}
+
+// end of extract Supplier Risk Engagment Details for Control task assessment  - extractSupplierRiskEngagementDetails
+
 async function extractSupplierQNAData (context, next) {
     return cds.tx (async srv => {
         //Get Job Details
@@ -1361,5 +1458,6 @@ module.exports = {
     extractSupplierCertificatesData,
     extractSupplierRiskEngagementData,
     extractSupplierRiskQuesQAData,
-    extractSupplierRiskEngQAData
+    extractSupplierRiskEngQAData,
+    extractSupplierRiskEngagementDetails
 };

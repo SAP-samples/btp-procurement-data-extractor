@@ -312,7 +312,34 @@
 								}
 							},
 							"response": []
-						}
+						},					
+						{
+							"name": "Extract Supplier Risk Engagement tasks control assement details",
+							"request": {
+								"method": "POST",
+								"header": [],
+								"body": {
+									"mode": "raw",
+									"raw": "{\r\n    \"realm\": \"{{realm}}\"\r\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "{{appurl}}/jobadmin/extractSupplierRiskEngagementDetails",
+									"host": [
+										"{{appurl}}"
+									],
+									"path": [
+										"jobadmin",
+										"extractSupplierRiskEngagementDetails"
+									]
+								}
+							},
+							"response": []
+						}						
 					]
 				}
 			]

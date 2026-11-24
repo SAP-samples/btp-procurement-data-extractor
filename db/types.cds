@@ -168,7 +168,7 @@ type documentVersionReferenceBO{
 
 type survey{
     SurveyId                : String(255);
-    VersionNumber           : Double;
+    VersionNumber           : Integer;
     SourceSystem            : String(100);
 }
 
@@ -178,7 +178,7 @@ type contractor{
 
 type scorecard{
     ScorecardId             : String(255);
-    VersionNumber           : Int16;
+    VersionNumber           : Int64;
     SourceSystem            : String(100);
 }
 type scorecardKPI{

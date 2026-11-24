@@ -51,24 +51,24 @@ entity SavingsAllocationDetails_AN: managed   {
         SavingsType             : String(100);
         IsTestProject           : Boolean;
         ProjectBaselineSpendB   : Double;
-        ProjectBaselineSpendC   : Double;
+        ProjectBaselineSpendC   : String(10);
         BaselineSpendB          : Double;
-        BaselineSpendC          : Double;
+        BaselineSpendC          : String(10);
         EstimatedSpendB         : Double;
-        EstimatedSpendC         : Double;
+        EstimatedSpendC         : String(10);
         EstimatedSavingsB       : Double;
-        EstimatedSavingsC       : Double;
+        EstimatedSavingsC       : String(10);
         NegotiatedSpendB        : Double;
-        NegotiatedSpendC        : Double;
+        NegotiatedSpendC        : String(10);
         NegotiatedSavingsB      : Double;
-        NegotiatedSavingsC      : Double;
+        NegotiatedSavingsC      : String(10);
         ImplementedSpendB       : Double;
-        ImplementedSpendC       : Double;
+        ImplementedSpendC       : String(10);
         ImplementedSavingsB     : Double;
-        ImplementedSavingsC     : Double;
+        ImplementedSavingsC     : String(10);
         ActualSpendB            : Double;
-        ActualSpendC            : Double;
+        ActualSpendC            : String(10);
         ActualSavingsB          : Double;
-        ActualSavingsC          : Double;
+        ActualSavingsC          : String(10);
 
 }
